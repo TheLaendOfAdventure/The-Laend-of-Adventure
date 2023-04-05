@@ -11,7 +11,7 @@ import android.view.WindowInsets
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import de.hdmstuttgart.thelaendofadventure.databinding.ActivityFullscreenBinding
+import de.hdmstuttgart.the_laend_of_adventure.databinding.ActivityFullscreenBinding
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

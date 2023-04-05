@@ -27,8 +27,10 @@ class FullscreenActivity : AppCompatActivity() {
     @SuppressLint("InlinedApi")
     private val hidePart2Runnable = Runnable {
         // Delayed removal of status and navigation bar
-        if (Build.VERSION.SDK_INT >= 30) {
-            fullscreenContent.windowInsetsController?.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+        if (Build.VERSION.SDK_INT >= ANDROID11) {
+            fullscreenContent.windowInsetsController?.hide(
+                WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars()
+            )
         } else {
             // Note that some of these constants are new as of API 16 (Jelly Bean)
             // and API 19 (KitKat). It is safe to use them, as they are inlined
@@ -97,7 +99,7 @@ class FullscreenActivity : AppCompatActivity() {
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
-        delayedHide(100)
+        delayedHide(DELAY_TIME_MS)
     }
 
     private fun toggle() {
@@ -121,8 +123,10 @@ class FullscreenActivity : AppCompatActivity() {
 
     private fun show() {
         // Show the system bar
-        if (Build.VERSION.SDK_INT >= 30) {
-            fullscreenContent.windowInsetsController?.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+        if (Build.VERSION.SDK_INT >= ANDROID11) {
+            fullscreenContent.windowInsetsController?.show(
+                WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars()
+            )
         } else {
             fullscreenContent.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
@@ -162,5 +166,7 @@ class FullscreenActivity : AppCompatActivity() {
          * and a change of the status and navigation bar.
          */
         private const val UI_ANIMATION_DELAY = 300
+        private const val ANDROID11 = 30
+        private const val DELAY_TIME_MS = 100
     }
 }

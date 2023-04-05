@@ -1,8 +1,7 @@
-package de.hdmstuttgart.the_laend_of_adventure
-
-import org.junit.Test
+package de.hdmstuttgart.thelaendofadventure
 
 import org.junit.Assert.*
+import org.junit.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).

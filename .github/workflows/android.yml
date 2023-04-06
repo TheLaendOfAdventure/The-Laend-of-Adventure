@@ -23,11 +23,12 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+        env:
+          MAPBOX_DOWNLOADS_TOKEN: ${{secrets.MAPBOX_DOWNLOADS_TOKEN}}
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-        with:
-          env:
-          MAPBOX_DOWNLOADS_TOKEN: ${{secrets.MAPBOX_DOWNLOADS_TOKEN}}

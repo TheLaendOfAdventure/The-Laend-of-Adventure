@@ -30,6 +30,3 @@ jobs:
       env:
         MAPBOX_DOWNLOADS_TOKEN: ${{secrets.MAPBOX_DOWNLOADS_TOKEN}}
       run: ./gradlew build
-        with:
-          emv:
-            MAPBOX_DOWNLOADS_TOKEN: ${{secrets.MAPBOX_DOWNLOADS_TOKEN}

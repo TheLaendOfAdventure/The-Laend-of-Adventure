@@ -26,7 +26,7 @@ jobs:
     - name: Autobuild
       uses: github/Android_CI/autobuild@v2
         env:
-          MAPBOX_DOWNLOADS_TOKEN: ${{secrets.MAPBOX_DOWNLOADS_TOKEN}}
+            MAPBOX_DOWNLOADS_TOKEN: ${{secrets.MAPBOX_DOWNLOADS_TOKEN}}
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew

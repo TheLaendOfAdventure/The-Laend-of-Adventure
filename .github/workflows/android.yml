@@ -24,7 +24,7 @@ jobs:
         distribution: 'temurin'
         cache: gradle
     - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+      uses: github/Android_CI/autobuild@v2
         env:
           MAPBOX_DOWNLOADS_TOKEN: ${{secrets.MAPBOX_DOWNLOADS_TOKEN}}
 

@@ -23,6 +23,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
+        env: MAPBOX_DOWNLOADS_TOKEN ${{secrets.MAPBOX_DOWNLOADS_TOKEN}}
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew

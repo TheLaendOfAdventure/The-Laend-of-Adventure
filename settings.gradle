@@ -6,6 +6,8 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
+    Properties mapBoxKey = new Properties()
+    mapBoxKey.load(file('mapbox.env').newDataInputStream())
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
@@ -19,9 +21,11 @@ dependencyResolutionManagement {
                 // Do not change the username below.
                 // This should always be `mapbox`.
                 username = "mapbox"
-                // Use the secret token from environment variables
                 password = System.getenv("MAPBOX_DOWNLOADS_TOKEN")
-            }
+                if(password == null){
+                    password = mapBoxKey.getProperty("MAPBOX_DOWNLOADS_TOKEN")
+                }
+             }
         }
     }
 }

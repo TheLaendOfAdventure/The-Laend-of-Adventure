@@ -63,6 +63,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.mapbox.maps:android:10.12.1'
 
     def room_version = "2.5.1"
 

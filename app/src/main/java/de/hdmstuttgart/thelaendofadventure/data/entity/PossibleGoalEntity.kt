@@ -21,7 +21,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class PossibleGoalEntity(
-    @PrimaryKey(autoGenerate = true) val possibleGoalID: Int,
+    @PrimaryKey(autoGenerate = true) val possibleGoalID: Int = 0,
     @ColumnInfo(name = "actionID", index = true) val actionID: Int,
     @ColumnInfo(name = "actionObjectID", index = true) val actionObjectID: Int
 )

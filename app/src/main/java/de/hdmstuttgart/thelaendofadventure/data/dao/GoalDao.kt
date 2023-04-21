@@ -5,21 +5,22 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.entity.GoalEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GoalDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertGoal(goal: GoalEntity)
+    suspend fun insertGoal(goal: GoalEntity)
 
     @Query("SELECT * FROM goal WHERE goalID = :goalID")
-    fun getGoalById(goalID: Int): GoalEntity
+    fun getGoalById(goalID: Int): Flow<GoalEntity>
 
     @Query("SELECT * FROM goal WHERE questID = :questID")
-    fun getGoalsByQuestId(questID: Int): List<GoalEntity>
+    fun getGoalsByQuestId(questID: Int): Flow<List<GoalEntity>>
 
     @Query("DELETE FROM goal WHERE goalID = :goalID")
-    fun deleteGoalById(goalID: Int)
+    suspend fun deleteGoalById(goalID: Int)
 
     @Query("DELETE FROM goal")
-    fun deleteAllGoals()
+    suspend fun deleteAllGoals()
 }

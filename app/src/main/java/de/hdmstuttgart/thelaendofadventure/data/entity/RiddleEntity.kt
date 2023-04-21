@@ -21,5 +21,5 @@ data class RiddleEntity(
     val riddleID: Int,
     @ColumnInfo(name = "question") val question: String,
     @ColumnInfo(name = "answer") val answer: String,
-    @ColumnInfo(name = "hint") val hint: String
+    @ColumnInfo(name = "hint") val hint: String?
 )

@@ -13,8 +13,8 @@ import androidx.room.*
     ]
 )
 data class QuestEntity(
-    @PrimaryKey(autoGenerate = true) val questID: Int,
-    @ColumnInfo(name = "userID", index = true) val userID: String,
+    @PrimaryKey(autoGenerate = true) val questID: Int = 0,
+    @ColumnInfo(name = "userID", index = true) val userID: Int?,
     @ColumnInfo(name = "questName") val questName: String,
     @ColumnInfo(name = "description") val description: String
 )

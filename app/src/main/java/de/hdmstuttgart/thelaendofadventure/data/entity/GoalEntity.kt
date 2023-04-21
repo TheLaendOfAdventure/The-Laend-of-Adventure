@@ -12,6 +12,11 @@ import androidx.room.PrimaryKey
             entity = QuestEntity::class,
             childColumns = ["questID"],
             parentColumns = ["questID"]
+        ),
+        ForeignKey(
+            entity = PossibleGoalEntity::class,
+            childColumns = ["possibleGoalID"],
+            parentColumns = ["possibleGoalID"]
         )
     ]
 )

@@ -14,14 +14,15 @@ import androidx.room.PrimaryKey
             parentColumns = ["questID"]
         ),
         ForeignKey(
-            entity = PossibleGoalEntity::class,
-            childColumns = ["possibleGoalID"],
-            parentColumns = ["possibleGoalID"]
+            entity = ActionEntity::class,
+            childColumns = ["actionID"],
+            parentColumns = ["actionID"]
         )
     ]
 )
-data class GoalEntity(
-    @PrimaryKey(autoGenerate = true) val goalID: Int = 0,
-    @ColumnInfo(name = "questID", index = true) val questID: Int,
-    @ColumnInfo(name = "possibleGoalID") val possibleGoalID: Int
+data class QuestGoalEntity(
+    @PrimaryKey(autoGenerate = true) val questGoalID: Int = 0,
+    @ColumnInfo(index = true) val questID: Int,
+    @ColumnInfo(index = true) val actionID: Int,
+    val goalNumber: Int
 )

@@ -9,16 +9,16 @@ import androidx.room.PrimaryKey
     tableName = "location",
     foreignKeys = [
         ForeignKey(
-            entity = ActionObjectEntity::class,
-            childColumns = ["locationID"],
-            parentColumns = ["actionObjectID"]
+            entity = ActionEntity::class,
+            childColumns = ["actionID"],
+            parentColumns = ["actionID"]
         )
     ]
 )
 data class LocationEntity(
     @PrimaryKey
     @ColumnInfo(index = true)
-    val locationID: Int,
-    @ColumnInfo(name = "longitude") val longitude: Double,
-    @ColumnInfo(name = "latitude") val latitude: Double
+    val actionID: Int,
+    val longitude: Double,
+    val latitude: Double
 )

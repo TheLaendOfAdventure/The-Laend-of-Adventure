@@ -6,20 +6,18 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "riddle",
+    tableName = "riddleAnswers",
     foreignKeys = [
         ForeignKey(
-            entity = ActionEntity::class,
+            entity = RiddleEntity::class,
             childColumns = ["actionID"],
             parentColumns = ["actionID"]
         )
     ]
 )
-data class RiddleEntity(
+data class RiddleAnswersEntity(
     @PrimaryKey
     @ColumnInfo(index = true)
     val actionID: Int,
-    val question: String,
-    val answer: String,
-    val hint: String?
+    val answer: String
 )

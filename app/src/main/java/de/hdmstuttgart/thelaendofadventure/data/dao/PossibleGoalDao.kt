@@ -5,18 +5,19 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.entity.PossibleGoalEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PossibleGoalDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertPossibleGoal(possibleGoal: PossibleGoalEntity)
+    suspend fun insertPossibleGoal(possibleGoal: PossibleGoalEntity)
 
     @Query("SELECT * FROM possibleGoal WHERE possibleGoalID = :possibleGoalID")
-    fun getPossibleGoal(possibleGoalID: Int): PossibleGoalEntity?
+    fun getPossibleGoal(possibleGoalID: Int): Flow<PossibleGoalEntity?>
 
     @Query("DELETE FROM possibleGoal WHERE possibleGoalID = :possibleGoalID")
-    fun deletePossibleGoal(possibleGoalID: Int)
+    suspend fun deletePossibleGoal(possibleGoalID: Int)
 
     @Query("SELECT * FROM possibleGoal")
-    fun getAllPossibleGoals(): List<PossibleGoalEntity>
+    fun getAllPossibleGoals(): Flow<List<PossibleGoalEntity>>
 }

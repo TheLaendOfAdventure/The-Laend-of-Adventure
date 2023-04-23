@@ -12,11 +12,9 @@ import de.hdmstuttgart.thelaendofadventure.data.entity.*
         UserEntity::class,
         QuestEntity::class,
         ActionEntity::class,
-        ActionObjectEntity::class,
         RiddleEntity::class,
         LocationEntity::class,
-        GoalEntity::class,
-        PossibleGoalEntity::class
+        QuestGoalEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -26,11 +24,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun questDao(): QuestDao
     abstract fun actionDao(): ActionDao
-    abstract fun actionObjectDao(): ActionObjectDao
     abstract fun riddleDao(): RiddleDao
     abstract fun locationDao(): LocationDao
     abstract fun goalDao(): GoalDao
-    abstract fun possibleGoalDao(): PossibleGoalDao
 
     companion object {
         @Volatile

@@ -1,5 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.data.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -21,6 +22,7 @@ import androidx.room.PrimaryKey
 )
 data class UserQuestEntity(
     @PrimaryKey(autoGenerate = true) val userQuestID: Int = 0,
-    val userID: Int,
-    val questID: Int
+    @ColumnInfo(index = true) val userID: Int,
+    @ColumnInfo(index = true) val questID: Int,
+    val currentGoalNumber: Int = 1
 )

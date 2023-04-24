@@ -16,8 +16,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class RiddleAnswersEntity(
-    @PrimaryKey
-    @ColumnInfo(index = true)
-    val actionID: Int,
+    @PrimaryKey(autoGenerate = true) val riddleAnswerID: Int = 0,
+    @ColumnInfo(index = true) val actionID: Int,
     val answer: String
 )

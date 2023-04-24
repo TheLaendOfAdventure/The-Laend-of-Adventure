@@ -9,6 +9,5 @@ data class BadgeEntity(
     val name: String,
     val description: String,
     val imagePath: String,
-    val currentGoalNumber: Int = 0,
     val targetGoalNumber: Int
 )

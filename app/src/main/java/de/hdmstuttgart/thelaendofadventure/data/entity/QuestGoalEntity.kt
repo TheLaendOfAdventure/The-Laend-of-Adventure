@@ -6,7 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "goal",
+    tableName = "questGoal",
     foreignKeys = [
         ForeignKey(
             entity = QuestEntity::class,

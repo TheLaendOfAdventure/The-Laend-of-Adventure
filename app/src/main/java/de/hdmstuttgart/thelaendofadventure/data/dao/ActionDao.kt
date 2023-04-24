@@ -1,31 +1,34 @@
 package de.hdmstuttgart.thelaendofadventure.data.dao
 
+import androidx.room.Dao
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.entity.LocationEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleAnswersEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleEntity
 import kotlinx.coroutines.flow.Flow
-
+@Dao
 interface ActionDao {
     @Query(
-        "SELECT location.* FROM location" +
-            "INNER JOIN action ON action.actionID = location.actionID" +
+        "SELECT location.* FROM location " +
+            "INNER JOIN action ON action.actionID = location.actionID " +
             "WHERE location.actionID = :actionID"
     )
     fun getLocationForAction(actionID: Int): Flow<LocationEntity>
 
     @Query(
-        "SELECT quest.* FROM quest" +
-            "INNER JOIN action ON action.actionID = achievement.actionID" +
+        "SELECT quest.* FROM quest " +
+            "INNER JOIN achievement ON achievement.questID = quest.questID " +
+            "INNER JOIN action ON action.actionID = achievement.actionID " +
             "WHERE achievement.actionID = :actionID"
     )
-    fun getAchievementForAction(actionID: Int): Flow<LocationEntity>
+    fun getAchievementForAction(actionID: Int): Flow<QuestEntity>
 
     @Query(
-        "SELECT * FROM riddle" +
-            "JOIN riddleAnswers ON riddle.actionID = riddleAnswers.actionID" +
+        "SELECT * FROM riddle " +
+            "JOIN riddleAnswers ON riddle.actionID = riddleAnswers.actionID " +
             "WHERE riddle.actionID = :actionID"
     )
-    fun getRiddleAndAnserwsForAction(actionID: Int):
+    fun getRiddleAndAnswersForAction(actionID: Int):
         Flow<Map<RiddleEntity, List<RiddleAnswersEntity>>>
 }

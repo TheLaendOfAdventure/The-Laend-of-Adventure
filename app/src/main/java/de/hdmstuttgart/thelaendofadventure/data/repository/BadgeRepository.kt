@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.data.repository
 
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestProgress
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import kotlinx.coroutines.flow.Flow
@@ -31,9 +31,9 @@ interface BadgeRepository {
      *
      * @param userID the ID of the user to get the badge progress for
      * @param badgeID the ID of the badge to get the progress for
-     * @return a [Flow] emitting a [QuestProgress] object representing the progress of the badge
+     * @return a [Flow] emitting a [Progress] object representing the progress of the badge
      */
-    fun getGoalBadgeProgressForBadgeForUser(userID: Int, badgeID: Int): Flow<QuestProgress>
+    fun getGoalBadgeProgressForBadgeForUser(userID: Int, badgeID: Int): Flow<Progress>
 
     /**
      * Gets all the completed goals for a specific badge and user.

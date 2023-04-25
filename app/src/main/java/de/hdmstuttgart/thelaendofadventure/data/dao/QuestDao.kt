@@ -2,7 +2,7 @@ package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestProgress
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.*
 import kotlinx.coroutines.flow.Flow
 
@@ -29,7 +29,7 @@ interface QuestDao {
             "INNER JOIN quest ON user_quest.questID = quest.questID " +
             "WHERE user_quest.userID = :userID AND user_quest.questID = :questID"
     )
-    fun getGoalQuestProgressForQuestForUser(userID: Int, questID: Int): Flow<QuestProgress>
+    fun getGoalQuestProgressForQuestForUser(userID: Int, questID: Int): Flow<Progress>
 
     @Query(
         "SELECT action.* From action " +

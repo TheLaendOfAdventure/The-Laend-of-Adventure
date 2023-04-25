@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.data.dao.datahelper
 
-data class QuestProgress(
+data class Progress(
     val currentGoalNumber: Int,
     val targetGoalNumber: Int
 )

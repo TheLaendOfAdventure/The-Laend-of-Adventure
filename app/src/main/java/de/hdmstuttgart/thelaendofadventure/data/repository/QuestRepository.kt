@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.data.repository
 
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestProgress
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import kotlinx.coroutines.flow.Flow
@@ -31,9 +31,9 @@ interface QuestRepository {
      *
      * @param userID ID of the user whose quest progress should be retrieved.
      * @param questID ID of the quest whose progress should be retrieved.
-     * @return A [Flow] emitting a [QuestProgress] object containing the current and target goal numbers.
+     * @return A [Flow] emitting a [Progress] object containing the current and target goal numbers.
      */
-    fun getGoalQuestProgressForQuestForUser(userID: Int, questID: Int): Flow<QuestProgress>
+    fun getGoalQuestProgressForQuestForUser(userID: Int, questID: Int): Flow<Progress>
 
     /**
      * Retrieves a list of all completed goals for the given quest and user.

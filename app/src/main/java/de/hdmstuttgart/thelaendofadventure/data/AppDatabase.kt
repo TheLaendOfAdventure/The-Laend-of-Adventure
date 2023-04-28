@@ -46,7 +46,7 @@ abstract class AppDatabase : RoomDatabase() {
                      * attempts to perform a migration with no defined migration path.
                      */
                     .fallbackToDestructiveMigration()
-                    .createFromAsset("Laend_of_Adventure.db")
+                    .createFromAsset("database/Laend_of_Adventure.db")
                     .build()
                     .also { Instance = it }
             }

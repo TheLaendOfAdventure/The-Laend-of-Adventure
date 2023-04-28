@@ -2,7 +2,7 @@ package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestProgress
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import kotlinx.coroutines.flow.Flow
@@ -30,7 +30,7 @@ interface BadgeDao {
             "INNER JOIN badge ON user_badge.badgeID = badge.badgeID " +
             "WHERE user_badge.userID = :userID AND user_badge.badgeID = :badgeID"
     )
-    fun getGoalBadgeProgressForBadgeForUser(userID: Int, badgeID: Int): Flow<QuestProgress>
+    fun getGoalBadgeProgressForBadgeForUser(userID: Int, badgeID: Int): Flow<Progress>
 
     @Query(
         "SELECT action.* From action " +

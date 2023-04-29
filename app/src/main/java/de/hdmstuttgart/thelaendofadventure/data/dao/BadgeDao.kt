@@ -55,4 +55,10 @@ interface BadgeDao {
             "WHERE badgeID = :badgeID AND userID = :userID"
     )
     suspend fun updateBadgeProgressByUserID(userID: Int, badgeID: Int, goalNumber: Int)
+
+    @Query(
+        "INSERT INTO user_badge (userID, badgeID)" +
+            "VALUES (:userID, (:badgeIDs))"
+    )
+    suspend fun assignAllBadgesToUser(userID: Int, badgeIDs: List<Int>)
 }

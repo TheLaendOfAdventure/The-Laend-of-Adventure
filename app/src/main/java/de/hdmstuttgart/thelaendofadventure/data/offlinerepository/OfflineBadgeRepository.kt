@@ -6,6 +6,7 @@ import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.toList
 
 class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
 
@@ -26,4 +27,10 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
 
     override suspend fun updateBadgeProgressByUserID(userID: Int, badgeID: Int, goalNumber: Int) =
         badgeDao.updateBadgeProgressByUserID(userID, badgeID, goalNumber)
+
+    override suspend fun assignAllBadgesToUser(userID: Int) {
+        val badges = badgeDao.getUnacceptedBadgesByUserID(userID).toList()
+        val badgesIDs = badges.map { it.badgeID }
+        badgeDao.assignAllBadgesToUser(userID, badgesIDs)
+    }
 }

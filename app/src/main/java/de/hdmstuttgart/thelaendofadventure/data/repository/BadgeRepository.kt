@@ -61,4 +61,11 @@ interface BadgeRepository {
      * @param goalNumber the new goal number to set for the badge progress
      */
     suspend fun updateBadgeProgressByUserID(userID: Int, badgeID: Int, goalNumber: Int)
+
+    /**
+     * Assign all Badges to a specific user.
+     *
+     * @param userID the ID of the user to assign the badges to.
+     */
+    suspend fun assignAllBadgesToUser(userID: Int)
 }

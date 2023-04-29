@@ -14,17 +14,17 @@ interface QuestRepository {
      * Retrieves a list of all quests accepted by the user with the given ID.
      *
      * @param userID ID of the user whose accepted quests should be retrieved.
-     * @return A [Flow] emitting a list of [QuestEntity] objects representing the accepted quests.
+     * @return A [Flow] of [QuestEntity] objects representing the accepted quests.
      */
-    fun getAcceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>>
+    fun getAcceptedQuestsByUserID(userID: Int): Flow<QuestEntity>
 
     /**
      * Retrieves a list of all quests that have not been accepted by the user with the given ID.
      *
      * @param userID ID of the user whose unaccepted quests should be retrieved.
-     * @return A [Flow] emitting a list of [QuestEntity] objects representing the unaccepted quests.
+     * @return A [Flow] of [QuestEntity] objects representing the unaccepted quests.
      */
-    fun getUnacceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>>
+    fun getUnacceptedQuestsByUserID(userID: Int): Flow<QuestEntity>
 
     /**
      * Retrieves the progress of the current goal for the given quest and user.
@@ -40,18 +40,18 @@ interface QuestRepository {
      *
      * @param userID ID of the user whose completed goals should be retrieved.
      * @param questID ID of the quest whose completed goals should be retrieved.
-     * @return A [Flow] emitting a list of [ActionEntity] objects representing the completed goals.
+     * @return A [Flow] of [ActionEntity] objects representing the completed goals.
      */
-    fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
+    fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<ActionEntity>
 
     /**
      * Retrieves a list of all uncompleted goals for the given quest and user.
      *
      * @param userID ID of the user whose uncompleted goals should be retrieved.
      * @param questID ID of the quest whose uncompleted goals should be retrieved.
-     * @return A [Flow] emitting a list of [ActionEntity] objects representing the uncompleted goals.
+     * @return A [Flow] of [ActionEntity] objects representing the uncompleted goals.
      */
-    fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
+    fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<ActionEntity>
 
     /**
      * Updates the progress of the current goal for the given quest and user.

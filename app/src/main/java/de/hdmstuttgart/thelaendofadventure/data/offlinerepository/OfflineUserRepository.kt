@@ -11,7 +11,7 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
         userDao.addUser(user)
     }
 
-    override fun getAllUsers(): Flow<List<UserEntity>> {
+    override fun getAllUsers(): Flow<UserEntity> {
         return userDao.getAllUsers()
     }
 

@@ -15,7 +15,7 @@ interface BadgeDao {
             "INNER JOIN user_badge ON badge.badgeID = user_badge.badgeID " +
             "WHERE user_badge.userID = :userID"
     )
-    fun getAcceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>>
+    fun getAcceptedBadgesByUserID(userID: Int): Flow<BadgeEntity>
 
     @Query(
         "SELECT badge.* FROM badge " +
@@ -23,7 +23,7 @@ interface BadgeDao {
             "AND user_badge.userID = :userID " +
             "WHERE user_badge.userID IS NULL"
     )
-    fun getUnacceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>>
+    fun getUnacceptedBadgesByUserID(userID: Int): Flow<BadgeEntity>
 
     @Query(
         "SELECT user_badge.currentGoalNumber, badge.targetGoalNumber FROM user_badge " +
@@ -39,7 +39,7 @@ interface BadgeDao {
             "WHERE user_badge.currentGoalNumber >= badgeGoal.goalNumber " +
             "AND user_badge.userID = :userID AND badgeGoal.badgeID = :badgeID"
     )
-    fun getCompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
+    fun getCompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<ActionEntity>
 
     @Query(
         "SELECT action.* From action " +
@@ -48,7 +48,7 @@ interface BadgeDao {
             "WHERE user_badge.currentGoalNumber < badgeGoal.goalNumber " +
             "AND user_badge.userID = :userID AND badgeGoal.badgeID = :badgeID"
     )
-    fun getUncompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
+    fun getUncompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<ActionEntity>
 
     @Query(
         "UPDATE user_badge SET currentGoalNumber = :goalNumber " +

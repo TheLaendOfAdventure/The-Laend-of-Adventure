@@ -13,7 +13,7 @@ interface UserDao {
     fun addUser(user: UserEntity)
 
     @Query("SELECT * FROM user")
-    fun getAllUsers(): Flow<List<UserEntity>>
+    fun getAllUsers(): Flow<UserEntity>
 
     @Query("SELECT * FROM user WHERE userID = :id")
     fun getUserById(id: Int): Flow<UserEntity>

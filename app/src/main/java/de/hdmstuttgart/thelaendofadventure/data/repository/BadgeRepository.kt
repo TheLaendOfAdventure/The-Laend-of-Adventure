@@ -14,17 +14,17 @@ interface BadgeRepository {
      * Gets all the accepted badges for a given user.
      *
      * @param userID the ID of the user to get the badges for
-     * @return a [Flow] emitting a list of [BadgeEntity] objects representing the accepted badges
+     * @return a [Flow] of [BadgeEntity] objects representing the accepted badges
      */
-    fun getAcceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>>
+    fun getAcceptedBadgesByUserID(userID: Int): Flow<BadgeEntity>
 
     /**
      * Gets all the unaccepted badges for a given user.
      *
      * @param userID the ID of the user to get the badges for
-     * @return a [Flow] emitting a list of [BadgeEntity] objects representing the unaccepted badges
+     * @return a [Flow] of [BadgeEntity] objects representing the unaccepted badges
      */
-    fun getUnacceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>>
+    fun getUnacceptedBadgesByUserID(userID: Int): Flow<BadgeEntity>
 
     /**
      * Gets the progress of a specific badge for a specific user.
@@ -40,18 +40,18 @@ interface BadgeRepository {
      *
      * @param userID the ID of the user to get the completed goals for
      * @param badgeID the ID of the badge to get the completed goals for
-     * @return a [Flow] emitting a list of [ActionEntity] objects representing the completed goals
+     * @return a [Flow] of [ActionEntity] objects representing the completed goals
      */
-    fun getCompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
+    fun getCompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<ActionEntity>
 
     /**
      * Gets all the uncompleted goals for a specific badge and user.
      *
      * @param userID the ID of the user to get the uncompleted goals for
      * @param badgeID the ID of the badge to get the uncompleted goals for
-     * @return a [Flow] emitting a list of [ActionEntity] objects representing the uncompleted goals
+     * @return a [Flow] of [ActionEntity] objects representing the uncompleted goals
      */
-    fun getUncompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
+    fun getUncompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<ActionEntity>
 
     /**
      * Updates the progress of a specific badge for a specific user.

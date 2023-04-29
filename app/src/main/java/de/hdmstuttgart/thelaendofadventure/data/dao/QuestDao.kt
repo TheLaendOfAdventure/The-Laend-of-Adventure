@@ -14,7 +14,7 @@ interface QuestDao {
             "INNER JOIN user_quest ON quest.questID = user_quest.questID " +
             "WHERE user_quest.userID = :userID"
     )
-    fun getAcceptedQuestsByUserID(userID: Int): Flow<QuestEntity>
+    fun getAcceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>>
 
     @Query(
         "SELECT quest.* FROM quest " +
@@ -22,7 +22,7 @@ interface QuestDao {
             "AND user_quest.userID = :userID " +
             "WHERE user_quest.userID IS NULL"
     )
-    fun getUnacceptedQuestsByUserID(userID: Int): Flow<QuestEntity>
+    fun getUnacceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>>
 
     @Query(
         "SELECT user_quest.currentGoalNumber, quest.targetGoalNumber FROM user_quest " +
@@ -38,7 +38,7 @@ interface QuestDao {
             "WHERE user_quest.currentGoalNumber >= questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"
     )
-    fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<ActionEntity>
+    fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     @Query(
         "SELECT [action].* From [action] " +
@@ -47,7 +47,7 @@ interface QuestDao {
             "WHERE user_quest.currentGoalNumber < questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"
     )
-    fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<ActionEntity>
+    fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     @Query(
         "UPDATE user_quest SET currentGoalNumber = :goalNumber " +

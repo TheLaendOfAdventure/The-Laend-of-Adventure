@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.Flow
 
 class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
 
-    override fun getAcceptedQuestsByUserID(userID: Int): Flow<QuestEntity> =
+    override fun getAcceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>> =
         questDao.getAcceptedQuestsByUserID(userID)
 
-    override fun getUnacceptedQuestsByUserID(userID: Int): Flow<QuestEntity> =
+    override fun getUnacceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>> =
         questDao.getUnacceptedQuestsByUserID(userID)
 
     override fun getProgressForQuestByUserID(userID: Int, questID: Int):
@@ -20,11 +20,11 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
         questDao.getProgressForQuestByUserID(userID, questID)
 
     override fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int):
-        Flow<ActionEntity> =
+        Flow<List<ActionEntity>> =
         questDao.getCompletedGoalsForQuestByUserID(userID, questID)
 
     override fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int):
-        Flow<ActionEntity> =
+        Flow<List<ActionEntity>> =
         questDao.getUncompletedGoalsForQuestByUserID(userID, questID)
 
     override suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int) {

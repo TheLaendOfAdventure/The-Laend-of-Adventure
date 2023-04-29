@@ -20,7 +20,7 @@ interface UserRepository {
      *
      * @return emitting a list of [UserEntity] in the database.
      */
-    fun getAllUsers(): Flow<UserEntity>
+    fun getAllUsers(): Flow<List<UserEntity>>
 
     /**
      * Get a specific user from the database.

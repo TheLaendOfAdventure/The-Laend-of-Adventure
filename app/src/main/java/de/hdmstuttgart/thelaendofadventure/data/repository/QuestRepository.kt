@@ -61,4 +61,12 @@ interface QuestRepository {
      * @param goalNumber The new goal number to set.
      */
     suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int)
+
+    /**
+     * Accepts a quest for a user with the given user ID.
+     *
+     * @param userID The ID of the user accepting the quest.
+     * @param questID The ID of the quest being accepted.
+     */
+    suspend fun acceptQuestByUserID(userID: Int, questID: Int)
 }

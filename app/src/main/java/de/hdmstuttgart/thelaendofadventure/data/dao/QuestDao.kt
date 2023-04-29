@@ -54,4 +54,10 @@ interface QuestDao {
             "WHERE questID = :questID AND userID = :userID"
     )
     suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int)
+
+    @Query(
+        "INSERT INTO user_quest (userID, questID)" +
+            "VALUES (:userID, :questID)"
+    )
+    suspend fun acceptQuestByUserID(userID: Int, questID: Int)
 }

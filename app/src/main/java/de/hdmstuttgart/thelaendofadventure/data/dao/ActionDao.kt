@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface ActionDao {
     @Query(
         "SELECT location.* FROM location " +
-            "INNER JOIN action ON action.actionID = location.actionID " +
+            "INNER JOIN [action] ON [action].actionID = location.actionID " +
             "WHERE location.actionID = :actionID"
     )
     fun getLocationByActionID(actionID: Int): Flow<LocationEntity>
@@ -19,7 +19,7 @@ interface ActionDao {
     @Query(
         "SELECT quest.* FROM quest " +
             "INNER JOIN achievement ON achievement.questID = quest.questID " +
-            "INNER JOIN action ON action.actionID = achievement.actionID " +
+            "INNER JOIN [action] ON [action].actionID = achievement.actionID " +
             "WHERE achievement.actionID = :actionID"
     )
     fun getAchievementByActionID(actionID: Int): Flow<QuestEntity>

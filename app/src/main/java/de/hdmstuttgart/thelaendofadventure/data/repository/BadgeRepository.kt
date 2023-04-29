@@ -33,7 +33,7 @@ interface BadgeRepository {
      * @param badgeID the ID of the badge to get the progress for
      * @return a [Flow] emitting a [Progress] object representing the progress of the badge
      */
-    fun getGoalBadgeProgressForBadgeForUser(userID: Int, badgeID: Int): Flow<Progress>
+    fun getProgressForBadgeByUserID(userID: Int, badgeID: Int): Flow<Progress>
 
     /**
      * Gets all the completed goals for a specific badge and user.
@@ -42,7 +42,7 @@ interface BadgeRepository {
      * @param badgeID the ID of the badge to get the completed goals for
      * @return a [Flow] emitting a list of [ActionEntity] objects representing the completed goals
      */
-    fun getCompletedGoalsForBadgeAndUser(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
+    fun getCompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
 
     /**
      * Gets all the uncompleted goals for a specific badge and user.
@@ -51,7 +51,7 @@ interface BadgeRepository {
      * @param badgeID the ID of the badge to get the uncompleted goals for
      * @return a [Flow] emitting a list of [ActionEntity] objects representing the uncompleted goals
      */
-    fun getUncompletedGoalsForBadgeAndUser(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
+    fun getUncompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
 
     /**
      * Updates the progress of a specific badge for a specific user.
@@ -60,5 +60,5 @@ interface BadgeRepository {
      * @param badgeID the ID of the badge to update the progress for
      * @param goalNumber the new goal number to set for the badge progress
      */
-    suspend fun updateBadgeProgress(userID: Int, badgeID: Int, goalNumber: Int)
+    suspend fun updateBadgeProgressByUserID(userID: Int, badgeID: Int, goalNumber: Int)
 }

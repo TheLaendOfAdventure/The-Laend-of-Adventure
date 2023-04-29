@@ -15,19 +15,19 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
     override fun getUnacceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>> =
         questDao.getUnacceptedQuestsByUserID(userID)
 
-    override fun getGoalQuestProgressForQuestForUser(userID: Int, questID: Int):
+    override fun getProgressForQuestByUserID(userID: Int, questID: Int):
         Flow<Progress> =
-        questDao.getGoalQuestProgressForQuestForUser(userID, questID)
+        questDao.getProgressForQuestByUserID(userID, questID)
 
-    override fun getCompletedGoalsForQuestAndUser(userID: Int, questID: Int):
+    override fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int):
         Flow<List<ActionEntity>> =
-        questDao.getCompletedGoalsForQuestAndUser(userID, questID)
+        questDao.getCompletedGoalsForQuestByUserID(userID, questID)
 
-    override fun getUncompletedGoalsForQuestAndUser(userID: Int, questID: Int):
+    override fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int):
         Flow<List<ActionEntity>> =
-        questDao.getUncompletedGoalsForQuestAndUser(userID, questID)
+        questDao.getUncompletedGoalsForQuestByUserID(userID, questID)
 
-    override suspend fun updateQuestProgress(userID: Int, questID: Int, goalNumber: Int) {
-        questDao.updateQuestProgress(userID, questID, goalNumber)
+    override suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int) {
+        questDao.updateQuestProgressByUserID(userID, questID, goalNumber)
     }
 }

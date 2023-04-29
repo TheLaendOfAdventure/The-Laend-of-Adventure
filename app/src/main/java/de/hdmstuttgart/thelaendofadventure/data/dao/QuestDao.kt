@@ -29,7 +29,7 @@ interface QuestDao {
             "INNER JOIN quest ON user_quest.questID = quest.questID " +
             "WHERE user_quest.userID = :userID AND user_quest.questID = :questID"
     )
-    fun getGoalQuestProgressForQuestForUser(userID: Int, questID: Int): Flow<Progress>
+    fun getProgressForQuestByUserID(userID: Int, questID: Int): Flow<Progress>
 
     @Query(
         "SELECT action.* From action " +
@@ -38,7 +38,7 @@ interface QuestDao {
             "WHERE user_quest.currentGoalNumber >= questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"
     )
-    fun getCompletedGoalsForQuestAndUser(userID: Int, questID: Int): Flow<List<ActionEntity>>
+    fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     @Query(
         "SELECT action.* From action " +
@@ -47,11 +47,11 @@ interface QuestDao {
             "WHERE user_quest.currentGoalNumber < questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"
     )
-    fun getUncompletedGoalsForQuestAndUser(userID: Int, questID: Int): Flow<List<ActionEntity>>
+    fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     @Query(
         "UPDATE user_quest SET currentGoalNumber = :goalNumber " +
             "WHERE questID = :questID AND userID = :userID"
     )
-    suspend fun updateQuestProgress(userID: Int, questID: Int, goalNumber: Int)
+    suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int)
 }

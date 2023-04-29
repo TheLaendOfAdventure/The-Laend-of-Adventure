@@ -33,7 +33,7 @@ interface QuestRepository {
      * @param questID ID of the quest whose progress should be retrieved.
      * @return A [Flow] emitting a [Progress] object containing the current and target goal numbers.
      */
-    fun getGoalQuestProgressForQuestForUser(userID: Int, questID: Int): Flow<Progress>
+    fun getProgressForQuestByUserID(userID: Int, questID: Int): Flow<Progress>
 
     /**
      * Retrieves a list of all completed goals for the given quest and user.
@@ -42,7 +42,7 @@ interface QuestRepository {
      * @param questID ID of the quest whose completed goals should be retrieved.
      * @return A [Flow] emitting a list of [ActionEntity] objects representing the completed goals.
      */
-    fun getCompletedGoalsForQuestAndUser(userID: Int, questID: Int): Flow<List<ActionEntity>>
+    fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     /**
      * Retrieves a list of all uncompleted goals for the given quest and user.
@@ -51,7 +51,7 @@ interface QuestRepository {
      * @param questID ID of the quest whose uncompleted goals should be retrieved.
      * @return A [Flow] emitting a list of [ActionEntity] objects representing the uncompleted goals.
      */
-    fun getUncompletedGoalsForQuestAndUser(userID: Int, questID: Int): Flow<List<ActionEntity>>
+    fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     /**
      * Updates the progress of the current goal for the given quest and user.
@@ -60,5 +60,5 @@ interface QuestRepository {
      * @param questID ID of the quest whose progress should be updated.
      * @param goalNumber The new goal number to set.
      */
-    suspend fun updateQuestProgress(userID: Int, questID: Int, goalNumber: Int)
+    suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int)
 }

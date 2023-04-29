@@ -14,7 +14,7 @@ interface ActionDao {
             "INNER JOIN action ON action.actionID = location.actionID " +
             "WHERE location.actionID = :actionID"
     )
-    fun getLocationForAction(actionID: Int): Flow<LocationEntity>
+    fun getLocationByActionID(actionID: Int): Flow<LocationEntity>
 
     @Query(
         "SELECT quest.* FROM quest " +
@@ -22,13 +22,13 @@ interface ActionDao {
             "INNER JOIN action ON action.actionID = achievement.actionID " +
             "WHERE achievement.actionID = :actionID"
     )
-    fun getAchievementForAction(actionID: Int): Flow<QuestEntity>
+    fun getAchievementByActionID(actionID: Int): Flow<QuestEntity>
 
     @Query(
         "SELECT * FROM riddle " +
             "JOIN riddleAnswers ON riddle.actionID = riddleAnswers.actionID " +
             "WHERE riddle.actionID = :actionID"
     )
-    fun getRiddleAndAnswersForAction(actionID: Int):
+    fun getRiddleAndAnswersByActionID(actionID: Int):
         Flow<Map<RiddleEntity, List<RiddleAnswersEntity>>>
 }

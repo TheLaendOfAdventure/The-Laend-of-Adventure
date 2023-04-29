@@ -21,7 +21,7 @@ interface UserRepository {
      * @param userID the ID of the user to retrieve.
      * @return a flow of the [UserEntity] with the given ID.
      */
-    fun getUserById(userID: Int): Flow<UserEntity>
+    fun getUserByID(userID: Int): Flow<UserEntity>
 
     /**
      * Update the name of a specific user in the database.

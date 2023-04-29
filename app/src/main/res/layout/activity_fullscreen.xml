@@ -14,9 +14,9 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        mapbox:mapbox_cameraTargetLat="40.7128"
-        mapbox:mapbox_cameraTargetLng="-74.0060"
-        mapbox:mapbox_cameraZoom="9.0"
+        mapbox:mapbox_cameraTargetLat="48.77849654840248"
+        mapbox:mapbox_cameraTargetLng="9.17961910927422"
+        mapbox:mapbox_cameraZoom="17.0"
         />
 
     <!-- This FrameLayout insets its children based on system windows using

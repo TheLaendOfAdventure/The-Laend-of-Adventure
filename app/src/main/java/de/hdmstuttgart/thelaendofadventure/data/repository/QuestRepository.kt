@@ -68,5 +68,5 @@ interface QuestRepository {
      * @param userID The ID of the user accepting the quest.
      * @param questID The ID of the quest being accepted.
      */
-    suspend fun acceptQuestByUserID(userID: Int, questID: Int)
+    suspend fun assignQuestToUser(userID: Int, questID: Int)
 }

@@ -59,5 +59,5 @@ interface QuestDao {
         "INSERT INTO user_quest (userID, questID)" +
             "VALUES (:userID, :questID)"
     )
-    suspend fun acceptQuestByUserID(userID: Int, questID: Int)
+    suspend fun assignQuestToUser(userID: Int, questID: Int)
 }

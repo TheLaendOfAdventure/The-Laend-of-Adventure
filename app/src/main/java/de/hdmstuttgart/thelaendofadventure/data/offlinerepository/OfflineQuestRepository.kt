@@ -31,7 +31,7 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
         questDao.updateQuestProgressByUserID(userID, questID, goalNumber)
     }
 
-    override suspend fun acceptQuestByUserID(userID: Int, questID: Int) {
-        questDao.acceptQuestByUserID(userID, questID)
+    override suspend fun assignQuestToUser(userID: Int, questID: Int) {
+        questDao.assignQuestToUser(userID, questID)
     }
 }

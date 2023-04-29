@@ -33,8 +33,8 @@ interface BadgeDao {
     fun getProgressForBadgeByUserID(userID: Int, badgeID: Int): Flow<Progress>
 
     @Query(
-        "SELECT action.* From action " +
-            "INNER JOIN badgeGoal ON action.actionID = badgeGoal.actionID " +
+        "SELECT [action].* From [action] " +
+            "INNER JOIN badgeGoal ON [action].actionID = badgeGoal.actionID " +
             "INNER JOIN user_badge ON user_badge.badgeID = badgeGoal.badgeID " +
             "WHERE user_badge.currentGoalNumber >= badgeGoal.goalNumber " +
             "AND user_badge.userID = :userID AND badgeGoal.badgeID = :badgeID"
@@ -42,8 +42,8 @@ interface BadgeDao {
     fun getCompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<ActionEntity>
 
     @Query(
-        "SELECT action.* From action " +
-            "INNER JOIN badgeGoal ON action.actionID = badgeGoal.actionID " +
+        "SELECT [action].* From [action] " +
+            "INNER JOIN badgeGoal ON [action].actionID = badgeGoal.actionID " +
             "INNER JOIN user_badge ON user_badge.badgeID = badgeGoal.badgeID " +
             "WHERE user_badge.currentGoalNumber < badgeGoal.goalNumber " +
             "AND user_badge.userID = :userID AND badgeGoal.badgeID = :badgeID"

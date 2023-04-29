@@ -32,8 +32,8 @@ interface QuestDao {
     fun getProgressForQuestByUserID(userID: Int, questID: Int): Flow<Progress>
 
     @Query(
-        "SELECT action.* From action " +
-            "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
+        "SELECT [action].* From [action] " +
+            "INNER JOIN questGoal ON [action].actionID = questGoal.actionID " +
             "INNER JOIN user_quest ON user_quest.questID = questGoal.questID " +
             "WHERE user_quest.currentGoalNumber >= questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"
@@ -41,8 +41,8 @@ interface QuestDao {
     fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<ActionEntity>
 
     @Query(
-        "SELECT action.* From action " +
-            "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
+        "SELECT [action].* From [action] " +
+            "INNER JOIN questGoal ON [action].actionID = questGoal.actionID " +
             "INNER JOIN user_quest ON user_quest.questID = questGoal.questID " +
             "WHERE user_quest.currentGoalNumber < questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"

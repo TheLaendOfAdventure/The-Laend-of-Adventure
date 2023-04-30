@@ -11,7 +11,6 @@ import android.view.WindowInsets
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.mapbox.maps.MapView
-import com.mapbox.maps.Style
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.ActivityFullscreenBinding
 
@@ -63,14 +62,9 @@ class FullscreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fullscreen)
-        mapView = findViewById(R.id.mapView)
-        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
-
         binding = ActivityFullscreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         isFullscreen = true
 
         fullscreenContentControls = binding.fullscreenContentControls
@@ -79,6 +73,9 @@ class FullscreenActivity : AppCompatActivity() {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         binding.dummyButton.setOnTouchListener(delayHideTouchListener)
+
+        mapView = findViewById(R.id.mapView)
+        mapView.getMapboxMap().loadStyleUri(getString(R.string.mapbox_styleURL))
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

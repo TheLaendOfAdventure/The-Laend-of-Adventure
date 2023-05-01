@@ -3,4 +3,8 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="mapbox_access_token">pk.eyJ1Ijoic2ViYXN0aWFuaGRtIiwiYSI6ImNsZzNrZHpheTBjMTIzZG4xeW9pYWloeTAifQ.KX0L4CprJOJHJkDOVX20ig</string>
+    <string name="gps_negativeButton">App schließen</string>
+    <string name="gps_positiveButton">Okay</string>
+    <string name="gps_required_title">GPS-Nutzung muss genehmigt werden</string>
+    <string name="gps_required_context">Das Spiel basiert auf GPS-Daten und ist ohne diese nicht lauffähig.</string>
 </resources>

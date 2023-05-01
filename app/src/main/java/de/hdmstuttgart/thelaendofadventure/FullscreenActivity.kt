@@ -19,6 +19,7 @@ import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.ActivityFullscreenBinding
+import kotlin.system.exitProcess
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -153,9 +154,9 @@ class FullscreenActivity : AppCompatActivity() {
                     requestCodeLocation,
                 )
             }
-            .setNegativeButton(R.string.gps_negativeButton, { dialog, id ->
-                System.exit(0)
-            })
+            .setNegativeButton(R.string.gps_negativeButton) { dialog, id ->
+                exitProcess(0)
+            }
         builder.create().show()
     }
 

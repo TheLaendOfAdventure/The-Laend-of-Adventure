@@ -48,8 +48,6 @@ class FullscreenActivity : AppCompatActivity() {
 
     private val hideRunnable = Runnable { hide() }
 
-    private val requestCodeLocation = 100
-
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -221,5 +219,6 @@ class FullscreenActivity : AppCompatActivity() {
         private const val UI_ANIMATION_DELAY = 300
         private const val ANDROID11 = 30
         private const val DELAY_TIME_MS = 100
+        private const val requestCodeLocation = 100
     }
 }

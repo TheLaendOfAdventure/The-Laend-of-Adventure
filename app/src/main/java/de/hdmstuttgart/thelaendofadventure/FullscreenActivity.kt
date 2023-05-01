@@ -160,6 +160,48 @@ class FullscreenActivity : AppCompatActivity() {
         builder.create().show()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            requestCodeLocation -> {
+                // If the request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty()) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // ACCESS_FINE_LOCATION is granted
+                    } else if (grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                        // ACCESS_COARSE_LOCATION is granted
+                    } else {
+                        showGpsAlertDialog()
+                    }
+                }
+                return
+            }
+        }
+    }
+
+    private fun showGpsAlertDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.gps_required_title))
+            .setMessage(R.string.gps_required_context)
+            .setPositiveButton(R.string.gps_positiveButton) { dialog, id ->
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                    ),
+                    requestCodeLocation,
+                )
+            }
+            .setNegativeButton(R.string.gps_negativeButton, { dialog, id ->
+                System.exit(0)
+            })
+        builder.create().show()
+    }
+
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 

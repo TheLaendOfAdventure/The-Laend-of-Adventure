@@ -1,6 +1,9 @@
 package de.hdmstuttgart.thelaendofadventure
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -10,6 +13,8 @@ import android.view.View
 import android.view.WindowInsets
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
 import de.hdmstuttgart.the_laend_of_adventure.R
@@ -42,6 +47,8 @@ class FullscreenActivity : AppCompatActivity() {
 
     private val hideRunnable = Runnable { hide() }
 
+    private val requestCodeLocation = 100
+
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -63,6 +70,32 @@ class FullscreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fullscreen)
+
+        when {
+            ContextCompat.checkSelfPermission(
+                this@FullscreenActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // You can use the API that requires the permission.
+            }
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this@FullscreenActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            ) -> {
+                showGpsAlertDialog()
+            }
+            else -> {
+                // Ask for both the ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION permissions.
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                    ),
+                    requestCodeLocation,
+                )
+            }
+        }
+
         mapView = findViewById(R.id.mapView)
         mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
 
@@ -79,6 +112,48 @@ class FullscreenActivity : AppCompatActivity() {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         binding.dummyButton.setOnTouchListener(delayHideTouchListener)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            requestCodeLocation -> {
+                // If the request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty()) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // ACCESS_FINE_LOCATION is granted
+                    } else if (grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                        // ACCESS_COARSE_LOCATION is granted
+                    } else {
+                        showGpsAlertDialog()
+                    }
+                }
+                return
+            }
+        }
+    }
+
+    private fun showGpsAlertDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.gps_required_title))
+            .setMessage(R.string.gps_required_context)
+            .setPositiveButton(R.string.gps_positiveButton) { dialog, id ->
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                    ),
+                    requestCodeLocation,
+                )
+            }
+            .setNegativeButton(R.string.gps_negativeButton, { dialog, id ->
+                System.exit(0)
+            })
+        builder.create().show()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

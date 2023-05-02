@@ -15,8 +15,13 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
+import com.mapbox.maps.plugin.gestures.gestures
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
+import com.mapbox.maps.plugin.locationcomponent.location
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.ActivityFullscreenBinding
 import kotlin.system.exitProcess
@@ -31,6 +36,15 @@ class FullscreenActivity : AppCompatActivity() {
     private lateinit var fullscreenContentControls: LinearLayout
     private val hideHandler = Handler(Looper.myLooper()!!)
     private lateinit var mapView: MapView
+
+    // Get the user's location as coordinates
+    private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
+        mapView.getMapboxMap().setCamera(CameraOptions.Builder().bearing(it).build())
+    }
+    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
+        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
+        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
+    }
 
     @SuppressLint("InlinedApi")
     private val hidePart2Runnable = Runnable {
@@ -114,6 +128,20 @@ class FullscreenActivity : AppCompatActivity() {
 
         mapView = findViewById(R.id.mapView)
         mapView.getMapboxMap().loadStyleUri(getString(R.string.mapbox_styleURL))
+
+        showUserAtMap()
+    }
+
+    private fun showUserAtMap() {
+        // Show user's location at the map
+        mapView.location.updateSettings {
+            enabled = true
+            pulsingEnabled = true
+        }
+
+        // Pass the user's location to camera
+        mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
+        mapView.location.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
     }
 
     override fun onRequestPermissionsResult(

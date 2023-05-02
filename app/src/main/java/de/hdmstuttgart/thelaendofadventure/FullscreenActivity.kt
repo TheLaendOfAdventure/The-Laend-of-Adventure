@@ -134,18 +134,10 @@ class FullscreenActivity : AppCompatActivity() {
 
     private fun showUserAtMap() {
         // Show user's location at the map
-        mapView.getMapboxMap().loadStyleUri(
-            Style.MAPBOX_STREETS,
-            // After the style is loaded, initialize the Location component.
-            object : Style.OnStyleLoaded {
-                override fun onStyleLoaded(style: Style) {
-                    mapView.location.updateSettings {
-                        enabled = true
-                        pulsingEnabled = true
-                    }
-                }
-            },
-        )
+        mapView.location.updateSettings {
+            enabled = true
+            pulsingEnabled = true
+        }
 
         // Pass the user's location to camera
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)

@@ -6,6 +6,9 @@ import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 
 class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
+    companion object {
+        private const val EXP_LIMIT = 100
+    }
 
     override fun getAllUsers(): Flow<List<UserEntity>> {
         return userDao.getAllUsers()
@@ -28,10 +31,30 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
     }
 
     override suspend fun updateUserExp(userID: Int, exp: Int) {
-        userDao.updateExpForUserID(userID, exp)
+        val user = getUserById(userID)
+        user.collect {
+            val currentExp = it.exp + exp
+            if (currentExp < EXP_LIMIT) {
+                userDao.updateExpForUserID(userID, currentExp)
+            } else {
+                val remainingExp = currentExp % EXP_LIMIT
+                levelUpUserByID(userID, remainingExp)
+            }
+        }
     }
 
     override suspend fun updateUserWalkedKm(userID: Int, walkedKm: Int) {
         userDao.updateWalkedKmForUserID(userID, walkedKm)
+    }
+
+    private suspend fun levelUpUserByID(userID: Int, remainingExp: Int) {
+        val user = getUserById(userID)
+
+        user.collect {
+            val level = it.level + 1
+
+            updateUserLevel(userID, level)
+            updateUserExp(userID, remainingExp)
+        }
     }
 }

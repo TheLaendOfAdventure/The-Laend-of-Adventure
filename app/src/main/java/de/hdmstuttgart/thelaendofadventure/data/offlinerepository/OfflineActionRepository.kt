@@ -9,13 +9,13 @@ import de.hdmstuttgart.thelaendofadventure.data.repository.ActionRepository
 import kotlinx.coroutines.flow.Flow
 
 class OfflineActionRepository(private val actionDao: ActionDao) : ActionRepository {
-    override fun getLocationForAction(actionID: Int): Flow<LocationEntity> =
-        actionDao.getLocationForAction(actionID)
+    override fun getLocationByActionID(actionID: Int): Flow<LocationEntity> =
+        actionDao.getLocationByActionID(actionID)
 
-    override fun getAchievementForAction(actionID: Int): Flow<QuestEntity> =
-        actionDao.getAchievementForAction(actionID)
+    override fun getAchievementByActionID(actionID: Int): Flow<QuestEntity> =
+        actionDao.getAchievementByActionID(actionID)
 
-    override fun getRiddleAndAnswersForAction(actionID: Int):
+    override fun getRiddleAndAnswersByActionID(actionID: Int):
         Flow<Map<RiddleEntity, List<RiddleAnswersEntity>>> =
-        actionDao.getRiddleAndAnswersForAction(actionID)
+        actionDao.getRiddleAndAnswersByActionID(actionID)
 }

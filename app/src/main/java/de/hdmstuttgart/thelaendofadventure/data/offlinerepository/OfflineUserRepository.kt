@@ -7,11 +7,15 @@ import kotlinx.coroutines.flow.Flow
 
 class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
 
+    override fun addUser(user: UserEntity) {
+        userDao.addUser(user)
+    }
+
     override fun getAllUsers(): Flow<List<UserEntity>> {
         return userDao.getAllUsers()
     }
 
-    override fun getUserById(userID: Int): Flow<UserEntity> {
+    override fun getUserByID(userID: Int): Flow<UserEntity> {
         return userDao.getUserById(userID)
     }
 

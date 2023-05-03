@@ -18,7 +18,7 @@ interface ActionRepository {
      * @param actionID The ID of the action to retrieve the location for.
      * @return A [Flow] of the [LocationEntity] associated with the given [actionID].
      */
-    fun getLocationForAction(actionID: Int): Flow<LocationEntity>
+    fun getLocationByActionID(actionID: Int): Flow<LocationEntity>
 
     /**
      * Retrieves the achievement associated with the given [actionID].
@@ -26,7 +26,7 @@ interface ActionRepository {
      * @param actionID The ID of the action to retrieve the achievement for.
      * @return A [Flow] of the [QuestEntity] associated with the given [actionID].
      */
-    fun getAchievementForAction(actionID: Int): Flow<QuestEntity>
+    fun getAchievementByActionID(actionID: Int): Flow<QuestEntity>
 
     /**
      * Retrieves the riddle and corresponding answers associated with the given [actionID].
@@ -35,6 +35,6 @@ interface ActionRepository {
      * @return A [Flow] of a [Map] of [RiddleEntity] to a [List] of [RiddleAnswersEntity]
      * associated with the given [actionID].
      */
-    fun getRiddleAndAnswersForAction(actionID: Int):
+    fun getRiddleAndAnswersByActionID(actionID: Int):
         Flow<Map<RiddleEntity, List<RiddleAnswersEntity>>>
 }

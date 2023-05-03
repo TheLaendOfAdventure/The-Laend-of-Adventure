@@ -35,7 +35,7 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
     }
 
     override suspend fun updateUserExp(userID: Int, exp: Int) {
-        val user = getUserById(userID)
+        val user = getUserByID(userID)
         user.collect {
             val currentExp = it.exp + exp
             if (currentExp < EXP_LIMIT) {
@@ -52,7 +52,7 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
     }
 
     private suspend fun levelUpUserByID(userID: Int, remainingExp: Int) {
-        val user = getUserById(userID)
+        val user = getUserByID(userID)
 
         user.collect {
             val level = it.level + 1

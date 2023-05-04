@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#62def8">
@@ -12,20 +11,21 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/circle" />
+        app:srcCompat="@drawable/circle"
+        android:contentDescription="@string/popup_name_NPC" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="40dp"
         android:layout_marginTop="85dp"
-        android:layout_marginRight="35dp"
+        android:layout_marginEnd="35dp"
         android:layout_toEndOf="@+id/imageView"
         android:background="@drawable/rectangle"
-        android:text="Name"
+        android:text="@string/popup_name_NPC"
         android:textAlignment="center" />
 
     <TextView
@@ -34,15 +34,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView3"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="70dp"
         android:layout_marginEnd="70dp"
         android:layout_marginTop="50dp"
         android:background="@drawable/rectangle"
-        android:text="XYZ will dir eine Quest anbieten"
+        android:text="@string/popup_questText"
         android:textAlignment="center" />
 
     <TextView
@@ -51,18 +49,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView4"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
         android:layout_marginStart="70dp"
-        android:layout_marginLeft="70dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="72dp"
-        android:layout_marginRight="72dp"
         android:background="@drawable/rectangle"
         android:maxLines="5"
-        android:text="Ort: Die Taverne \n Aufgabe: xyz"
+        android:text="@string/popup_questDetails"
         android:textAlignment="center" />
 
     <Button
@@ -70,21 +64,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView5"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/rectangle"
-        android:text="Nein" />
+        android:text="@string/popup_declineButton" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView5"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/rectangle"
-        android:text="Ja" />
+        android:text="@string/popup_acceptButton" />
 
 </RelativeLayout>

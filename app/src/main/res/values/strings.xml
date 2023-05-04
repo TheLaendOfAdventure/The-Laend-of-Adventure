@@ -8,4 +8,6 @@
     <string name="gps_positiveButton">Okay</string>
     <string name="gps_required_title">GPS-Nutzung muss genehmigt werden</string>
     <string name="gps_required_context">Das Spiel basiert auf GPS-Daten und ist ohne diese nicht lauffähig.</string>
+    <string name="quest1_name">Quest Name</string>
+    <string name="quest2_name">Quest Name</string>
 </resources>

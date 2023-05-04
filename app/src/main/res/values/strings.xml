@@ -8,4 +8,10 @@
     <string name="gps_positiveButton">Okay</string>
     <string name="gps_required_title">GPS-Nutzung muss genehmigt werden</string>
     <string name="gps_required_context">Das Spiel basiert auf GPS-Daten und ist ohne diese nicht lauffähig.</string>
+    <string name="userPage_name">Name</string>
+    <string name="avatar">profilePicture</string>
+    <string name="userPage_profileLevel">3</string>
+    <string name="userPage_levelText">Level:</string>
+    <string name="userPage_profileButton">userPage_profileButton</string>
+    <string name="userPage_profileImage">userPage_profileImage</string>
 </resources>

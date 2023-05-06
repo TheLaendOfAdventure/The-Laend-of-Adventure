@@ -10,4 +10,15 @@
     <string name="gps_required_context">Das Spiel basiert auf GPS-Daten und ist ohne diese nicht lauffähig.</string>
     <string name="quest1_name">Quest Name</string>
     <string name="quest2_name">Quest Name</string>
+    <string name="image_npc">image_NPC</string>
+    <string name="popup_name_NPC">Name</string>
+    <string name="popup_questText">XYZ will dir eine Quest anbieten</string>
+    <string name="popup_questDetails">Ort: Die Taverne \n Aufgabe: xyz</string>
+    <string name="popup_declineButton">Nein</string>
+    <string name="popup_acceptButton">Ja</string>
+    <string name="userCreationPage_nameInputField">Name</string>
+    <string name="userCreationPage_title">The Länd of Adventure</string>
+    <string name="userCreationPage_confirmButton">Bestätigen</string>
+    <string name="userCreationPage_secondaryTitle">Charaktererstellung</string>
+    <string name="userCreationPage_avatarButton">profileAvatar</string>
 </resources>

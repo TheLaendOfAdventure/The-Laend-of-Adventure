@@ -27,7 +27,7 @@
         android:layout_toEndOf="@+id/imageView"
         android:background="@drawable/rectangle"
         tools:text="@string/popup_name_NPC"
-        tools:textAlignment="center" />
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/popupDialog_questDescription"
@@ -42,7 +42,7 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/rectangle"
         tools:text="@string/popup_questText"
-        tools:textAlignment="center" />
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/popupDialog_questDetails"
@@ -58,7 +58,7 @@
         android:background="@drawable/rectangle"
         android:maxLines="5"
         tools:text="@string/popup_questDetails"
-        tools:textAlignment="center" />
+        android:textAlignment="center" />
 
     <Button
         android:id="@+id/popupDialog_declineButton"

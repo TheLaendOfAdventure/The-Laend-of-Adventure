@@ -8,4 +8,10 @@
     <string name="gps_positiveButton">Okay</string>
     <string name="gps_required_title">GPS-Nutzung muss genehmigt werden</string>
     <string name="gps_required_context">Das Spiel basiert auf GPS-Daten und ist ohne diese nicht lauffähig.</string>
+    <string name="image_npc">image_NPC</string>
+    <string name="popup_name_NPC">Name</string>
+    <string name="popup_questText">XYZ will dir eine Quest anbieten</string>
+    <string name="popup_questDetails">Ort: Die Taverne \n Aufgabe: xyz</string>
+    <string name="popup_declineButton">Nein</string>
+    <string name="popup_acceptButton">Ja</string>
 </resources>

@@ -21,7 +21,7 @@
     <string name="userCreationPage_avatarButton">profileAvatar</string>
     <string name="userPage_name">Name</string>
     <string name="avatar">profilePicture</string>
-    <string name="userPage_profileLevel">3</string>
+    <string name="profileLevel">3</string>
     <string name="userPage_levelText">Level:</string>
     <string name="userPage_profileButton">userPage_profileButton</string>
     <string name="userPage_profileImage">userPage_profileImage</string>

@@ -89,24 +89,33 @@
 
     </ScrollView>
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/circle"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:srcCompat="@android:drawable/ic_menu_my_calendar"
-            android:contentDescription="@string/profile_image" />
+    <ImageButton
+        android:id="@+id/userPage_profileButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/circle"
+        android:contentDescription="@string/userPage_profileButton"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/circle"
-            android:text="@string/profile_level"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:maxWidth="30dp"
+        android:maxHeight="30dp"
+        android:text="@string/profileLevel"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_max="30dp"
+        tools:ignore="TextViewEdits"
+        tools:layout_constraintHeight_max="30dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,7 +17,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
-import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.gestures.gestures
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
@@ -37,15 +36,6 @@ class FullscreenActivity : AppCompatActivity() {
     private val hideHandler = Handler(Looper.myLooper()!!)
     private lateinit var mapView: MapView
 
-    // Get the user's location as coordinates
-    private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
-        mapView.getMapboxMap().setCamera(CameraOptions.Builder().bearing(it).build())
-    }
-    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
-        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
-        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
-    }
-
     @SuppressLint("InlinedApi")
     private val hidePart2Runnable = Runnable {
         // Delayed removal of status and navigation bar
@@ -61,6 +51,15 @@ class FullscreenActivity : AppCompatActivity() {
     private var isFullscreen: Boolean = false
 
     private val hideRunnable = Runnable { hide() }
+
+    // Get the user's location as coordinates
+    private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
+        mapView.getMapboxMap().setCamera(CameraOptions.Builder().bearing(it).build())
+    }
+    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
+        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
+        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
+    }
 
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
@@ -82,35 +81,9 @@ class FullscreenActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkIfRequiredPermissionIsGranted()
+
         setContentView(R.layout.activity_fullscreen)
-
-        when {
-            ContextCompat.checkSelfPermission(
-                this@FullscreenActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                // You can use the API that requires the permission.
-            }
-            ActivityCompat.shouldShowRequestPermissionRationale(
-                this@FullscreenActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-            ) -> {
-                showGpsAlertDialog()
-            }
-            else -> {
-                // Ask for both the ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION permissions.
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                    ),
-                    requestCodeLocation,
-                )
-            }
-        }
-
-        mapView = findViewById(R.id.mapView)
-        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
 
         binding = ActivityFullscreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -142,6 +115,33 @@ class FullscreenActivity : AppCompatActivity() {
         // Pass the user's location to camera
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
         mapView.location.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
+    }
+
+    private fun checkIfRequiredPermissionIsGranted() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this@FullscreenActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // You can use the API that requires the permission.
+            }
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this@FullscreenActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            ) -> {
+                showGpsAlertDialog()
+            }
+            else -> {
+                // Ask for both the ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION permissions.
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                    ),
+                    requestCodeLocation,
+                )
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(

@@ -1,6 +1,9 @@
 package de.hdmstuttgart.thelaendofadventure
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -10,10 +13,17 @@ import android.view.View
 import android.view.WindowInsets
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
-import com.mapbox.maps.Style
+import com.mapbox.maps.plugin.gestures.gestures
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
+import com.mapbox.maps.plugin.locationcomponent.location
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.ActivityFullscreenBinding
+import kotlin.system.exitProcess
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -42,6 +52,15 @@ class FullscreenActivity : AppCompatActivity() {
 
     private val hideRunnable = Runnable { hide() }
 
+    // Get the user's location as coordinates
+    private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
+        mapView.getMapboxMap().setCamera(CameraOptions.Builder().bearing(it).build())
+    }
+    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
+        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
+        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
+    }
+
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -62,9 +81,9 @@ class FullscreenActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkIfRequiredPermissionIsGranted()
+
         setContentView(R.layout.activity_fullscreen)
-        mapView = findViewById(R.id.mapView)
-        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
 
         binding = ActivityFullscreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -79,6 +98,92 @@ class FullscreenActivity : AppCompatActivity() {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         binding.dummyButton.setOnTouchListener(delayHideTouchListener)
+
+        mapView = findViewById(R.id.mapView)
+        mapView.getMapboxMap().loadStyleUri(getString(R.string.mapbox_styleURL))
+
+        showUserAtMap()
+    }
+
+    private fun showUserAtMap() {
+        // Show user's location at the map
+        mapView.location.updateSettings {
+            enabled = true
+            pulsingEnabled = true
+        }
+
+        // Pass the user's location to camera
+        mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
+        mapView.location.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
+    }
+
+    private fun checkIfRequiredPermissionIsGranted() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this@FullscreenActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // You can use the API that requires the permission.
+            }
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this@FullscreenActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            ) -> {
+                showGpsAlertDialog()
+            }
+            else -> {
+                // Ask for both the ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION permissions.
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                    ),
+                    requestCodeLocation,
+                )
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            requestCodeLocation -> {
+                // If the request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty()) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // ACCESS_FINE_LOCATION is granted
+                    } else if (grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                        // ACCESS_COARSE_LOCATION is granted
+                    } else {
+                        showGpsAlertDialog()
+                    }
+                }
+                return
+            }
+        }
+    }
+
+    private fun showGpsAlertDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.gps_required_title))
+            .setMessage(R.string.gps_required_context)
+            .setPositiveButton(R.string.gps_positiveButton) { dialog, id ->
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                    ),
+                    requestCodeLocation,
+                )
+            }
+            .setNegativeButton(R.string.gps_negativeButton) { dialog, id ->
+                exitProcess(0)
+            }
+        builder.create().show()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -142,5 +247,6 @@ class FullscreenActivity : AppCompatActivity() {
         private const val UI_ANIMATION_DELAY = 300
         private const val ANDROID11 = 30
         private const val DELAY_TIME_MS = 100
+        private const val requestCodeLocation = 100
     }
 }

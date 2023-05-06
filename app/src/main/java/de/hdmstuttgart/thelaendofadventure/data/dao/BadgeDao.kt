@@ -30,29 +30,35 @@ interface BadgeDao {
             "INNER JOIN badge ON user_badge.badgeID = badge.badgeID " +
             "WHERE user_badge.userID = :userID AND user_badge.badgeID = :badgeID"
     )
-    fun getGoalBadgeProgressForBadgeForUser(userID: Int, badgeID: Int): Flow<Progress>
+    fun getProgressForBadgeByUserID(userID: Int, badgeID: Int): Flow<Progress>
 
     @Query(
-        "SELECT action.* From action " +
-            "INNER JOIN badgeGoal ON action.actionID = badgeGoal.actionID " +
+        "SELECT [action].* From [action] " +
+            "INNER JOIN badgeGoal ON [action].actionID = badgeGoal.actionID " +
             "INNER JOIN user_badge ON user_badge.badgeID = badgeGoal.badgeID " +
             "WHERE user_badge.currentGoalNumber >= badgeGoal.goalNumber " +
             "AND user_badge.userID = :userID AND badgeGoal.badgeID = :badgeID"
     )
-    fun getCompletedGoalsForBadgeAndUser(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
+    fun getCompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
 
     @Query(
-        "SELECT action.* From action " +
-            "INNER JOIN badgeGoal ON action.actionID = badgeGoal.actionID " +
+        "SELECT [action].* From [action] " +
+            "INNER JOIN badgeGoal ON [action].actionID = badgeGoal.actionID " +
             "INNER JOIN user_badge ON user_badge.badgeID = badgeGoal.badgeID " +
             "WHERE user_badge.currentGoalNumber < badgeGoal.goalNumber " +
             "AND user_badge.userID = :userID AND badgeGoal.badgeID = :badgeID"
     )
-    fun getUncompletedGoalsForBadgeAndUser(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
+    fun getUncompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
 
     @Query(
         "UPDATE user_badge SET currentGoalNumber = :goalNumber " +
             "WHERE badgeID = :badgeID AND userID = :userID"
     )
-    suspend fun updateBadgeProgress(userID: Int, badgeID: Int, goalNumber: Int)
+    suspend fun updateBadgeProgressByUserID(userID: Int, badgeID: Int, goalNumber: Int)
+
+    @Query(
+        "INSERT INTO user_badge (userID, badgeID)" +
+            "VALUES (:userID, (:badgeIDs))"
+    )
+    suspend fun assignAllBadgesToUser(userID: Int, badgeIDs: List<Int>)
 }

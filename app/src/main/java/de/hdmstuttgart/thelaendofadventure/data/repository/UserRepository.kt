@@ -9,6 +9,13 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
 
     /**
+     * Add a user to the database.
+     *
+     * @param user the [UserEntity] to add to the database.
+     */
+    fun addUser(user: UserEntity)
+
+    /**
      * Get all users from the database.
      *
      * @return emitting a list of [UserEntity] in the database.
@@ -21,7 +28,7 @@ interface UserRepository {
      * @param userID the ID of the user to retrieve.
      * @return a flow of the [UserEntity] with the given ID.
      */
-    fun getUserById(userID: Int): Flow<UserEntity>
+    fun getUserByID(userID: Int): Flow<UserEntity>
 
     /**
      * Update the name of a specific user in the database.

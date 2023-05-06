@@ -1,12 +1,17 @@
 package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
+
+    @Insert
+    fun addUser(user: UserEntity)
+
     @Query("SELECT * FROM user")
     fun getAllUsers(): Flow<List<UserEntity>>
 

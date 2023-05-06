@@ -16,7 +16,7 @@
         android:contentDescription="@string/popup_name_NPC" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/popupDialog_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -30,10 +30,10 @@
         tools:textAlignment="center" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/popupDialog_questDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/popupDialog_name"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
@@ -45,10 +45,10 @@
         tools:textAlignment="center" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/popupDialog_questDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
+        android:layout_below="@+id/popupDialog_questDescription"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
@@ -61,10 +61,10 @@
         tools:textAlignment="center" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/popupDialog_declineButton"
         android:layout_width="139dp"
         android:layout_height="48dp"
-        android:layout_below="@+id/textView5"
+        android:layout_below="@+id/popupDialog_questDetails"
         android:layout_alignParentStart="true"
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
@@ -74,10 +74,10 @@
         tools:text="@string/popup_declineButton" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/popupDialog_acceptButton"
         android:layout_width="139dp"
         android:layout_height="48dp"
-        android:layout_below="@+id/textView5"
+        android:layout_below="@+id/popupDialog_questDetails"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"

@@ -22,107 +22,118 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="226dp"
-                android:layout_height="64dp"
+                android:id="@+id/quest1_background"
+                android:layout_width="240dp"
+                android:layout_height="80dp"
                 android:layout_marginTop="-5dp"
+                android:contentDescription="@string/questpage_backgroundrectangle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView2"
-                app:srcCompat="@drawable/questpage_rectangle"
-                android:contentDescription="@string/questpage_backgroundrectangle" />
+                app:layout_constraintTop_toTopOf="@+id/quest1_questName"
+                app:srcCompat="@drawable/questpage_rectangle" />
 
             <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="226dp"
-                android:layout_height="64dp"
+                android:id="@+id/quest2_background"
+                android:layout_width="240dp"
+                android:layout_height="80dp"
                 android:layout_marginTop="-5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView3"
+                app:layout_constraintTop_toTopOf="@+id/quest2_questName"
                 app:srcCompat="@drawable/questpage_rectangle"
                 android:contentDescription="@string/questpage_backgroundrectangle" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/quest1_questName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/quest1_name"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ProgressBar
-                android:id="@+id/progressBar"
+                android:id="@+id/quest1_progressDisplayBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/quest1_questName" />
 
             <ProgressBar
-                android:id="@+id/progressBar2"
+                android:id="@+id/quest2_progressDisplayBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@+id/quest2_questName" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/quest2_questName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/quest2_name"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintTop_toBottomOf="@+id/quest1_progressDisplayNumeric" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/quest1_progressDisplayNumeric"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/quest1_progressNumeric"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+                app:layout_constraintTop_toBottomOf="@+id/quest1_progressDisplayBar" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/quest2_progressDisplayNumeric"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/quest2_progressNumeric"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
+                app:layout_constraintTop_toBottomOf="@+id/quest2_progressDisplayBar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
     <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/userPage_profileButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:background="@drawable/circle"
+        android:contentDescription="@string/userPage_profileButton"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:srcCompat="@android:drawable/ic_menu_my_calendar"
-        android:contentDescription="@string/questmenu_profile" />
+        tools:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/circle"
-        android:text="@string/profile_level"
+        android:maxWidth="30dp"
+        android:maxHeight="30dp"
+        android:text="@string/profileLevel"
         android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_max="30dp"
+        tools:ignore="TextViewEdits"
+        tools:layout_constraintHeight_max="30dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

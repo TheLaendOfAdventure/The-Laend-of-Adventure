@@ -3,15 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle"
+        android:minWidth="250dp"
+        android:minHeight="50dp"
         android:text="@string/userPage_name"
+        android:textAlignment="center"
+        android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,26 +36,32 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/circle"
+        android:maxWidth="30dp"
+        android:maxHeight="30dp"
         android:text="@string/userPage_profileLevel"
         android:textAlignment="center"
-        android:textColor="#FFE0B2"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="TextViewEdits" />
+        app:layout_constraintWidth_max="30dp"
+        tools:ignore="TextViewEdits"
+        tools:layout_constraintHeight_max="30dp" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="299dp"
-        android:layout_height="277dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/circle"
+        android:contentDescription="@string/userPage_profileImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:srcCompat="@drawable/circle"
-        android:contentDescription="@string/userPage_profileImage" />
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <TextView
         android:id="@+id/textView7"
@@ -60,20 +69,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rectangle"
-        android:text="@string/userPage_levelText"
+        android:minWidth="50dp"
+        android:minHeight="50dp"
+        android:text="@string/userPage_profileLevel"
+        android:textAlignment="center"
+        android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rectangle"
-        android:text="@string/userPage_profileLevel"
-        app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toTopOf="@+id/textView7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

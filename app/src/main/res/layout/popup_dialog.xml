@@ -9,7 +9,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/badge1_logoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/circle"
@@ -24,7 +24,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="85dp"
         android:layout_marginEnd="35dp"
-        android:layout_toEndOf="@+id/imageView"
+        android:layout_toEndOf="@+id/badge1_logoView"
         android:background="@drawable/rectangle"
         tools:text="@string/popup_name_NPC"
         android:textAlignment="center" />

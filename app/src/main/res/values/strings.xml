@@ -25,4 +25,6 @@
     <string name="userCreationPage_confirmButton">Bestätigen</string>
     <string name="userCreationPage_secondaryTitle">Charaktererstellung</string>
     <string name="userCreationPage_avatarButton">profileAvatar</string>
+    <string name="badgesPage_badge1_background">badge1_background</string>
+    <string name="badgesPage_badge2_background">badge2_background</string>
 </resources>

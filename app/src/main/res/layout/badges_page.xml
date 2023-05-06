@@ -20,7 +20,31 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/badge2_background"
+                android:layout_width="270dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/badgesPage_badge2_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/badge2_logoView"
+                app:srcCompat="@drawable/questpage_rectangle" />
+
+            <ImageView
+                android:id="@+id/badge1_background"
+                android:layout_width="270dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/badgesPage_badge1_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/badge1_logoView"
+                app:srcCompat="@drawable/questpage_rectangle" />
+
+            <ImageView
+                android:id="@+id/badge1_logoView"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="20dp"
@@ -31,33 +55,35 @@
                 android:contentDescription="@string/badge1_image" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/badge1_nameView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/badge1_name"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                app:layout_constraintTop_toBottomOf="@+id/badge1_logoView" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/badge2_logoView"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/badge1_nameView"
                 app:srcCompat="@android:drawable/btn_dialog"
                 android:contentDescription="@string/badge2_image" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/badge2_nameView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/badge2_name"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                app:layout_constraintTop_toBottomOf="@+id/badge2_logoView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

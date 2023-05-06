@@ -14,4 +14,9 @@
     <string name="popup_questDetails">Ort: Die Taverne \n Aufgabe: xyz</string>
     <string name="popup_declineButton">Nein</string>
     <string name="popup_acceptButton">Ja</string>
+    <string name="userCreationPage_nameInputField">Name</string>
+    <string name="userCreationPage_title">The Länd of Adventure</string>
+    <string name="userCreationPage_confirmButton">Bestätigen</string>
+    <string name="userCreationPage_secondaryTitle">Charaktererstellung</string>
+    <string name="userCreationPage_avatarButton">profileAvatar</string>
 </resources>

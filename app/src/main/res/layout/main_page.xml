@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageButton
-        android:id="@+id/button"
+        android:id="@+id/mainPage_compass"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:background="@drawable/circle"
@@ -27,7 +27,7 @@
         tools:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/mainPage_profileButtonLevelDisplay"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/circle"

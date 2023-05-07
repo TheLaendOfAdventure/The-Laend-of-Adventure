@@ -19,7 +19,7 @@
     <string name="userCreationPage_confirmButton">Bestätigen</string>
     <string name="userCreationPage_secondaryTitle">Charaktererstellung</string>
     <string name="userCreationPage_avatarButton">profileAvatar</string>
-    <string name="mainPage_profileButton">profile page</string>
+    <string name="mainPage_profileButton">Profil</string>
     <string name="player_level">3</string>
-    <string name="mainPage_compass">compass</string>
+    <string name="mainPage_compass">Kompass</string>
 </resources>

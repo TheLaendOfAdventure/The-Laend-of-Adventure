@@ -25,4 +25,8 @@
     <string name="userPage_levelText">Level:</string>
     <string name="userPage_profileButton">userPage_profileButton</string>
     <string name="userPage_profileImage">userPage_profileImage</string>
+    <string name="mainPage_profileButton">Profil</string>
+    <string name="player_level">3</string>
+    <string name="mainPage_compass">Kompass</string>
+    
 </resources>

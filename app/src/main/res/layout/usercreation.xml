@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/mainPage_compass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="80dp"
@@ -56,7 +56,7 @@
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <TextView
-        android:id="@+id/userPage_profileButtonLevelDisplay"
+        android:id="@+id/mainPage_profileButtonLevelDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/userCreationPage_secondaryTitle"

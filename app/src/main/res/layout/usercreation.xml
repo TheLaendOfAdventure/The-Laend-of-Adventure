@@ -52,7 +52,7 @@
         android:contentDescription="@string/userCreationPage_avatarButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainPage_profileButtonLevelDisplay"
+        app:layout_constraintTop_toBottomOf="@+id/userPage_profileButtonLevelDisplay"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <TextView

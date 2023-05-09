@@ -9,11 +9,16 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/dialogPopup_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="0dp"
+        android:contentDescription="@string/popup_name_NPC"
         app:srcCompat="@drawable/circle"
-        android:contentDescription="@string/popup_name_NPC" />
+        tools:layout_marginTop="20dp" />
 
     <TextView
         android:id="@+id/popupDialog_name"
@@ -21,13 +26,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="85dp"
         android:layout_marginEnd="35dp"
-        android:layout_toEndOf="@+id/imageView"
+        android:layout_toEndOf="@+id/dialogPopup_image"
         android:background="@drawable/rectangle"
-        tools:text="@string/popup_name_NPC"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        tools:text="@string/popup_name_NPC" />
 
     <TextView
         android:id="@+id/popupDialog_questDescription"

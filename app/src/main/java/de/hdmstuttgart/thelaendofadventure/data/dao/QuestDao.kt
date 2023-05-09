@@ -2,6 +2,7 @@ package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.*
 import kotlinx.coroutines.flow.Flow
@@ -60,4 +61,16 @@ interface QuestDao {
             "VALUES (:userID, :questID)"
     )
     suspend fun assignQuestToUser(userID: Int, questID: Int)
+
+    @Query(
+        "SELECT quest.questID, questGoal.questGoalID, location.longitude, location.latitude " +
+            "FROM quest " +
+            "JOIN user_quest ON quest.questID = user_quest.questID " +
+            "JOIN questGoal ON questGoal.questID = quest.questID " +
+            "JOIN location ON questGoal.actionID = location.actionID " +
+            "WHERE user_quest.userID = :userID " +
+            "AND user_quest.currentGoalNumber < quest.targetGoalNumber " +
+            "AND user_quest.currentGoalNumber = questGoal.goalNumber"
+    )
+    fun getLocationForAcceptedQuestsByUserID(userID: Int): Flow<List<LocationGoal>>
 }

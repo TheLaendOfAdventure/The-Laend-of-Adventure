@@ -1,5 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.data.repository
 
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
@@ -69,4 +70,11 @@ interface QuestRepository {
      * @param questID The ID of the quest being accepted.
      */
     suspend fun assignQuestToUser(userID: Int, questID: Int)
+
+    /**
+     * Retrieves a list of [LocationGoal] of all active quests of a given user whose current goal is a location action.
+     *
+     * @param userID The ID of the user
+     */
+    fun getLocationForAcceptedQuestsByUserID(userID: Int): Flow<List<LocationGoal>>
 }

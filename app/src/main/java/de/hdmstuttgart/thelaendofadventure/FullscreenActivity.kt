@@ -4,10 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.pm.PackageManager
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowInsets
@@ -15,6 +12,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.gestures.gestures
@@ -23,6 +21,8 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListen
 import com.mapbox.maps.plugin.locationcomponent.location
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.ActivityFullscreenBinding
+import de.hdmstuttgart.thelaendofadventure.adapters.BadgesAdapter
+import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import kotlin.system.exitProcess
 
 /**
@@ -84,6 +84,15 @@ class FullscreenActivity : AppCompatActivity() {
         checkIfRequiredPermissionIsGranted()
 
         setContentView(R.layout.activity_fullscreen)
+
+        /*setContentView(R.layout.badges_page)
+
+        val badgeList = mutableListOf<BadgeEntity>()
+        badgeList.add(BadgeEntity(0, "keks", "lecker", "", 2))
+        val adapter =  BadgesAdapter(badgeList)
+
+        var badgeListView = findViewById<RecyclerView>(R.id.badgesPage_RecyclerView)
+        badgeListView.adapter = adapter */
 
         binding = ActivityFullscreenBinding.inflate(layoutInflater)
         setContentView(binding.root)

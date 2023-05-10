@@ -27,4 +27,5 @@
     <string name="userCreationPage_avatarButton">profileAvatar</string>
     <string name="badgesPage_badge1_background">badge1_background</string>
     <string name="badgesPage_badge2_background">badge2_background</string>
+    <string name="badgesPage_profileButton">badgesPage_profileButton</string>
 </resources>

@@ -6,106 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <view class="androidx.appcompat.app.AlertController$RecycleListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fadeScrollbars="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/quest1_background"
-                android:layout_width="240dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="-5dp"
-                android:contentDescription="@string/questpage_backgroundrectangle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/quest1_questName"
-                app:srcCompat="@drawable/questpage_rectangle" />
 
-            <ImageView
-                android:id="@+id/quest2_background"
-                android:layout_width="240dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="-5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/quest2_questName"
-                app:srcCompat="@drawable/questpage_rectangle"
-                android:contentDescription="@string/questpage_backgroundrectangle" />
-
-            <TextView
-                android:id="@+id/quest1_questName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/quest1_name"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ProgressBar
-                android:id="@+id/quest1_progressDisplayBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/quest1_questName" />
-
-            <ProgressBar
-                android:id="@+id/quest2_progressDisplayBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/quest2_questName" />
-
-            <TextView
-                android:id="@+id/quest2_questName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/quest2_name"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/quest1_progressDisplayNumeric" />
-
-            <TextView
-                android:id="@+id/quest1_progressDisplayNumeric"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/quest1_progressNumeric"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/quest1_progressDisplayBar" />
-
-            <TextView
-                android:id="@+id/quest2_progressDisplayNumeric"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/quest2_progressNumeric"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/quest2_progressDisplayBar" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
+    </view>
 
     <ImageButton
         android:id="@+id/userPage_profileButton"

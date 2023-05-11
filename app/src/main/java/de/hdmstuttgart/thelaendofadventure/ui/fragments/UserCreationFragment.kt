@@ -1,6 +1,8 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
+import android.Manifest // ktlint-disable import-ordering
 import android.app.AlertDialog // ktlint-disable import-ordering
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -29,6 +32,7 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
     private lateinit var binding: FragmentUserCreationBinding
     private lateinit var viewModel: UserCreationViewModel
     private lateinit var mPickGallery: ActivityResultLauncher<String>
+    private lateinit var requestMultiplePermissions: ActivityResultLauncher<Array<String>>
     private var imagePath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +43,13 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
                     saveImage(uri)
                 }
             }
+        requestMultiplePermissions = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            permissions.entries.forEach {
+                Log.e("DEBUG", "${it.key} = ${it.value}")
+            }
+        }
     }
 
     override fun onCreateView(
@@ -56,7 +67,11 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
         viewModel = ViewModelProvider(this)[UserCreationViewModel::class.java]
 
         binding.userCreationPageAvatarButton.setOnClickListener {
-            pickImage()
+            if (checkIfPermissionIsGranted()) {
+                pickImage()
+            } else {
+                requestForPermission()
+            }
         }
 
         binding.userCreationPageConfirmButton.setOnClickListener {
@@ -67,6 +82,26 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
             }
             activity?.supportFragmentManager?.popBackStack()
         }
+    }
+
+    private fun requestForPermission() {
+        val permissions = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        requestMultiplePermissions.launch(permissions)
+    }
+
+    private fun checkIfPermissionIsGranted(): Boolean {
+        val readStorage = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+        val writeStorage = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+        return readStorage && writeStorage
     }
 
     private fun pickImage() {

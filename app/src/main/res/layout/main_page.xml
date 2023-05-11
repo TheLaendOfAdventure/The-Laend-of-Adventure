@@ -11,7 +11,7 @@
         android:layout_height="100dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/circle"
-        android:contentDescription="@string/userPage_profileButton"
+        android:contentDescription="@string/profileButton"
         android:minWidth="48dp"
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"

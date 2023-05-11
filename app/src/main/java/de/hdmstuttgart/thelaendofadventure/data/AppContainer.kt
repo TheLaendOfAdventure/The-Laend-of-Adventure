@@ -13,7 +13,7 @@ import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
 interface AppContainer {
     val actionRepository: ActionRepository
     val badgeRepository: BadgeRepository
-    val quesRepository: QuestRepository
+    val questRepository: QuestRepository
     val userRepository: UserRepository
 }
 
@@ -39,7 +39,7 @@ class AppDataContainer(private val context: Context) : AppContainer {
     /**
      * Implementation for [QuestRepository]
      */
-    override val quesRepository: QuestRepository by lazy {
+    override val questRepository: QuestRepository by lazy {
         OfflineQuestRepository(AppDatabase.getDatabase(context).questDao())
     }
 

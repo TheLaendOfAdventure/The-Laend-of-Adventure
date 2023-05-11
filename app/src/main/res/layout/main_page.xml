@@ -6,34 +6,36 @@
     android:layout_height="match_parent">
 
     <ImageButton
-        android:id="@+id/mainPage_compass"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:background="@drawable/circle"
-        tools:text="Button"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_compass"
-        android:contentDescription="@string/mainPage_compass" />
-
-    <ImageButton
         android:id="@+id/mainPage_profileButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/circle"
-        android:contentDescription="@string/mainPage_profileButton"
+        android:contentDescription="@string/profileButton"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_marginBottom="10dp"
         tools:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
     <TextView
-        android:id="@+id/mainPage_profileButtonLevelDisplay"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:id="@+id/mainPage_profileLevelDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/circle"
-        android:text="@string/player_level"
+        android:maxWidth="30dp"
+        android:maxHeight="30dp"
+        android:text="@string/profileLevel"
         android:textAlignment="center"
-        android:textColor="#FFE0B2"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_max="30dp"
+        tools:ignore="TextViewEdits"
+        tools:layout_constraintHeight_max="30dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

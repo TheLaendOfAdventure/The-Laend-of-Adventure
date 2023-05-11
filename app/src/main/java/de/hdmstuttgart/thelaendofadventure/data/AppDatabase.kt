@@ -22,7 +22,7 @@ import de.hdmstuttgart.thelaendofadventure.data.entity.*
         ActionEntity::class,
         AchievementEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

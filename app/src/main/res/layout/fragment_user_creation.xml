@@ -3,21 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <EditText
-        android:id="@+id/name_text_input"
-        android:layout_width="391dp"
-        android:layout_height="69dp"
-        android:background="@drawable/name_field_background"
-        android:hint="@string/userCreationPage_nameInputField"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton"
-        tools:textAlignment="center"
-        android:autofillHints="username"
-        android:inputType="text" />
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_user_creation"
+    tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.UserCreationFragment">
 
     <TextView
         android:id="@+id/title_text"
@@ -31,8 +19,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/userCreationPage_character_creation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/userCreationPage_secondaryTitle"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_text" />
+
+    <ImageButton
+        android:id="@+id/userCreationPage_avatarButton"
+        android:layout_width="277dp"
+        android:layout_height="273dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/circle"
+        android:contentDescription="@string/userCreationPage_avatarButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userCreationPage_character_creation"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <EditText
+        android:id="@+id/name_text_input"
+        android:layout_width="391dp"
+        android:layout_height="69dp"
+        android:background="@drawable/name_field_background"
+        android:hint="@string/userCreationPage_nameInputField"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userCreationPage_avatarButton"
+        tools:textAlignment="center"
+        android:autofillHints="username"
+        android:inputType="text" />
+
+
     <Button
-        android:id="@+id/mainPage_compass"
+        android:id="@+id/userCreationPageConfirmButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="80dp"
@@ -43,27 +69,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_text_input" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="277dp"
-        android:layout_height="273dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/circle"
-        android:contentDescription="@string/userCreationPage_avatarButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userPage_profileButtonLevelDisplay"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
 
-    <TextView
-        android:id="@+id/mainPage_profileButtonLevelDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/userCreationPage_secondaryTitle"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_text" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

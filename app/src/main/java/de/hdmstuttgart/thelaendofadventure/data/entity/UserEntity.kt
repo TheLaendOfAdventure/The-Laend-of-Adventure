@@ -8,7 +8,7 @@ data class UserEntity(
     @PrimaryKey(autoGenerate = true) val userID: Int = 0,
     val name: String?,
     val imagePath: String?,
-    val walkedKm: Int?,
+    val walkedKm: Int = 0,
     val level: Int = 1,
     val exp: Int = 0
 )

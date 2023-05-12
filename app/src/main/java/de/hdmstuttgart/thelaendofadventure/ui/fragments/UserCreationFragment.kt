@@ -47,7 +47,7 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
             permissions.entries.forEach {
-                Log.e("DEBUG", "${it.key} = ${it.value}")
+                Log.e(TAG, "${it.key} = ${it.value}")
             }
         }
     }
@@ -105,16 +105,19 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
     }
 
     private fun pickImage() {
-        val items = arrayOf<CharSequence>("Aus der Galerie wählen!", "Abbrechen")
+        val items = arrayOf<CharSequence>(
+            getString(R.string.pick_from_gallery),
+            getString(R.string.cancel)
+        )
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Bild hinzufügen!")
+        builder.setTitle(R.string.add_image)
         builder.setItems(items) { dialog, item ->
             when {
-                items[item] == "Aus der Galerie wählen!" -> {
+                items[item] == getString(R.string.pick_from_gallery) -> {
                     mPickGallery.launch("image/*")
                 }
 
-                items[item] == "Abbrechen" -> {
+                items[item] == getString(R.string.cancel) -> {
                     dialog.dismiss()
                 }
             }
@@ -150,7 +153,11 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
                 Toast.LENGTH_SHORT
             ).show()
         } catch (e: FileSystemException) {
-            Toast.makeText(requireContext(), "Failed to save image", Toast.LENGTH_SHORT)
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.failed_to_save_image),
+                Toast.LENGTH_SHORT
+            )
                 .show()
             Log.e(TAG, e.toString())
         }

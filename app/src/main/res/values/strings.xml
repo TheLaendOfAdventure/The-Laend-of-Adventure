@@ -31,7 +31,5 @@
     <string name="pick_from_gallery">Aus der Galerie wählen!</string>
     <string name="cancel">Abbrechen</string>
     <string name="add_image">Bild hinzufügen!</string>
-    <string name="image_saved">Image saved to %1$s</string>
     <string name="failed_to_save_image">Bild konnte nicht gespeichert werden.</string>
-    
 </resources>

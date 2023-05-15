@@ -1,6 +1,8 @@
 package de.hdmstuttgart.thelaendofadventure.ui.viewmodels
 
 import android.app.Application // ktlint-disable import-ordering
+import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -28,6 +30,14 @@ class UserCreationViewModel(application: Application) : AndroidViewModel(applica
     // Repository for accessing user data
     private val userRepository: UserRepository = AppDataContainer(application).userRepository
 
+    // Saving the userID to SharedPreferences
+    private val sharedPreferences =
+        application.getSharedPreferences(
+            R.string.sharedPreferences.toString(),
+            Context.MODE_PRIVATE
+        )
+    private val editor: SharedPreferences.Editor = sharedPreferences.edit()
+
     // User name
     lateinit var name: String
 
@@ -40,7 +50,10 @@ class UserCreationViewModel(application: Application) : AndroidViewModel(applica
      */
     fun createUser() = viewModelScope.launch(Dispatchers.IO) {
         val user = UserEntity(name = name, imagePath = imagePath)
-        userRepository.addUser(user)
+        val userID = userRepository.addUser(user).toInt()
+
+        editor.putInt(R.string.userID.toString(), userID)
+        editor.apply()
     }
 
     /**

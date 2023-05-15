@@ -1,4 +1,4 @@
-package de.hdmstuttgart.thelaendofadventure
+package de.hdmstuttgart.thelaendofadventure.data
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,7 +6,6 @@ import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.*
 import de.hdmstuttgart.the_laend_of_adventure.R
-import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import kotlinx.coroutines.*
@@ -20,7 +19,7 @@ class Tracking(context: Context) {
         private const val ALLOWED_DEVIATION = 0.0015
     }
 
-    private val TAG = "Tracking"
+    private val tag = "Tracking"
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
 
@@ -61,8 +60,8 @@ class Tracking(context: Context) {
         trackableQuest.collect { list ->
             CoroutineScope(Dispatchers.Default).launch {
                 while (isActive) {
-                    Log.d(TAG, "Current userID: $userID")
-                    Log.d(TAG, "Current list: $list")
+                    Log.d(tag, "Current userID: $userID")
+                    Log.d(tag, "Current list: $list")
                     compareLocationGoal(list)
                     delay(INTERVAL)
                 }
@@ -71,12 +70,12 @@ class Tracking(context: Context) {
     }
 
     private fun compareLocationGoal(locationGoals: List<LocationGoal>) {
-        Log.d(TAG, "Current longitude: $longitude Current latitude: $latitude")
+        Log.d(tag, "Current longitude: $longitude Current latitude: $latitude")
         locationGoals.forEach { locationGoal ->
             if (locationGoal.latitude in latitude - ALLOWED_DEVIATION..latitude + ALLOWED_DEVIATION && // ktlint-disable max-line-length
                 locationGoal.longitude in longitude - ALLOWED_DEVIATION..longitude + ALLOWED_DEVIATION
             ) {
-                Log.d(TAG, "finished for ${locationGoal.questID}")
+                Log.d(tag, "finished for ${locationGoal.questID}")
                 // @todo call followup function for locationGoal.questID locationGoal.questGoalID
             }
         }

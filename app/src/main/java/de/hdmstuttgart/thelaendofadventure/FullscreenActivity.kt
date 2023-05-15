@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.lifecycleScope
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.gestures.gestures
@@ -23,9 +24,11 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListen
 import com.mapbox.maps.plugin.locationcomponent.location
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.ActivityFullscreenBinding
+import de.hdmstuttgart.thelaendofadventure.data.Tracking
 import de.hdmstuttgart.thelaendofadventure.ui.fragments.UserCreationFragment
 import de.hdmstuttgart.thelaendofadventure.adapters.BadgesAdapter
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
+import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 /**
@@ -126,6 +129,9 @@ class FullscreenActivity : AppCompatActivity() {
         }
 
         showUserAtMap()
+        lifecycleScope.launch {
+            Tracking(this@FullscreenActivity).start()
+        }
     }
 
     private fun showUserAtMap() {
@@ -144,14 +150,14 @@ class FullscreenActivity : AppCompatActivity() {
         when {
             ContextCompat.checkSelfPermission(
                 this@FullscreenActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
             ) == PackageManager.PERMISSION_GRANTED -> {
                 // You can use the API that requires the permission.
             }
 
             ActivityCompat.shouldShowRequestPermissionRationale(
                 this@FullscreenActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
             ) -> {
                 showGpsAlertDialog()
             }
@@ -161,7 +167,7 @@ class FullscreenActivity : AppCompatActivity() {
                 requestPermissions(
                     arrayOf(
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
                     ),
                     requestCodeLocation,
                 )
@@ -172,7 +178,7 @@ class FullscreenActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -200,9 +206,9 @@ class FullscreenActivity : AppCompatActivity() {
                 requestPermissions(
                     arrayOf(
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
                     ),
-                    requestCodeLocation
+                    requestCodeLocation,
                 )
             }
             .setNegativeButton(R.string.gps_negativeButton) { dialog, id ->

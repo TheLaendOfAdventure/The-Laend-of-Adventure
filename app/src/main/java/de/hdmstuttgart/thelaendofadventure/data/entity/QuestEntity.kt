@@ -10,5 +10,7 @@ data class QuestEntity(
     val imagePath: String?,
     val dialogPath: String,
     val description: String,
-    val targetGoalNumber: Int
+    val targetGoalNumber: Int,
+    val longitude: Double,
+    val latitude: Double
 )

@@ -12,6 +12,8 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.RecyclerView
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
@@ -21,6 +23,7 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListen
 import com.mapbox.maps.plugin.locationcomponent.location
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.ActivityFullscreenBinding
+import de.hdmstuttgart.thelaendofadventure.ui.fragments.UserCreationFragment
 import de.hdmstuttgart.thelaendofadventure.adapters.BadgesAdapter
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import kotlin.system.exitProcess
@@ -36,6 +39,8 @@ class FullscreenActivity : AppCompatActivity() {
     private val hideHandler = Handler(Looper.myLooper()!!)
     private lateinit var mapView: MapView
 
+    private var isFullscreen: Boolean = false
+
     @SuppressLint("InlinedApi")
     private val hidePart2Runnable = Runnable {
         // Delayed removal of status and navigation bar
@@ -48,9 +53,9 @@ class FullscreenActivity : AppCompatActivity() {
         supportActionBar?.show()
         fullscreenContentControls.visibility = View.VISIBLE
     }
-    private var isFullscreen: Boolean = false
-
-    private val hideRunnable = Runnable { hide() }
+    private val hideRunnable = Runnable {
+        hide()
+    }
 
     // Get the user's location as coordinates
     private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
@@ -71,6 +76,7 @@ class FullscreenActivity : AppCompatActivity() {
             MotionEvent.ACTION_DOWN -> if (AUTO_HIDE) {
                 delayedHide(AUTO_HIDE_DELAY_MILLIS)
             }
+
             MotionEvent.ACTION_UP -> view.performClick()
             else -> {
             }
@@ -111,6 +117,14 @@ class FullscreenActivity : AppCompatActivity() {
         mapView = findViewById(R.id.mapView)
         mapView.getMapboxMap().loadStyleUri(getString(R.string.mapbox_styleURL))
 
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<UserCreationFragment>(R.id.activity_fullscreen)
+                addToBackStack(null)
+            }
+        }
+
         showUserAtMap()
     }
 
@@ -130,22 +144,24 @@ class FullscreenActivity : AppCompatActivity() {
         when {
             ContextCompat.checkSelfPermission(
                 this@FullscreenActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
                 // You can use the API that requires the permission.
             }
+
             ActivityCompat.shouldShowRequestPermissionRationale(
                 this@FullscreenActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) -> {
                 showGpsAlertDialog()
             }
+
             else -> {
                 // Ask for both the ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION permissions.
                 requestPermissions(
                     arrayOf(
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
                     ),
                     requestCodeLocation,
                 )
@@ -156,7 +172,7 @@ class FullscreenActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -184,9 +200,9 @@ class FullscreenActivity : AppCompatActivity() {
                 requestPermissions(
                     arrayOf(
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
                     ),
-                    requestCodeLocation,
+                    requestCodeLocation
                 )
             }
             .setNegativeButton(R.string.gps_negativeButton) { dialog, id ->
@@ -213,18 +229,6 @@ class FullscreenActivity : AppCompatActivity() {
         // Schedule a runnable to remove the status and navigation bar after a delay
         hideHandler.removeCallbacks(showPart2Runnable)
         hideHandler.postDelayed(hidePart2Runnable, UI_ANIMATION_DELAY.toLong())
-    }
-
-    private fun show() {
-        // Show the system bar
-        if (Build.VERSION.SDK_INT >= ANDROID11) {
-            WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars()
-        }
-        isFullscreen = true
-
-        // Schedule a runnable to display UI elements after a delay
-        hideHandler.removeCallbacks(hidePart2Runnable)
-        hideHandler.postDelayed(showPart2Runnable, UI_ANIMATION_DELAY.toLong())
     }
 
     /**

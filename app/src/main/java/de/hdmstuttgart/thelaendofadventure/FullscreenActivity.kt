@@ -130,7 +130,7 @@ class FullscreenActivity : AppCompatActivity() {
         }
     }
 
-    fun setupGame(){
+    fun setupGame() {
         if (!gameStarted) {
             Log.d(tag, "Starting necessary game functions")
             showUserAtMap()

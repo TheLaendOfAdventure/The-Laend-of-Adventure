@@ -17,7 +17,7 @@
         android:theme="@style/Theme.TheLaendofAdventure"
         tools:targetApi="31">
         <activity
-            android:name="de.hdmstuttgart.thelaendofadventure.FullscreenActivity"
+            android:name="de.hdmstuttgart.thelaendofadventure.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:theme="@style/Theme.TheLaendofAdventure.Fullscreen">

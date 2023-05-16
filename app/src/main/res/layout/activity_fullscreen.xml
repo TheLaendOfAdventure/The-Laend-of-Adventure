@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="?attr/fullscreenBackgroundColor"
     android:theme="@style/ThemeOverlay.TheLaendofAdventure.FullscreenContainer"
-    tools:context="de.hdmstuttgart.thelaendofadventure.FullscreenActivity">
+    tools:context="de.hdmstuttgart.thelaendofadventure.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"

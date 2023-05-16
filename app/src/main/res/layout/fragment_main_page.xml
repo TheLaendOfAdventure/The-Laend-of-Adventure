@@ -7,10 +7,24 @@
     android:layout_height="match_parent"
     tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.MainPageFragment">
 
+<!--
+The MapView is generated as the bottom object.
+So that the imageButton etc. are generated on top of the map, the MapView must be at the top of the xml file.
+-->
+    <com.mapbox.maps.MapView xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        mapbox:mapbox_cameraTargetLat="48.77849654840248"
+        mapbox:mapbox_cameraTargetLng="9.17961910927422"
+        mapbox:mapbox_cameraZoom="17.0"
+        />
+
     <ImageButton
         android:id="@+id/mainPage_profileButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/circle"
         android:contentDescription="@string/profileButton"
         android:minWidth="48dp"
@@ -25,6 +39,8 @@
         android:id="@+id/mainPage_profileLevelDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/circle"
         android:maxWidth="30dp"
         android:maxHeight="30dp"

@@ -10,8 +10,8 @@ import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.ActivityFullscreenBinding
 
 /**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
+ * This class represents a fullscreen activity in the Android application.
+ * It extends the AppCompatActivity class, which is a base class for activities that use the support library action bar features.
  */
 class FullscreenActivity : AppCompatActivity() {
 

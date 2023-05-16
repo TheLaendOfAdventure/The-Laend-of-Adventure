@@ -68,7 +68,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
     private fun setUpProfileButton() {
         binding.mainPageProfileButton.setOnClickListener {
-            // @todo: Navigation here
+            // @todo Navigation here
         }
     }
 
@@ -91,6 +91,4 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
         mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
     }
-
-    // function for clicking on a quest on the map
 }

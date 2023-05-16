@@ -7,18 +7,17 @@
     android:layout_height="match_parent"
     tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.MainPageFragment">
 
-<!--
-The MapView is generated as the bottom object.
-So that the imageButton etc. are generated on top of the map, the MapView must be at the top of the xml file.
--->
+    <!--
+    The MapView is generated as the bottom object.
+    So that the imageButton etc. are generated on top of the map, the MapView must be at the top of the xml file.
+    -->
     <com.mapbox.maps.MapView xmlns:mapbox="http://schemas.android.com/apk/res-auto"
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         mapbox:mapbox_cameraTargetLat="48.77849654840248"
         mapbox:mapbox_cameraTargetLng="9.17961910927422"
-        mapbox:mapbox_cameraZoom="17.0"
-        />
+        mapbox:mapbox_cameraZoom="17.0" />
 
     <ImageButton
         android:id="@+id/mainPage_profileButton"
@@ -49,9 +48,7 @@ So that the imageButton etc. are generated on top of the map, the MapView must b
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/mainPage_profileButton"
-        app:layout_constraintStart_toStartOf="@+id/mainPage_profileButton"
-        app:layout_constraintTop_toTopOf="@+id/mainPage_profileButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_max="30dp"
         tools:ignore="TextViewEdits"
         tools:layout_constraintHeight_max="30dp"

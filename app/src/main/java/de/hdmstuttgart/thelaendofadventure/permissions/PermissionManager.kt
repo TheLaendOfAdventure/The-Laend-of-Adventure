@@ -2,10 +2,15 @@ package de.hdmstuttgart.thelaendofadventure.permissions
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import de.hdmstuttgart.the_laend_of_adventure.R
+import kotlin.system.exitProcess
 
 /**
  * The PermissionManager class provides methods to check and request permissions.
@@ -37,10 +42,6 @@ class PermissionManager(private val context: Context) {
                     true
                 }
             }
-            Permissions.ACCESS_LOCATION -> {
-                // @todo Implement
-                return false
-            }
         }
     }
 
@@ -65,6 +66,5 @@ class PermissionManager(private val context: Context) {
  * Represents a permission that can be checked or requested.
  */
 enum class Permissions {
-    READ_WRITE_STORAGE,
-    ACCESS_LOCATION
+    READ_WRITE_STORAGE
 }

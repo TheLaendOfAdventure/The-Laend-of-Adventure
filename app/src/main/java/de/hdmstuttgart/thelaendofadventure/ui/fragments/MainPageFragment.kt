@@ -33,13 +33,15 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private lateinit var mapView: MapView
     private lateinit var permissionManager: PermissionManager
 
-    private val permissionResultLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        val granted = permissions.entries.all { it.value }
-        if (granted) {
-            showUserAtMap()
-        } else {
-           showGpsAlertDialog()
-        }
+    private val permissionResultLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            val granted = permissions.entries.all { it.value }
+            if (granted) {
+                showUserAtMap()
+            } else {
+               showGpsAlertDialog()
+            }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,15 +2,10 @@ package de.hdmstuttgart.thelaendofadventure.permissions
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import de.hdmstuttgart.the_laend_of_adventure.R
-import kotlin.system.exitProcess
 
 /**
  * The PermissionManager class provides methods to check and request permissions.

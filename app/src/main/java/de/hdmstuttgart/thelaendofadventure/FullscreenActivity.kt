@@ -125,13 +125,13 @@ class FullscreenActivity : AppCompatActivity() {
                 add<UserCreationFragment>(R.id.activity_fullscreen)
                 addToBackStack(null)
             }
-        }else{
+        } else {
             setupGame()
         }
     }
 
     fun setupGame(){
-        if(!gameStarted) {
+        if (!gameStarted) {
             Log.d(tag, "Starting necessary game functions")
             showUserAtMap()
             lifecycleScope.launch {

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.gestures.gestures
@@ -24,8 +25,8 @@ import de.hdmstuttgart.thelaendofadventure.data.Tracking
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
-import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
+import kotlinx.coroutines.launch
 
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
@@ -86,7 +87,9 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
     private fun setUpProfileButton() {
         binding.mainPageProfileButton.setOnClickListener {
-            // @todo Navigation here
+            Navigation.findNavController(requireView()).navigate(
+                R.id.navigate_from_main_to_user_page
+            )
         }
     }
 

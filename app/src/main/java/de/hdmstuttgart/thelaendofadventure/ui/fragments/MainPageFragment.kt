@@ -1,9 +1,12 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
+import android.Manifest
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,9 +22,9 @@ import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
-import de.hdmstuttgart.thelaendofadventure.permissions.Permissions
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
 import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
@@ -29,6 +32,17 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private lateinit var viewModel: MainPageViewModel
     private lateinit var mapView: MapView
     private lateinit var permissionManager: PermissionManager
+
+    private val permissionResultLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val granted = permissions.entries.all { it.value }
+        if (granted) {
+            showUserAtMap()
+        } else {
+            showGpsAlertDialog()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,9 +75,8 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         viewModel.user.observe(viewLifecycleOwner, userObserver)
 
         setUpProfileButton()
-        if (permissionManager.checkPermission(Permissions.ACCESS_LOCATION)) {
-            showUserAtMap()
-        }
+        val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        permissionResultLauncher.launch(permissions)
     }
 
     private fun setUpProfileButton() {
@@ -82,6 +95,20 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         // Pass the user's location to camera
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
         mapView.location.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
+    }
+
+    private fun showGpsAlertDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.setTitle(R.string.gps_required_title)
+            .setMessage(R.string.gps_required_context)
+            .setPositiveButton(R.string.gps_positiveButton) { dialog, id ->
+                val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+                permissionResultLauncher.launch(permissions)
+            }
+            .setNegativeButton(R.string.gps_negativeButton) { _, _ ->
+                exitProcess(0)
+            }
+        builder.create().show()
     }
 
     private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {

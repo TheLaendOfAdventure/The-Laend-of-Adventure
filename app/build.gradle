@@ -76,6 +76,10 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 
+    //In App Navigation
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+
     // Room database
     def room_version = "2.5.1"
     implementation "androidx.room:room-runtime:$room_version"
@@ -90,10 +94,10 @@ dependencies {
 
     // Kotlin Coroutines
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
 
     // Material Design
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
 
     // Testing dependencies
     testImplementation 'junit:junit:4.13.2'

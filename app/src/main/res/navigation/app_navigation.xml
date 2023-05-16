@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainPageFragment"
-        android:name="de.hdmstuttgart.the_laend_of_adventure.mainPageFragment"
+        android:name="de.hdmstuttgart.thelaendofadventure.ui.fragments.mainPageFragment"
         android:label="fragment_main_page"
         tools:layout="@layout/fragment_main_page" />
 </navigation>

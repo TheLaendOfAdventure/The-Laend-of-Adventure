@@ -20,6 +20,7 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListen
 import com.mapbox.maps.plugin.locationcomponent.location
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
+import de.hdmstuttgart.thelaendofadventure.data.Tracking
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
@@ -46,6 +47,10 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            Tracking(requireContext()).start()
+        }
 
         permissionManager = PermissionManager(requireContext())
     }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/userCreationFragment">
+
+    <fragment
+        android:id="@+id/userCreationFragment"
+        android:name="de.hdmstuttgart.thelaendofadventure.ui.fragments.UserCreationFragment"
+        android:label="fragment_user_creation"
+        tools:layout="@layout/fragment_user_creation" >
+        <action
+            android:id="@+id/navigate_to_main_page"
+            app:destination="@id/mainPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainPageFragment"
+        android:name="de.hdmstuttgart.thelaendofadventure.ui.fragments.MainPageFragment"
+        android:label="fragment_main_page"
+        tools:layout="@layout/fragment_main_page" />
+</navigation>

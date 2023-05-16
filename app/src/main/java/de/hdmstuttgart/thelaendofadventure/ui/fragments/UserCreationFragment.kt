@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentUserCreationBinding
 import de.hdmstuttgart.thelaendofadventure.FullscreenActivity
@@ -44,6 +45,7 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserCreationBinding.inflate(inflater, container, false)
+        Log.d(TAG, "UserCreationPage is created!")
         return binding.root
     }
 
@@ -79,8 +81,9 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
         binding.userCreationPageConfirmButton.setOnClickListener {
             viewModel.name = binding.nameTextInput.text.toString()
             viewModel.createUser()
-            activity?.supportFragmentManager?.popBackStack()
-            (activity as FullscreenActivity).setupGame()
+            Navigation.findNavController(requireView()).navigate(R.id.navigate_to_main_page)
+            //activity?.supportFragmentManager?.popBackStack()
+            //(activity as FullscreenActivity).setupGame()
             Log.d(TAG, "User created with name: ${viewModel.name}")
         }
     }

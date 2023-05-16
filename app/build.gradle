@@ -73,6 +73,8 @@ dependencies {
 
     // Mapbox library
     implementation 'com.mapbox.maps:android:10.12.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 
     // Room database
     def room_version = "2.5.1"

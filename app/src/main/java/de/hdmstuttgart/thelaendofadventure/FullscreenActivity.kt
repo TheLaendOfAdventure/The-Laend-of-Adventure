@@ -1,43 +1,119 @@
 package de.hdmstuttgart.thelaendofadventure
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.view.WindowInsets
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
-import androidx.lifecycle.lifecycleScope
-import com.mapbox.maps.CameraOptions
-import com.mapbox.maps.MapView
-import com.mapbox.maps.plugin.gestures.gestures
-import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener
-import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
-import com.mapbox.maps.plugin.locationcomponent.location
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.ActivityFullscreenBinding
-import de.hdmstuttgart.thelaendofadventure.data.Tracking
-import de.hdmstuttgart.thelaendofadventure.ui.fragments.UserCreationFragment
-import kotlinx.coroutines.launch
-import kotlin.system.exitProcess
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 class FullscreenActivity : AppCompatActivity() {
+
+    //private val hideHandler = Handler(Looper.myLooper()!!)
+
+    /*@SuppressLint("InlinedApi")
+    private val hidePart2Runnable = Runnable {
+        // Delayed removal of status and navigation bar
+
+    }*/
+/*
+    private val showPart2Runnable = Runnable {
+        // Delayed display of UI elements
+        supportActionBar?.show()
+    }*/
+    //private var isFullscreen: Boolean = false
+    //private val hideRunnable = Runnable { hide() }
+
+    private lateinit var binding: ActivityFullscreenBinding
+    private lateinit var navController: NavController
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityFullscreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+        Log.d("Main", "ContainerCreated!")
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+        setupActionBarWithNavController(navController)
+
+        supportActionBar?.hide()
+        //isFullscreen = true
+    }
+
+    /*override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+
+        // Trigger the initial hide() shortly after the activity has been
+        // created, to briefly hint to the user that UI controls
+        // are available.
+        //delayedHide(100)
+    }*/
+
+/*
+    private fun hide() {
+        // Hide UI first
+        supportActionBar?.hide()
+        isFullscreen = false
+
+        // Schedule a runnable to remove the status and navigation bar after a delay
+        hideHandler.removeCallbacks(showPart2Runnable)
+        hideHandler.postDelayed(hidePart2Runnable, UI_ANIMATION_DELAY.toLong())
+    }*/
+
+    /**
+     * Schedules a call to hide() in [delayMillis], canceling any
+     * previously scheduled calls.
+     *//*
+    private fun delayedHide(delayMillis: Int) {
+        hideHandler.removeCallbacks(hideRunnable)
+        hideHandler.postDelayed(hideRunnable, delayMillis.toLong())
+    }*/
+
+    companion object {
+        /**
+         * Whether or not the system UI should be auto-hidden after
+         * [AUTO_HIDE_DELAY_MILLIS] milliseconds.
+         */
+        private const val AUTO_HIDE = true
+
+        /**
+         * If [AUTO_HIDE] is set, the number of milliseconds to wait after
+         * user interaction before hiding the system UI.
+         */
+        private const val AUTO_HIDE_DELAY_MILLIS = 3000
+
+        /**
+         * Some older devices needs a small delay between UI widget updates
+         * and a change of the status and navigation bar.
+         */
+        private const val UI_ANIMATION_DELAY = 300
+    }
+
+/*
+    private lateinit var navController: NavController
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+        val binding = ActivityFullscreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        Log.d("Main", "ContainerCreated!")
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+        setupActionBarWithNavController(navController)
+
+    }*/
+
+/*
 
     private val tag = "FullscreenActivity"
     private lateinit var binding: ActivityFullscreenBinding
@@ -59,14 +135,6 @@ class FullscreenActivity : AppCompatActivity() {
             WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars()
         }
     }
-    private val showPart2Runnable = Runnable {
-        // Delayed display of UI elements
-        supportActionBar?.show()
-        fullscreenContentControls.visibility = View.VISIBLE
-    }
-    private val hideRunnable = Runnable {
-        hide()
-    }
 
     // Get the user's location as coordinates
     private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
@@ -77,11 +145,13 @@ class FullscreenActivity : AppCompatActivity() {
         mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
     }
 
-    /**
+    */
+/**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
      * while interacting with activity UI.
-     */
+     *//*
+
     private val delayHideTouchListener = View.OnTouchListener { view, motionEvent ->
         when (motionEvent.action) {
             MotionEvent.ACTION_DOWN -> if (AUTO_HIDE) {
@@ -244,35 +314,42 @@ class FullscreenActivity : AppCompatActivity() {
         hideHandler.postDelayed(hidePart2Runnable, UI_ANIMATION_DELAY.toLong())
     }
 
-    /**
+    */
+
+
+/**
      * Schedules a call to hide() in [delayMillis], canceling any
      * previously scheduled calls.
      */
+
+    /*
+
     private fun delayedHide(delayMillis: Int) {
         hideHandler.removeCallbacks(hideRunnable)
         hideHandler.postDelayed(hideRunnable, delayMillis.toLong())
     }
+*//*
 
     companion object {
-        /**
+        *//**
          * Whether or not the system UI should be auto-hidden after
          * [AUTO_HIDE_DELAY_MILLIS] milliseconds.
-         */
+         *//*
         private const val AUTO_HIDE = true
 
-        /**
+        *//**
          * If [AUTO_HIDE] is set, the number of milliseconds to wait after
          * user interaction before hiding the system UI.
-         */
+         *//*
         private const val AUTO_HIDE_DELAY_MILLIS = 3000
 
-        /**
+        *//**
          * Some older devices needs a small delay between UI widget updates
          * and a change of the status and navigation bar.
-         */
+         *//*
         private const val UI_ANIMATION_DELAY = 300
         private const val ANDROID11 = 30
         private const val DELAY_TIME_MS = 100
         private const val requestCodeLocation = 100
-    }
+    }*/
 }

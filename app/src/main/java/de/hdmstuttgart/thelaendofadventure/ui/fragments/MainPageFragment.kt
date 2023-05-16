@@ -23,8 +23,8 @@ import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBindin
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
-import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
+import kotlinx.coroutines.launch
 
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
@@ -34,14 +34,14 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private lateinit var permissionManager: PermissionManager
 
     private val permissionResultLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            val granted = permissions.entries.all { it.value }
-            if (granted) {
-                showUserAtMap()
-            } else {
-               showGpsAlertDialog()
-            }
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val granted = permissions.entries.all { it.value }
+        if (granted) {
+            showUserAtMap()
+        } else {
+            showGpsAlertDialog()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +68,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
         viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
 
-       val userObserver = Observer<UserEntity> { user ->
+        val userObserver = Observer<UserEntity> { user ->
             binding.mainPageProfileLevelDisplay.text = user.level.toString()
             binding.mainPageProfileButton.setImageURI(user.imagePath?.toUri())
         }

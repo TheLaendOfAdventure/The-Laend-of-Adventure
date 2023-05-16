@@ -9,14 +9,6 @@
     android:theme="@style/ThemeOverlay.TheLaendofAdventure.FullscreenContainer"
     tools:context="de.hdmstuttgart.thelaendofadventure.FullscreenActivity">
 
-    <com.mapbox.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:mapbox_cameraTargetLat="48.77849654840248"
-        app:mapbox_cameraTargetLng="9.17961910927422"
-        app:mapbox_cameraZoom="17.0" />
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"

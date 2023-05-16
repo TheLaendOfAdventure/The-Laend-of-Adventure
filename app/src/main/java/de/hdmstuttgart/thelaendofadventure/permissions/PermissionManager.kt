@@ -37,6 +37,10 @@ class PermissionManager(private val context: Context) {
                     true
                 }
             }
+            Permissions.ACCESS_LOCATION -> {
+                // @todo Implement
+                return false
+            }
         }
     }
 
@@ -61,5 +65,6 @@ class PermissionManager(private val context: Context) {
  * Represents a permission that can be checked or requested.
  */
 enum class Permissions {
-    READ_WRITE_STORAGE
+    READ_WRITE_STORAGE,
+    ACCESS_LOCATION
 }

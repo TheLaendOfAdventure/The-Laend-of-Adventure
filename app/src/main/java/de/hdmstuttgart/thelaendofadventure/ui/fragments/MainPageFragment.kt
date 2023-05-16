@@ -105,7 +105,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
                 val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
                 permissionResultLauncher.launch(permissions)
             }
-            .setNegativeButton(R.string.gps_negativeButton) { dialog, id ->
+            .setNegativeButton(R.string.gps_negativeButton) { _, _ ->
                 exitProcess(0)
             }
         builder.create().show()

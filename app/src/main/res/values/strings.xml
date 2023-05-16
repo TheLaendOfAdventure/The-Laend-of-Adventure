@@ -31,5 +31,7 @@
     <string name="pick_from_gallery">Aus der Galerie wählen!</string>
     <string name="cancel">Abbrechen</string>
     <string name="add_image">Bild hinzufügen!</string>
+    <string name="userID">userID</string>
+    <string name="sharedPreferences">LaendOfAdventurePreferences</string>
     <string name="failed_to_save_image">Bild konnte nicht gespeichert werden.</string>
 </resources>

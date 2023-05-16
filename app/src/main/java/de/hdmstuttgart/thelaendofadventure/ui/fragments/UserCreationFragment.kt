@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
-import android.app.AlertDialog // ktlint-disable import-ordering
+import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentUserCreationBinding
+import de.hdmstuttgart.thelaendofadventure.FullscreenActivity
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.permissions.Permissions
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.UserCreationViewModel
@@ -79,6 +80,7 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
             viewModel.name = binding.nameTextInput.text.toString()
             viewModel.createUser()
             activity?.supportFragmentManager?.popBackStack()
+            (activity as FullscreenActivity).setupGame()
             Log.d(TAG, "User created with name: ${viewModel.name}")
         }
     }

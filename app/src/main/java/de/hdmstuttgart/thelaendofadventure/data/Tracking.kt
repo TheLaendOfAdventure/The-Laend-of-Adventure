@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository

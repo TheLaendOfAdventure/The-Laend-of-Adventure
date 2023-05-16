@@ -3,11 +3,13 @@ package de.hdmstuttgart.thelaendofadventure
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowInsets
@@ -37,10 +39,16 @@ import kotlin.system.exitProcess
  */
 class FullscreenActivity : AppCompatActivity() {
 
+    private val tag = "FullscreenActivity"
     private lateinit var binding: ActivityFullscreenBinding
     private lateinit var fullscreenContentControls: LinearLayout
     private val hideHandler = Handler(Looper.myLooper()!!)
     private lateinit var mapView: MapView
+    private var gameStarted = false
+    val userID = this.getSharedPreferences(
+        R.string.sharedPreferences.toString(),
+        Context.MODE_PRIVATE,
+    ).getInt(R.string.userID.toString(), -1)
 
     private var isFullscreen: Boolean = false
 
@@ -111,17 +119,25 @@ class FullscreenActivity : AppCompatActivity() {
         mapView = findViewById(R.id.mapView)
         mapView.getMapboxMap().loadStyleUri(getString(R.string.mapbox_styleURL))
 
-        if (savedInstanceState == null) {
+        if (userID == -1) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 add<UserCreationFragment>(R.id.activity_fullscreen)
                 addToBackStack(null)
             }
+        }else{
+            setupGame()
         }
+    }
 
-        showUserAtMap()
-        lifecycleScope.launch {
-            Tracking(this@FullscreenActivity).start()
+    fun setupGame(){
+        if(!gameStarted) {
+            Log.d(tag, "Starting necessary game functions")
+            showUserAtMap()
+            lifecycleScope.launch {
+                Tracking(this@FullscreenActivity).start()
+            }
+            gameStarted = true
         }
     }
 

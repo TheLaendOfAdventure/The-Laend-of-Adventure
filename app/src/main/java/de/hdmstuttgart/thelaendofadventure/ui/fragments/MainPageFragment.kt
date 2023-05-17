@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
-import android.Manifest
+import android.Manifest // ktlint-disable import-ordering
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,8 +25,8 @@ import de.hdmstuttgart.thelaendofadventure.data.Tracking
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
-import kotlin.system.exitProcess
 import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 

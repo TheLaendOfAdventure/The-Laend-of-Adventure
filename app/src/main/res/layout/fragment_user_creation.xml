@@ -5,13 +5,14 @@
     android:id="@+id/fragment_user_creation"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.UserCreationFragment">
 
     <TextView
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:text="@string/userCreationPage_title"
         android:textAlignment="center"
         android:textSize="24sp"
@@ -36,13 +37,14 @@
         android:layout_height="273dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/circle"
-        android:scaleType="centerCrop"
         android:contentDescription="@string/userCreationPage_avatarButton"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userCreationPage_character_creation"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        app:shapeAppearanceOverlay="@style/Circular"/>
+        app:shapeAppearanceOverlay="@style/Circular"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
 
     <EditText
         android:id="@+id/name_text_input"
@@ -50,14 +52,16 @@
         android:layout_height="69dp"
         android:layout_marginTop="20dp"
         android:autofillHints="username"
-        android:background="@drawable/name_field_background"
+        android:textSize="30sp"
+        android:background="@drawable/rectangle"
+        android:ellipsize="middle"
+        android:gravity="center"
         android:hint="@string/userCreationPage_nameInputField"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userCreationPage_avatarButton"
         tools:textAlignment="center" />
-
 
     <Button
         android:id="@+id/userCreationPageConfirmButton"

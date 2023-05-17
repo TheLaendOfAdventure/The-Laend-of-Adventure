@@ -39,8 +39,8 @@ class BadgesPageFragment : Fragment() {
 
         viewModel.badges.observe(
             viewLifecycleOwner
-        ) {
-            adapter.submitList(it)
+        ) { badges ->
+            adapter.submitList(badges)
         }
         return binding.root
     }

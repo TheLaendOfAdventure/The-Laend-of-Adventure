@@ -46,7 +46,7 @@ class QuestPageFragment : Fragment() {
         viewModel.user.observe(viewLifecycleOwner, userObserver)
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.badges.observe(viewLifecycleOwner, questObserver)
+        viewModel.quest.observe(viewLifecycleOwner, questObserver)
         return binding.root
     }
 

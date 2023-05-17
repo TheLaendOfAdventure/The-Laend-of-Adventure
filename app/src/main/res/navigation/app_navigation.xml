@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation"
-    app:startDestination="@id/userCreationFragment">
+    app:startDestination="@id/mainPageFragment">
 
     <fragment
         android:id="@+id/userCreationFragment"
@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_user_creation" >
         <action
             android:id="@+id/navigate_from_creation_to_main_page"
-            app:destination="@id/mainPageFragment" />
+            app:destination="@id/mainPageFragment"
+            app:popUpTo="@id/mainPageFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/mainPageFragment"

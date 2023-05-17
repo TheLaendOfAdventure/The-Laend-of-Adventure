@@ -74,15 +74,21 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
         viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
 
-        val userObserver = Observer<UserEntity> { user ->
-            binding.mainPageProfileLevelDisplay.text = user.level.toString()
-            binding.mainPageProfileButton.setImageURI(user.imagePath?.toUri())
-        }
-        viewModel.user.observe(viewLifecycleOwner, userObserver)
+        if (viewModel.userID == -1) {
+            Navigation.findNavController(requireView()).navigate(
+                R.id.userCreationFragment
+            )
+        } else {
+            val userObserver = Observer<UserEntity> { user ->
+                binding.mainPageProfileLevelDisplay.text = user.level.toString()
+                binding.mainPageProfileButton.setImageURI(user.imagePath?.toUri())
+            }
+            viewModel.user.observe(viewLifecycleOwner, userObserver)
 
-        setUpProfileButton()
-        val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-        permissionResultLauncher.launch(permissions)
+            setUpProfileButton()
+            val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+            permissionResultLauncher.launch(permissions)
+        }
     }
 
     private fun setUpProfileButton() {

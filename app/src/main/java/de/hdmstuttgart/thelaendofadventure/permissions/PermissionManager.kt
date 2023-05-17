@@ -4,7 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
+import android.os.Build
 import androidx.core.content.ContextCompat
 
 /**
@@ -12,8 +12,11 @@ import androidx.core.content.ContextCompat
  */
 class PermissionManager(private val context: Context) {
 
+    private val isTiramisuOrHigher = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
     companion object {
         const val STORAGE_PERMISSION_CODE = 1
+        const val READ_MEDIA_IMAGES_PERMISSION_CODE = 2
     }
 
     /**
@@ -23,37 +26,51 @@ class PermissionManager(private val context: Context) {
      * @param permission the permission to check
      * @return true if the permission is granted, false otherwise
      */
-    fun checkPermission(permission: Permissions): Boolean {
-        return when (permission) {
-            Permissions.READ_WRITE_STORAGE -> {
-                if (!checkStoragePermission()) {
-                    val permissions = arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    requestPermissions(permissions, STORAGE_PERMISSION_CODE)
-                    false
-                } else {
-                    true
-                }
+    fun checkPermission(permission: Permissions): Boolean = when (permission) {
+        Permissions.READ_WRITE_STORAGE -> {
+            if (checkStoragePermission()) {
+                true
+            } else {
+                requestPermissions()
+                false
             }
         }
     }
 
     private fun checkStoragePermission(): Boolean {
-        val readStorage = ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-        val writeStorage = ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-        return readStorage && writeStorage
+        val permissions = if (isTiramisuOrHigher) {
+            arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        }
+
+        return permissions.all { permission ->
+            ContextCompat.checkSelfPermission(
+                context,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
+        }
     }
 
-    private fun requestPermissions(permissions: Array<String>, requestCode: Int) {
-        ActivityCompat.requestPermissions(context as Activity, permissions, requestCode)
+    private fun requestPermissions() {
+        val requestCode = if (isTiramisuOrHigher) {
+            STORAGE_PERMISSION_CODE
+        } else {
+            READ_MEDIA_IMAGES_PERMISSION_CODE
+        }
+        (context as Activity).requestPermissions(getPermissions(), requestCode)
+    }
+
+    private fun getPermissions() = if (isTiramisuOrHigher) {
+        arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+    } else {
+        arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
     }
 }
 

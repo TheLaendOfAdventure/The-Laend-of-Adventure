@@ -75,7 +75,9 @@ class BadgesPageFragment : Fragment() {
             )
         }
         binding.badgesPageNavigationButtonToQuest.setOnClickListener {
-            // TODO implement as quest page gets implemented
+            Navigation.findNavController(requireView()).navigate(
+                R.id.navigate_from_badges_to_quest_page
+            )
         }
     }
 }

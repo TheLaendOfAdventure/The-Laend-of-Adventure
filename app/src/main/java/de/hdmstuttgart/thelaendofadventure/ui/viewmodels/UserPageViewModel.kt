@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.viewmodels
 
-import android.app.Application
+import android.app.Application // ktlint-disable import-ordering
 import android.content.Context
 import android.net.Uri
 import android.util.Log
@@ -8,14 +8,13 @@ import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
+import kotlinx.coroutines.launch
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 
 class UserPageViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -34,29 +33,26 @@ class UserPageViewModel(application: Application) : AndroidViewModel(application
 
     fun saveImage(uri: Uri) {
         try {
-            // Create a new file in the app's files directory
-            val file = File(
-                getApplication<Application>().filesDir,
-                "new_image.jpg"
-            )
+            val context = getApplication<Application>()
+            val filename = "profile_image.jpg"
+            val dir = context.getDir("my_images", Context.MODE_PRIVATE)
+            val file = File(dir, filename)
 
-            // Open an input stream for the image URI and an output stream for the new file
-            val inputStream: InputStream? =
-                getApplication<Application>().contentResolver.openInputStream(uri)
-            val outputStream: OutputStream
-
-            // Copy the input stream to the output stream
-            outputStream = FileOutputStream(file)
-            inputStream.use { input ->
-                outputStream.use { output ->
-                    input?.copyTo(output)
+            // Copy the input stream to the output stream using useLines and use extension functions
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                file.outputStream().use { output ->
+                    input.copyTo(output)
                 }
             }
 
             // Update the image URI and file path
+            imagePath = file.absolutePath
             imageUri = file.toUri()
             Log.d(TAG, "ImageUri has been initialized : $imageUri")
-            imagePath = file.absolutePath
+
+            viewModelScope.launch {
+                updateUserImage(imagePath)
+            }
 
             // Show a toast message confirming the image was saved
             Toast.makeText(
@@ -68,18 +64,18 @@ class UserPageViewModel(application: Application) : AndroidViewModel(application
             // Show a toast message if there was an error saving the image
             Toast.makeText(
                 getApplication(),
-                (R.string.failed_to_save_image),
+                R.string.failed_to_save_image,
                 Toast.LENGTH_SHORT
             ).show()
             Log.e(TAG, "Error saving image: $e")
         }
     }
 
-    suspend fun updateUserData(name: String) {
+    private suspend fun updateUserData(name: String) {
         userRepository.updateUserName(userID, name)
     }
 
-    suspend fun updateUserImage(imagePath: String) {
+    private suspend fun updateUserImage(imagePath: String) {
         userRepository.updateUserImagePath(userID, imagePath)
     }
 

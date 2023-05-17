@@ -9,6 +9,12 @@
     <string name="gps_required_title">GPS-Nutzung muss genehmigt werden</string>
     <string name="gps_required_context">Das Spiel basiert auf GPS-Daten und ist ohne diese nicht lauffähig.</string>
     <string name="image_npc">Bild NPC</string>
+    <string name="badge1_image">badgeImage</string>
+    <string name="badge1_name">Badge Name</string>
+    <string name="badge2_image">badgeImage</string>
+    <string name="badge2_name">Badge Name</string>
+    <string name="profile_image">profile_image</string>
+    <string name="profile_level">2</string>
     <string name="popup_name_NPC">Name</string>
     <string name="popup_questText">XYZ will dir eine Quest anbieten</string>
     <string name="popup_questDetails">Ort: Die Taverne \n Aufgabe: xyz</string>
@@ -37,4 +43,7 @@
     <string name="profile_tab_text">Profil</string>
     <string name="badges_tab_text">Badges</string>
     <string name="quests_tab_text">Quests</string>
+    <string name="badgesPage_badge1_background">badge1_background</string>
+    <string name="badgesPage_badge2_background">badge2_background</string>
+    <string name="badgesPage_profileButton">badgesPage_profileButton</string>
 </resources>

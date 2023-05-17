@@ -33,5 +33,20 @@
         <action
             android:id="@+id/navigate_from_user_to_main_page"
             app:destination="@id/mainPageFragment" />
+        <action
+            android:id="@+id/navigate_from_user_to_badges_page"
+            app:destination="@id/badgesPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/badgesPageFragment"
+        android:name="de.hdmstuttgart.thelaendofadventure.ui.fragments.BadgesPageFragment"
+        android:label="fragment_badges_page"
+        tools:layout="@layout/fragment_badges_page" >
+        <action
+            android:id="@+id/navigate_from_badges_to_user_page"
+            app:destination="@id/userPageFragment" />
+        <action
+            android:id="@+id/navigate_from_badges_to_main_page"
+            app:destination="@id/mainPageFragment" />
     </fragment>
 </navigation>

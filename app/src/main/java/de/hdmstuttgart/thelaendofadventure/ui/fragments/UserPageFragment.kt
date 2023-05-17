@@ -95,7 +95,9 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
 
     private fun setUpUserPageNavigationButtons() {
         binding.userPageNavigationButtonToBadges.setOnClickListener {
-            // TODO implement as badges page gets implemented
+            Navigation.findNavController(requireView()).navigate(
+                R.id.navigate_from_user_to_badges_page
+            )
         }
         binding.userPageNavigationButtonToQuest.setOnClickListener {
             // TODO implement as quest page gets implemented

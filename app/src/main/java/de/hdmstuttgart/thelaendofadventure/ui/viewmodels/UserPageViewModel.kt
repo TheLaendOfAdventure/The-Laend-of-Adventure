@@ -71,9 +71,11 @@ class UserPageViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    /*
     private suspend fun updateUserData(name: String) {
         userRepository.updateUserName(userID, name)
     }
+    */
 
     private suspend fun updateUserImage(imagePath: String) {
         userRepository.updateUserImagePath(userID, imagePath)

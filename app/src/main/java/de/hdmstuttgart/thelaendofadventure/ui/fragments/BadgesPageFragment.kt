@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentBadgesPageBinding
+import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import de.hdmstuttgart.thelaendofadventure.ui.adapters.BadgesAdapter
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.BadgesPageViewModel
 
@@ -34,14 +36,13 @@ class BadgesPageFragment : Fragment() {
         val recycleView = binding.badgesPageRecyclerview
         recycleView.layoutManager = LinearLayoutManager(requireContext())
 
-        val adapter = BadgesAdapter()
-        recycleView.adapter = adapter
-
-        viewModel.badges.observe(
-            viewLifecycleOwner
-        ) { badges ->
-            adapter.submitList(badges)
+        val badgeObserver = Observer<List<BadgeEntity>> { badge ->
+            val adapter = BadgesAdapter(badge)
+            recycleView.adapter = adapter
         }
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        viewModel.badges.observe(viewLifecycleOwner, badgeObserver)
         return binding.root
     }
 

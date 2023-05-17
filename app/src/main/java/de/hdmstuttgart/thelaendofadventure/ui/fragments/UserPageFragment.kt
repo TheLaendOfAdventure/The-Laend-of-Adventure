@@ -1,13 +1,12 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
-import android.app.AlertDialog
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -25,13 +24,13 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
 
     private lateinit var binding: FragmentUserPageBinding
     private lateinit var viewModel: UserPageViewModel
-    private lateinit var mPickGallery: ActivityResultLauncher<String>
+    private lateinit var mPickGallery: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var permissionManager: PermissionManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Initialize ActivityResultLauncher to pick an image from the gallery
         mPickGallery =
-            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 uri?.let {
                     viewModel.saveImage(uri)
                     binding.userPageProfilePictureView.setImageURI(viewModel.imageUri)
@@ -40,6 +39,7 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
             }
         permissionManager = PermissionManager(requireContext())
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,25 +78,9 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
     }
 
     private fun pickImage() {
-        val items = arrayOf<CharSequence>(
-            getString(R.string.pick_from_gallery),
-            getString(R.string.cancel)
+        mPickGallery.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
         )
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle(R.string.add_image)
-        builder.setItems(items) { dialog, item ->
-            when {
-                items[item] == getString(R.string.pick_from_gallery) -> {
-                    mPickGallery.launch("image/*")
-                    Log.d(TAG, "Launching gallery intent")
-                }
-
-                items[item] == getString(R.string.cancel) -> {
-                    dialog.dismiss()
-                }
-            }
-        }
-        builder.show()
     }
 
     private fun setUpUserPageProfileButton() {

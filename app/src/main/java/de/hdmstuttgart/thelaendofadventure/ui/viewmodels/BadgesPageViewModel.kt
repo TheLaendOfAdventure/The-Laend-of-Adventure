@@ -17,4 +17,14 @@ class BadgesPageViewModel(application: Application) : AndroidViewModel(applicati
     ).getInt(R.string.userID.toString(), -1)
 
     val badges = badgeRepository.getAcceptedBadgesByUserID(userID).asLiveData()
+
+    /*val badges: LiveData<List<BadgeEntity>> = MutableLiveData()
+
+    init {
+        fetchBadges()
+    }
+
+    private fun fetchBadges() {
+        badgeRepository.getAcceptedBadgesByUserID()
+    }*/
 }

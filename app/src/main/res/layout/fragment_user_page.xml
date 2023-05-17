@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="0.224"
         tools:layout_goneMarginEnd="20dp" />
 
-    <ImageButton
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/userPage_profileButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -34,14 +34,17 @@
         android:contentDescription="@string/profileButton"
         android:minWidth="48dp"
         android:minHeight="48dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:srcCompat="@android:drawable/ic_menu_my_calendar" />
+        app:shapeAppearanceOverlay="@style/Circular"
+        tools:srcCompat="@android:drawable/ic_menu_my_calendar"
+        />
 
     <TextView
         android:id="@+id/userPage_profileButtonLevelDisplay"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/circle"
@@ -57,17 +60,19 @@
         tools:ignore="TextViewEdits"
         tools:layout_constraintHeight_max="30dp" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/userPage_profilePictureView"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/circle"
         android:contentDescription="@string/userPage_profileImage"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userPage_nameView"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        app:shapeAppearanceOverlay="@style/Circular"/>
 
     <TextView
         android:id="@+id/userPage_levelDisplay"

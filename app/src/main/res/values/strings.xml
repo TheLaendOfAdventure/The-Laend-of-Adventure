@@ -23,7 +23,7 @@
     <string name="avatar">Profilbild</string>
     <string name="profileLevel">3</string>
     <string name="userPage_levelText">Level:</string>
-    <string name="userPage_profileButton">Profilebutton</string>
+    <string name="profileButton">Profilebutton</string>
     <string name="userPage_profileImage">Profilbild</string>
     <string name="mainPage_profileButton">Profil</string>
     <string name="player_level">3</string>
@@ -33,4 +33,13 @@
     <string name="quest2_progressNumeric">0/100</string>
     <string name="questmenu_profile">questMenu_profile</string>
     <string name="quest_name">Name</string>
+    <string name="pick_from_gallery">Aus der Galerie wählen!</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="add_image">Bild hinzufügen!</string>
+    <string name="userID">userID</string>
+    <string name="sharedPreferences">LaendOfAdventurePreferences</string>
+    <string name="failed_to_save_image">Bild konnte nicht gespeichert werden.</string>
+    <string name="profile_tab_text">Profil</string>
+    <string name="badges_tab_text">Badges</string>
+    <string name="quests_tab_text">Quests</string>
 </resources>

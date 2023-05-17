@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_user_creation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.UserCreationFragment">
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/userCreationPage_title"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/userCreationPage_character_creation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/userCreationPage_secondaryTitle"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_text" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/userCreationPage_avatarButton"
+        android:layout_width="277dp"
+        android:layout_height="273dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/circle"
+        android:contentDescription="@string/userCreationPage_avatarButton"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userCreationPage_character_creation"
+        app:shapeAppearanceOverlay="@style/Circular"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+
+    <EditText
+        android:id="@+id/name_text_input"
+        android:layout_width="391dp"
+        android:layout_height="69dp"
+        android:layout_marginTop="20dp"
+        android:autofillHints="username"
+        android:textSize="30sp"
+        android:background="@drawable/rectangle"
+        android:ellipsize="middle"
+        android:gravity="center"
+        android:hint="@string/userCreationPage_nameInputField"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userCreationPage_avatarButton"
+        tools:textAlignment="center" />
+
+    <Button
+        android:id="@+id/userCreationPageConfirmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="200dp"
+        android:minHeight="80dp"
+        android:text="@string/userCreationPage_confirmButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_text_input" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

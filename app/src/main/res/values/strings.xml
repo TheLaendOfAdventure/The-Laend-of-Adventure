@@ -34,4 +34,7 @@
     <string name="userID">userID</string>
     <string name="sharedPreferences">LaendOfAdventurePreferences</string>
     <string name="failed_to_save_image">Bild konnte nicht gespeichert werden.</string>
+    <string name="profile_tab_text">Profil</string>
+    <string name="badges_tab_text">Badges</string>
+    <string name="quests_tab_text">Quests</string>
 </resources>

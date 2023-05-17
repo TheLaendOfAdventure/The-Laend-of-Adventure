@@ -13,6 +13,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentUserPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
@@ -62,7 +63,8 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
         viewModel.user.observe(viewLifecycleOwner, userObserver)
 
         changeImageButton()
-        setUpUserPageExitButton()
+        setUpUserPageProfileButton()
+        setUpUserPageNavigationButtons()
     }
 
     private fun changeImageButton() {
@@ -97,9 +99,20 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
         builder.show()
     }
 
-    private fun setUpUserPageExitButton() {
+    private fun setUpUserPageProfileButton() {
         binding.userPageProfileButton.setOnClickListener {
-            activity?.supportFragmentManager?.popBackStack()
+            Navigation.findNavController(requireView()).navigate(
+                R.id.navigate_from_user_to_main_page
+            )
+        }
+    }
+
+    private fun setUpUserPageNavigationButtons() {
+        binding.userPageNavigationButtonToBadges.setOnClickListener {
+            // TODO implement as badges page gets implemented
+        }
+        binding.userPageNavigationButtonToQuest.setOnClickListener {
+            // TODO implement as quest page gets implemented
         }
     }
 

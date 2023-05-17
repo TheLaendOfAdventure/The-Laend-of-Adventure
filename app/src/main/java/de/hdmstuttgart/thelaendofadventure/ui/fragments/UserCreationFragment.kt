@@ -80,7 +80,9 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
         binding.userCreationPageConfirmButton.setOnClickListener {
             viewModel.name = binding.nameTextInput.text.toString()
             viewModel.createUser()
-            Navigation.findNavController(requireView()).navigate(R.id.navigate_to_main_page)
+            Navigation.findNavController(requireView()).navigate(
+                R.id.navigate_from_creation_to_main_page
+            )
             Log.d(TAG, "User created with name: ${viewModel.name}")
         }
     }

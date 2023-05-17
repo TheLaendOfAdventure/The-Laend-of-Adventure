@@ -100,7 +100,9 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
             )
         }
         binding.userPageNavigationButtonToQuest.setOnClickListener {
-            // TODO implement as quest page gets implemented
+            Navigation.findNavController(requireView()).navigate(
+                R.id.navigate_from_user_to_quest_page
+            )
         }
     }
 

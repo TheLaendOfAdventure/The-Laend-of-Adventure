@@ -59,7 +59,7 @@ class QuestPageFragment : Fragment() {
     private fun setUpBadgePageProfileButton() {
         binding.questPageProfileButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_badges_to_main_page
+                R.id.navigate_from_quest_to_main_page
             )
         }
     }

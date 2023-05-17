@@ -5,16 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentBadgesPageBinding
-
-// @TODO Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+import de.hdmstuttgart.thelaendofadventure.ui.adapters.BadgesAdapter
+import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.BadgesPageViewModel
 
 class BadgesPageFragment : Fragment() {
 
     private lateinit var binding: FragmentBadgesPageBinding
-
+    private lateinit var viewModel: BadgesPageViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // @TODO recycleview implementation
@@ -24,19 +26,44 @@ class BadgesPageFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_badges_page, container, false)
+    ): View {
+        viewModel = ViewModelProvider(this)[BadgesPageViewModel::class.java]
+
+        binding = FragmentBadgesPageBinding.inflate(inflater, container, false)
+
+        val recycleView = binding.badgesPageRecyclerview
+        recycleView.layoutManager = LinearLayoutManager(requireContext())
+
+        val adapter = BadgesAdapter()
+        recycleView.adapter = adapter
+
+        viewModel.badges.observe(
+            viewLifecycleOwner
+        ) {
+            adapter.submitList(it)
+        }
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpUserPageNavigationButtons()
+        setUpBadgePageProfileButton()
+    }
+
+    private fun setUpBadgePageProfileButton() {
+        binding.badgesPageProfileButton.setOnClickListener {
+            Navigation.findNavController(requireView()).navigate(
+                R.id.navigate_from_badges_to_main_page
+            )
+        }
     }
 
     private fun setUpUserPageNavigationButtons() {
         binding.badgesPageNavigationButtonToUser.setOnClickListener {
-            // TODO implement as badges page gets implemented
+            Navigation.findNavController(requireView()).navigate(
+                R.id.navigate_from_badges_to_user_page
+            )
         }
         binding.badgesPageNavigationButtonToQuest.setOnClickListener {
             // TODO implement as quest page gets implemented

@@ -21,10 +21,6 @@ class BadgesPageFragment : Fragment() {
 
     private lateinit var binding: FragmentBadgesPageBinding
     private lateinit var viewModel: BadgesPageViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // @TODO recycleview implementation
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

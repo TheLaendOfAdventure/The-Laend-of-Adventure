@@ -18,6 +18,6 @@ class QuestPageViewModel(application: Application) : AndroidViewModel(applicatio
         Context.MODE_PRIVATE
     ).getInt(R.string.userID.toString(), -1)
 
-    val badges = questRepository.getUnacceptedQuestsByUserID(userID).asLiveData()
+    val quest = questRepository.getAcceptedQuestsByUserID(userID).asLiveData()
     val user = userRepository.getUserByID(userID).asLiveData()
 }

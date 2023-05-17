@@ -34,6 +34,7 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
                 uri?.let {
                     viewModel.saveImage(uri)
                     binding.userPageProfilePictureView.setImageURI(viewModel.imageUri)
+                    binding.userPageProfileButton.setImageURI(viewModel.imageUri)
                     Log.d(TAG, "User avatar image saved: $uri")
                 }
             }
@@ -58,6 +59,7 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
             binding.userPageNameView.text = user.name
             binding.userPageLevelDisplay.text = user.level.toString()
             binding.userPageProfileButtonLevelDisplay.text = user.level.toString()
+            binding.userPageProfileButton.setImageURI(user.imagePath?.toUri())
             binding.userPageProfilePictureView.setImageURI(user.imagePath?.toUri())
         }
         viewModel.user.observe(viewLifecycleOwner, userObserver)

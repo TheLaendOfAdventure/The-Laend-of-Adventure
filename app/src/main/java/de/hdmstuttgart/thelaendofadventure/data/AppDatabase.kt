@@ -45,7 +45,6 @@ abstract class AppDatabase : RoomDatabase() {
                      * permanently deletes all data from the tables in your database when it
                      * attempts to perform a migration with no defined migration path.
                      */
-                    .fallbackToDestructiveMigration()
                     .createFromAsset("database/Laend_of_Adventure.db")
                     .build()
                     .also { Instance = it }

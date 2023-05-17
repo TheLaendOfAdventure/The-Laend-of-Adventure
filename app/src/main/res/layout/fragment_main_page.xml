@@ -11,35 +11,39 @@
     The MapView is generated as the bottom object.
     So that the imageButton etc. are generated on top of the map, the MapView must be at the top of the xml file.
     -->
-    <com.mapbox.maps.MapView xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+    <com.mapbox.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        mapbox:mapbox_cameraTargetLat="48.77849654840248"
-        mapbox:mapbox_cameraTargetLng="9.17961910927422"
-        mapbox:mapbox_cameraZoom="17.0" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mapbox_cameraTargetLat="48.77849654840248"
+        app:mapbox_cameraTargetLng="9.17961910927422"
+        app:mapbox_cameraZoom="17.0" />
 
-    <ImageButton
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/mainPage_profileButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/circle"
         android:contentDescription="@string/profileButton"
+        android:scaleType="centerCrop"
         android:minWidth="48dp"
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_marginBottom="10dp"
+        app:shapeAppearanceOverlay="@style/Circular"
         tools:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         tools:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
     <TextView
         android:id="@+id/mainPage_profileLevelDisplay"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="30dp"
         android:background="@drawable/circle"
         android:maxWidth="30dp"
         android:maxHeight="30dp"
@@ -47,12 +51,12 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/mainPage_profileButton"
+        app:layout_constraintEnd_toEndOf="@+id/mainPage_profileButton"
         app:layout_constraintWidth_max="30dp"
         tools:ignore="TextViewEdits"
         tools:layout_constraintHeight_max="30dp"
         tools:layout_marginLeft="90dp"
-        tools:layout_marginTop="80dp"/>
+        tools:layout_marginTop="80dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

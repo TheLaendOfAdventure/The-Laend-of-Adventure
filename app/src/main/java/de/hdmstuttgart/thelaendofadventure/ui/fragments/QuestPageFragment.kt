@@ -12,7 +12,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentQuestPageBinding
-import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.WholeQuest
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.ui.adapters.QuestAdapter
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.QuestPageViewModel
@@ -34,8 +34,9 @@ class QuestPageFragment : Fragment() {
         val recycleView = binding.questPageRecyclerview
         recycleView.layoutManager = LinearLayoutManager(requireContext())
 
-        val questObserver = Observer<List<QuestEntity>> { quest ->
-            val adapter = QuestAdapter(quest)
+        val questObserver = Observer<List<WholeQuest>> { questList ->
+            // Handle the questList
+            val adapter = QuestAdapter(questList)
             recycleView.adapter = adapter
         }
 
@@ -46,7 +47,7 @@ class QuestPageFragment : Fragment() {
         viewModel.user.observe(viewLifecycleOwner, userObserver)
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.quest.observe(viewLifecycleOwner, questObserver)
+        viewModel.questList.observe(viewLifecycleOwner, questObserver)
         return binding.root
     }
 

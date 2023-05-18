@@ -40,6 +40,7 @@ class QuestPageFragment : Fragment() {
 
             recycleView.adapter = adapter
         }
+        viewModel.questList.observe(viewLifecycleOwner, questObserver)
 
         val userObserver = Observer<UserEntity> { user ->
             binding.questProfileButtonLevelDisplay.text = user.level.toString()
@@ -47,19 +48,16 @@ class QuestPageFragment : Fragment() {
         }
         viewModel.user.observe(viewLifecycleOwner, userObserver)
 
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.questList.observe(viewLifecycleOwner, questObserver)
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpUserPageNavigationButtons()
-        setUpBadgePageProfileButton()
+        setUpQuestPageNavigationButtons()
+        setUpQuestPageProfileButton()
     }
 
-    private fun setUpBadgePageProfileButton() {
+    private fun setUpQuestPageProfileButton() {
         binding.questPageProfileButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_quest_to_main_page
@@ -67,7 +65,7 @@ class QuestPageFragment : Fragment() {
         }
     }
 
-    private fun setUpUserPageNavigationButtons() {
+    private fun setUpQuestPageNavigationButtons() {
         binding.questPageNavigationButtonToUser.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_quest_to_user_page

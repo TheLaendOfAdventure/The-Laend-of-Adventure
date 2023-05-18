@@ -46,4 +46,9 @@
     <string name="badgesPage_badge1_background">badge1_background</string>
     <string name="badgesPage_badge2_background">badge2_background</string>
     <string name="badgesPage_profileButton">badgesPage_profileButton</string>
+    <string name="riddle_text">Rätsel</string>
+    <string name="antwort_1">Antwort_1</string>
+    <string name="antwort_2">Antwort_2</string>
+    <string name="antwort_3">Antwort_3</string>
+    <string name="antwort_4">Antwort_4</string>
 </resources>

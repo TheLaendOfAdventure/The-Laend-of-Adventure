@@ -63,7 +63,8 @@ interface QuestDao {
     suspend fun assignQuestToUser(userID: Int, questID: Int)
 
     @Query(
-        "SELECT quest.questID, questGoal.questGoalID, location.longitude, location.latitude " +
+        "SELECT quest.questID, questGoal.questGoalID," +
+            "user_quest.currentGoalNumber, location.longitude, location.latitude " +
             "FROM quest " +
             "JOIN user_quest ON quest.questID = user_quest.questID " +
             "JOIN questGoal ON questGoal.questID = quest.questID " +

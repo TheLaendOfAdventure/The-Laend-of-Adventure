@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 
-class BadgesAdapter(private val mList: List<BadgeEntity>) : RecyclerView.Adapter<BadgesAdapter.ViewHolder>() { // ktlint-disable max-line-length
+class BadgesAdapter(private val badgeList: List<BadgeEntity>) : RecyclerView.Adapter<BadgesAdapter.ViewHolder>() { // ktlint-disable max-line-length
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
@@ -23,18 +23,18 @@ class BadgesAdapter(private val mList: List<BadgeEntity>) : RecyclerView.Adapter
 
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val badges = mList[position]
+        val badge = badgeList[position]
 
         // sets the image to the imageview from our itemHolder class
-        holder.imageView.setImageURI(badges.imagePath.toUri())
+        holder.imageView.setImageURI(badge.imagePath.toUri())
 
         // sets the text to the textview from our itemHolder class
-        holder.textView.text = badges.name
+        holder.textView.text = badge.name
     }
 
     // return the number of the items in the list
     override fun getItemCount(): Int {
-        return mList.size
+        return badgeList.size
     }
 
     // Holds the views for adding it to image and text

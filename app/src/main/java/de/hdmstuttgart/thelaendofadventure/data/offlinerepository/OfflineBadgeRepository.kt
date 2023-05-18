@@ -26,16 +26,23 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
         Flow<List<ActionEntity>> = badgeDao.getUncompletedGoalsForBadgeByUserID(userID, badgeID)
 
     override suspend fun updateBadgeProgressByUserID(userID: Int, badgeID: Int, goalNumber: Int) {
-        val progress = badgeDao.getProgressForBadgeByUserID(userID, badgeID)
+        val badgeProgress = badgeDao.getProgressForBadgeByUserID(userID, badgeID)
 
-        progress.collect {
+        badgeProgress.collect {
             val currentGoalNumber = it.currentGoalNumber
             val targetGoalNumber = it.targetGoalNumber
 
-            if (currentGoalNumber == targetGoalNumber) {
-                assignBadgeToUser(userID, badgeID, goalNumber)
-            } else {
+            if (currentGoalNumber != targetGoalNumber) {
                 badgeDao.updateBadgeProgressByUserID(userID, badgeID, goalNumber)
+            }
+        }
+    }
+
+    private suspend fun checkForBadgeProgress(userID: Int, questID: Int) {
+        val allBadges = getAcceptedBadgesByUserID(userID)
+        allBadges.collect { badgesList ->
+            badgesList.forEach { badge ->
+
             }
         }
     }
@@ -44,12 +51,5 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
         val badges = badgeDao.getUnacceptedBadgesByUserID(userID).toList().flatten()
         val badgesIDs = badges.map { it.badgeID }
         badgeDao.assignAllBadgesToUser(userID, badgesIDs)
-    }
-
-    private suspend fun assignBadgeToUser(userID: Int, badgeID: Int, goalNumber: Int) {
-        badgeDao.updateBadgeProgressByUserID(userID, badgeID, goalNumber)
-
-        val listOfOneBadge = listOf(badgeID)
-        badgeDao.assignAllBadgesToUser(userID, listOfOneBadge)
     }
 }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class UserLogic(context: Context) {
+class UserLogic(private val context: Context) {
 
     companion object {
         private const val TAG = "UserLogic"
@@ -21,18 +21,21 @@ class UserLogic(context: Context) {
     fun addExperience(userID: Int, experience: Int) {
         Log.d(TAG, "User userID: $userID added $experience experience")
         CoroutineScope(Dispatchers.IO).launch {
-            val user = userRepository.getUserByID(userID).first()
-            var currentExp = user.exp + experience
-            if (currentExp >= EXPERIENCE_FOR_LEVEL) {
-                currentExp -= EXPERIENCE_FOR_LEVEL
-                Log.d(
-                    TAG,
-                    "User userID: $userID level up " +
-                        "new level ${user.level + 1} experience: $currentExp"
-                )
-                userRepository.updateUserLevel(userID, user.level + 1)
+            try {
+                val user = userRepository.getUserByID(userID).first()
+                var currentExp = user.exp + experience
+                if (currentExp >= EXPERIENCE_FOR_LEVEL) {
+                    currentExp -= EXPERIENCE_FOR_LEVEL
+                    Log.d(
+                        TAG,
+                        "User userID: $userID level up new level ${user.level + 1} experience: $currentExp" // ktlint-disable max-line-length
+                    )
+                    userRepository.updateUserLevel(userID, user.level + 1)
+                }
+                userRepository.updateUserExp(userID, currentExp)
+            } catch (e: NoSuchElementException) {
+                Log.e(TAG, "ERROR getting user with userID: $userID $e")
             }
-            userRepository.updateUserExp(userID, currentExp)
         }
     }
 }

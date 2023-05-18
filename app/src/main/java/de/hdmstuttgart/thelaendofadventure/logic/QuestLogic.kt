@@ -9,13 +9,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class QuestLogic(context: Context) {
+class QuestLogic(private val context: Context) {
 
     companion object {
         private const val TAG = "QuestLogic"
         private const val EXPERIENCE_PER_QUEST = 50
     }
-    val context = context
 
     private val questRepository: QuestRepository = AppDataContainer(context).questRepository
 

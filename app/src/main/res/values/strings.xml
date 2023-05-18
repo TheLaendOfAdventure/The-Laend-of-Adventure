@@ -35,7 +35,7 @@
     <string name="player_level">3</string>
     <string name="mainPage_compass">Kompass</string>
     <string name="questpage_backgroundrectangle">questPage_backgroundRectangle</string>
-    <string name="quest1_progressNumeric">0/100</string>
+    <string name="quest_progress_numeric_text">%1$d / %2$d</string>
     <string name="quest2_progressNumeric">0/100</string>
     <string name="questmenu_profile">questMenu_profile</string>
     <string name="quest_name">Name</string>
@@ -51,4 +51,5 @@
     <string name="badgesPage_badge1_background">badge1_background</string>
     <string name="badgesPage_badge2_background">badge2_background</string>
     <string name="badgesPage_profileButton">badgesPage_profileButton</string>
+    <string name="quest_description_text">Beschreibung</string>
 </resources>

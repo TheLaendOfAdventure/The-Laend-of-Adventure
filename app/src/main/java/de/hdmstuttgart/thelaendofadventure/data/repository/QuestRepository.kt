@@ -55,13 +55,15 @@ interface QuestRepository {
     fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     /**
-     * Updates the progress of the current goal for the given quest and user.
+     * Updates the progress of the current goal for the given quest and user and checks if the quest is completed.
      *
      * @param userID ID of the user whose quest progress should be updated.
      * @param questID ID of the quest whose progress should be updated.
      * @param goalNumber The new goal number to set.
+     * @return True if the quest is completed, otherwise False.
      */
-    suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int)
+    suspend fun updateAndCheckQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int):
+        Boolean
 
     /**
      * Accepts a quest for a user with the given user ID.

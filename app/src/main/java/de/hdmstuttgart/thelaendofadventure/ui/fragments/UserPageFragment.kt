@@ -56,7 +56,7 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
         viewModel = ViewModelProvider(this)[UserPageViewModel::class.java]
 
         val userObserver = Observer<UserEntity> { user ->
-            binding.userPageNameView.text = user.name
+            binding.userPageNameField.hint = user.name
             binding.userPageLevelDisplay.text = user.level.toString()
             binding.userPageProfileButtonLevelDisplay.text = user.level.toString()
             binding.userPageProfileButton.setImageURI(user.imagePath?.toUri())

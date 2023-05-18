@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 
-class BadgesAdapter(private val badgeList: List<BadgeEntity>) : RecyclerView.Adapter<BadgesAdapter.ViewHolder>() { // ktlint-disable max-line-length
+class BadgesAdapter(private val badgeList: List<BadgeEntity>) :
+    RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view

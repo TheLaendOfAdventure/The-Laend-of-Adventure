@@ -55,6 +55,15 @@ interface QuestRepository {
     fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     /**
+     * Retrieves a list of quest IDs associated with a specific badge and user.
+     *
+     * @param userID The ID of the user.
+     * @param badgeID The ID of the badge.
+     * @return A list of quest IDs associated with the specified badge and user.
+     */
+    suspend fun getQuestForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<Int>>
+
+    /**
      * Updates the progress of the current goal for the given quest and user.
      *
      * @param userID ID of the user whose quest progress should be updated.

@@ -2,6 +2,7 @@ package de.hdmstuttgart.thelaendofadventure.data.repository
 
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import kotlinx.coroutines.flow.Flow
@@ -53,6 +54,14 @@ interface QuestRepository {
      * @return A [Flow] emitting a list of [ActionEntity] objects representing the uncompleted goals.
      */
     fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
+
+    /**
+     * Retrieves a list of all quest accepted by user with details.
+     *
+     * @param userID ID of the user whose uncompleted goals should be retrieved.
+     * @return A [Flow] emitting a list of [QuestDetails] objects representing the accepted quests.
+     */
+    fun getQuestsWithDetailsByUserID(userID: Int): Flow<List<QuestDetails>>
 
     /**
      * Retrieves a list of quest IDs associated with a specific badge and user.

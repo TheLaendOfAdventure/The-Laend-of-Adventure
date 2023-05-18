@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -77,7 +78,7 @@ class UserPageViewModel(application: Application) : AndroidViewModel(application
     }
     */
 
-    private suspend fun updateUserImage(imagePath: String) {
+    fun updateUserImage(imagePath: String) = viewModelScope.launch(Dispatchers.IO) {
         userRepository.updateUserImagePath(userID, imagePath)
     }
 

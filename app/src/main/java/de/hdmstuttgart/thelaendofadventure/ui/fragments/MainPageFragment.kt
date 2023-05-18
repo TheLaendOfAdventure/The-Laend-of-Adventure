@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -34,8 +35,8 @@ import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
 import de.hdmstuttgart.the_laend_of_adventure.databinding.PopupDialogBinding
-import de.hdmstuttgart.thelaendofadventure.BitmapUtils
 import de.hdmstuttgart.thelaendofadventure.data.Tracking
+import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
@@ -50,9 +51,21 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private lateinit var permissionManager: PermissionManager
     private lateinit var viewAnnotationManager: ViewAnnotationManager
     private lateinit var pointAnnotationManager: PointAnnotationManager
-    private lateinit var pointAnnotation: PointAnnotation
-    private lateinit var viewAnnotation: View
     private lateinit var iconBitmap: Bitmap
+
+    private var fakelist = listOf<QuestEntity>(
+        QuestEntity(
+            name = "test",
+            longitude = 9.179612373010999,
+            latitude = 48.77888855848808,
+            description = "",
+            targetGoalNumber = 3,
+            dialogPath = "path",
+            imagePath = "path"
+        )
+
+    )
+
     private val permissionResultLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions(),
     ) { permissions ->
@@ -64,13 +77,12 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        iconBitmap = BitmapUtils.bitmapFromDrawableRes(
-            requireContext(),
-            R.drawable.chat_icon,
-        )!!
+        iconBitmap = requireContext().getDrawable(R.drawable.chat_icon)?.toBitmap()!!
+
         lifecycleScope.launch {
             Tracking(requireContext()).start()
         }
@@ -81,65 +93,91 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainPageBinding.inflate(inflater, container, false)
         viewAnnotationManager = binding.mapView.viewAnnotationManager
-
         mapView = binding.mapView
+
         setUpMap()
+
         return binding.root
     }
 
     private fun setUpMap() {
         binding.mapView.getMapboxMap().loadStyleUri(getString(R.string.mapbox_styleURL)) {
-            prepareAnnotationMarker(binding.mapView, iconBitmap)
-            prepareViewAnnotation()
+            val pointAnnotationList = prepareAnnotationMarker(binding.mapView)
+            val viewList = prepareViewAnnotation(pointAnnotationList)
             // show / hide view annotation based on a marker click
             pointAnnotationManager.addClickListener { clickedAnnotation ->
-                if (pointAnnotation == clickedAnnotation) {
-                    viewAnnotation.toggleViewVisibility()
+                pointAnnotationList.forEach { pointAnnotation ->
+                    viewList.forEach { viewAnnotation ->
+                        if (pointAnnotation == clickedAnnotation) {
+                            viewAnnotation.toggleViewVisibility()
+                        }
+                    }
                 }
                 true
             }
         }
     }
-    private fun View.toggleViewVisibility() {
-        visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
-    }
-    private fun prepareAnnotationMarker(mapView: MapView, iconBitmap: Bitmap) {
+
+    private fun prepareAnnotationMarker(
+        mapView: MapView,
+    ): List<PointAnnotation> {
         val annotationPlugin = mapView.annotations
-        val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
-            .withPoint(POINT)
-            .withIconImage(iconBitmap)
-            .withIconAnchor(IconAnchor.BOTTOM)
-            .withDraggable(false)
         pointAnnotationManager = annotationPlugin.createPointAnnotationManager()
-        pointAnnotation = pointAnnotationManager.create(pointAnnotationOptions)
+
+        val pointAnnotationOptionsList = getPointAnnotationOptionsList(fakelist)
+        return pointAnnotationOptionsList.map { pointAnnotationOptions ->
+            pointAnnotationManager.create(pointAnnotationOptions)
+        }
+    }
+
+    private fun getPointAnnotationOptionsList(questList: List<QuestEntity>): List<PointAnnotationOptions> { // ktlint-disable max-line-length
+        return questList.map { quest ->
+            val point = Point.fromLngLat(quest.longitude, quest.latitude)
+
+            PointAnnotationOptions()
+                .withPoint(point)
+                .withIconImage(iconBitmap)
+                .withIconAnchor(IconAnchor.BOTTOM)
+                .withDraggable(false)
+        }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun prepareViewAnnotation() {
-        viewAnnotation = viewAnnotationManager.addViewAnnotation(
-            resId = R.layout.popup_dialog,
-            options = viewAnnotationOptions {
-                geometry(POINT)
+    private fun prepareViewAnnotation(pointAnnotationList: List<PointAnnotation>): List<View> {
+        val viewAnnotationList = pointAnnotationList.map { pointAnnotation ->
+
+            val options = viewAnnotationOptions {
+                geometry(pointAnnotation.point)
                 associatedFeatureId(pointAnnotation.featureIdentifier)
                 anchor(ViewAnnotationAnchor.BOTTOM)
                 offsetY((pointAnnotation.iconImageBitmap?.height!!).toInt())
-            },
-        )
-
-        viewAnnotation.visibility = View.GONE
-
-        PopupDialogBinding.bind(viewAnnotation).apply {
-            popupDialogDeclineButton.setOnClickListener {
-                viewAnnotationManager.removeViewAnnotation(viewAnnotation)
             }
-            popupDialogAcceptButton.setOnClickListener {
-                viewAnnotationManager.removeViewAnnotation(viewAnnotation)
+
+            viewAnnotationManager.addViewAnnotation(R.layout.popup_dialog, options)
+        }
+
+        viewAnnotationList.forEach { viewAnnotation ->
+            viewAnnotation.visibility = View.GONE
+
+            PopupDialogBinding.bind(viewAnnotation).apply {
+                popupDialogDeclineButton.setOnClickListener {
+                    viewAnnotationManager.removeViewAnnotation(viewAnnotation)
+                }
+                popupDialogAcceptButton.setOnClickListener {
+                    viewAnnotationManager.removeViewAnnotation(viewAnnotation)
+                }
             }
         }
+
+        return viewAnnotationList
+    }
+
+    private fun View.toggleViewVisibility() {
+        visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -204,9 +242,5 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
         mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
         mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
-    }
-
-    private companion object {
-        val POINT: Point = Point.fromLngLat(9.179736659033168, 48.778604067433584)
     }
 }

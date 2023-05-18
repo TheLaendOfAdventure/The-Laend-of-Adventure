@@ -7,12 +7,9 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.hdmstuttgart.the_laend_of_adventure.R
-import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.UserQuestEntity
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.WholeQuest
 
-class QuestAdapter(
-    private val questList: MutableList<Any>
-) : RecyclerView.Adapter<QuestAdapter.ViewHolder>() {
+class QuestAdapter(private val questList: List<WholeQuest>) : RecyclerView.Adapter<QuestAdapter.ViewHolder>() { // ktlint-disable max-line-length
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
@@ -25,14 +22,14 @@ class QuestAdapter(
 
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val quests = questList[position] as QuestEntity
-        val userQuest = questList[position] as UserQuestEntity
+        val quest = questList[position]
 
         // sets the text to the textview from our itemHolder class
-        holder.textView.text = quests.name
-
-        holder.progressBar.max = quests.targetGoalNumber
-        holder.progressBar.setProgress(userQuest.currentGoalNumber, true)
+        holder.textView.text = quest.name
+        // sets the max to the progressBar from our itemHolder class
+        holder.progressBar.max = quest.targetGoalNumber
+        // sets the progress to the progressBar from our itemHolder class
+        holder.progressBar.setProgress(quest.currentGoalNumber, true)
     }
 
     // return the number of the items in the list

@@ -11,7 +11,7 @@
     The MapView is generated as the bottom object.
     So that the imageButton etc. are generated on top of the map, the MapView must be at the top of the xml file.
     -->
-    <com.mapbox.maps.MapView
+    <com.mapbox.maps.MapView xmlns:mapbox="http://schemas.android.com/apk/res-auto"
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -62,6 +62,13 @@ interface QuestRepository {
      * @return A [Flow] emitting a list of [QuestDetails] objects representing the accepted quests.
      */
     fun getQuestsWithDetailsByUserID(userID: Int): Flow<List<QuestDetails>>
+     * Retrieves a list of quest IDs associated with a specific badge and user.
+     *
+     * @param userID The ID of the user.
+     * @param badgeID The ID of the badge.
+     * @return A list of quest IDs associated with the specified badge and user.
+     */
+    suspend fun getQuestForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<Int>>
 
     /**
      * Updates the progress of the current goal for the given quest and user.

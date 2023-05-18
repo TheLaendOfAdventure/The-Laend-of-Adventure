@@ -34,8 +34,9 @@ class BadgesPageFragment : Fragment() {
         val recycleView = binding.badgesPageRecyclerview
         recycleView.layoutManager = LinearLayoutManager(requireContext())
 
-        val badgeObserver = Observer<List<BadgeEntity>> { badge ->
-            val adapter = BadgesAdapter(badge)
+        val badgeObserver = Observer<List<BadgeEntity>> { badgeList ->
+            // Handle the badgeList
+            val adapter = BadgesAdapter(badgeList)
             recycleView.adapter = adapter
         }
 

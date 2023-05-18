@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -27,6 +28,8 @@ import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBindin
 import de.hdmstuttgart.thelaendofadventure.data.Tracking
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleAnswersEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
@@ -161,5 +164,34 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
         mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
         mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
+    }
+
+    private fun showRiddlePopUp(
+        actionID: Number
+    ) {
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.riddle_popup, null)
+
+        val answer1Button = dialogView.findViewById<Button>(R.id.answer_option_1)
+        answer1Button.text
+        answer1Button.setOnClickListener{}
+
+        val answer2Button = dialogView.findViewById<Button>(R.id.answer_option_2)
+        answer2Button.text
+        answer2Button.setOnClickListener{}
+
+        val answer3Button = dialogView.findViewById<Button>(R.id.answer_option_3)
+        answer3Button.text
+        answer3Button.setOnClickListener{}
+
+        val answer4Button = dialogView.findViewById<Button>(R.id.answer_option_4)
+        answer4Button.text
+        answer4Button.setOnClickListener{}
+
+        var buidler = AlertDialog.Builder(requireContext())
+        buidler.setView(dialogView)
+
+        buidler.create()
+        buidler.show()
     }
 }

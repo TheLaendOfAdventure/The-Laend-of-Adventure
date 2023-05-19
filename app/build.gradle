@@ -79,6 +79,7 @@ dependencies {
     //In App Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment:2.4.1'
 
     // Room database
     def room_version = "2.5.1"

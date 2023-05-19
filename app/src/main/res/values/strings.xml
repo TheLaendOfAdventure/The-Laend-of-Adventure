@@ -34,6 +34,11 @@
     <string name="mainPage_profileButton">Profil</string>
     <string name="player_level">3</string>
     <string name="mainPage_compass">Kompass</string>
+    <string name="questpage_backgroundrectangle">questPage_backgroundRectangle</string>
+    <string name="quest_progress_numeric_text">%1$d / %2$d</string>
+    <string name="quest2_progressNumeric">0/100</string>
+    <string name="questmenu_profile">questMenu_profile</string>
+    <string name="quest_name">Name</string>
     <string name="pick_from_gallery">Aus der Galerie wählen!</string>
     <string name="cancel">Abbrechen</string>
     <string name="add_image">Bild hinzufügen!</string>
@@ -51,4 +56,5 @@
     <string name="antwort_2">Antwort_2</string>
     <string name="antwort_3">Antwort_3</string>
     <string name="antwort_4">Antwort_4</string>
+    <string name="quest_description_text">Beschreibung</string>
 </resources>

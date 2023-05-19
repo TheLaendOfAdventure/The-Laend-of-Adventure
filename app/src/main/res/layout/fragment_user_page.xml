@@ -7,22 +7,24 @@
     android:background="#FFFFFF"
     tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.UserPageFragment">
 
-    <TextView
-        android:id="@+id/userPage_nameView"
+    <EditText
+        android:id="@+id/user_page_name_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle"
         android:minWidth="250dp"
         android:minHeight="50dp"
         android:textColor="#000000"
-        android:text="@string/userPage_name"
+        android:hint="@string/userPage_name"
         android:textAlignment="center"
         android:textSize="34sp"
+        android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.224"
+        android:autofillHints="name"
         tools:layout_goneMarginEnd="20dp" />
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -71,7 +73,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userPage_nameView"
+        app:layout_constraintTop_toBottomOf="@+id/user_page_name_field"
         app:srcCompat="@android:drawable/ic_menu_camera"
         app:shapeAppearanceOverlay="@style/Circular"/>
 

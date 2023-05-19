@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.QuestPageFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/quest_page_linearlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_max="960dp">
+
+            <Button
+                android:id="@+id/quest_page_navigation_button_to_user"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/profile_tab_text"
+                app:layout_constraintWidth_max="320dp" />
+
+            <Button
+                android:id="@+id/quest_page_navigation_button_to_badges"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/badges_tab_text"
+                app:layout_constraintWidth_max="320dp" />
+
+            <Button
+                android:id="@+id/quest_page_navigation_button_to_quest"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/quests_tab_text"
+                app:layout_constraintWidth_max="320dp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/quest_page_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/badges_page_profile_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            tools:listitem="@layout/questpage_listitem" />
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/quest_page_profile_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/circle"
+            android:contentDescription="@string/profileButton"
+            android:scaleType="centerCrop"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shapeAppearanceOverlay="@style/Circular"
+            tools:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            tools:srcCompat="@android:drawable/ic_menu_my_calendar" />
+
+        <TextView
+            android:id="@+id/quest_profile_button_level_display"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/circle"
+            android:maxWidth="30dp"
+            android:maxHeight="30dp"
+            android:text="@string/profileLevel"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/quest_page_profile_button"
+            app:layout_constraintEnd_toEndOf="@+id/quest_page_profile_button"
+            app:layout_constraintWidth_max="30dp"
+            tools:ignore="TextViewEdits"
+            tools:layout_constraintHeight_max="30dp"
+            tools:layout_marginLeft="90dp"
+            tools:layout_marginTop="80dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

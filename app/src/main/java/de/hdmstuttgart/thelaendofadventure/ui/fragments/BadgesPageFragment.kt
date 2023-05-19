@@ -21,10 +21,6 @@ class BadgesPageFragment : Fragment() {
 
     private lateinit var binding: FragmentBadgesPageBinding
     private lateinit var viewModel: BadgesPageViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // @TODO recycleview implementation
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +34,9 @@ class BadgesPageFragment : Fragment() {
         val recycleView = binding.badgesPageRecyclerview
         recycleView.layoutManager = LinearLayoutManager(requireContext())
 
-        val badgeObserver = Observer<List<BadgeEntity>> { badge ->
-            val adapter = BadgesAdapter(badge)
+        val badgeObserver = Observer<List<BadgeEntity>> { badgeList ->
+            // Handle the badgeList
+            val adapter = BadgesAdapter(badgeList)
             recycleView.adapter = adapter
         }
 
@@ -75,7 +72,9 @@ class BadgesPageFragment : Fragment() {
             )
         }
         binding.badgesPageNavigationButtonToQuest.setOnClickListener {
-            // TODO implement as quest page gets implemented
+            Navigation.findNavController(requireView()).navigate(
+                R.id.navigate_from_badges_to_quest_page
+            )
         }
     }
 }

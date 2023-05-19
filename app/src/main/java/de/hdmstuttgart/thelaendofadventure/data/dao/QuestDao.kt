@@ -4,7 +4,8 @@ import androidx.room.Dao
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
-import de.hdmstuttgart.thelaendofadventure.data.entity.*
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
+import de.hdmstuttgart.thelaendofadventure.data.entity.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -31,6 +32,13 @@ interface QuestDao {
             "WHERE user_quest.userID = :userID AND user_quest.questID = :questID"
     )
     fun getProgressForQuestByUserID(userID: Int, questID: Int): Flow<Progress>
+
+    @Query(
+        "SELECT user_quest.*, quest.name, quest.targetGoalNumber, quest.description FROM user_quest " + // ktlint-disable max-line-length
+            "LEFT JOIN quest ON user_quest.questID = quest.questID " +
+            "WHERE user_quest.userID = :userID"
+    )
+    fun getQuestsWithDetailsByUserID(userID: Int): Flow<List<QuestDetails>>
 
     @Query(
         "SELECT [action].* From [action] " +
@@ -63,7 +71,8 @@ interface QuestDao {
     suspend fun assignQuestToUser(userID: Int, questID: Int)
 
     @Query(
-        "SELECT quest.questID, questGoal.questGoalID, location.longitude, location.latitude " +
+        "SELECT quest.questID, questGoal.questGoalID," +
+            "user_quest.currentGoalNumber, location.longitude, location.latitude " +
             "FROM quest " +
             "JOIN user_quest ON quest.questID = user_quest.questID " +
             "JOIN questGoal ON questGoal.questID = quest.questID " +

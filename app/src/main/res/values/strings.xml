@@ -46,4 +46,8 @@
     <string name="badgesPage_badge1_background">badge1_background</string>
     <string name="badgesPage_badge2_background">badge2_background</string>
     <string name="badgesPage_profileButton">badgesPage_profileButton</string>
+    <string name="npc_name">%1$s will dir eine Quest Anbieten</string>
+    <string name="quest_details">%1$f, %2$f \n Aufgabe: %3$s</string>
+    <string name="quest_accept">Accept</string>
+    <string name="quest_decline">Decline</string>
 </resources>

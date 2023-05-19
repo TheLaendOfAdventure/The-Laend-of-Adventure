@@ -6,9 +6,8 @@ import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.first
 
 class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
 
@@ -19,19 +18,16 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
         questDao.getUnacceptedQuestsByUserID(userID)
 
     override fun getProgressForQuestByUserID(userID: Int, questID: Int):
-            Flow<Progress> =
+        Flow<Progress> =
         questDao.getProgressForQuestByUserID(userID, questID)
 
     override fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int):
-            Flow<List<ActionEntity>> =
+        Flow<List<ActionEntity>> =
         questDao.getCompletedGoalsForQuestByUserID(userID, questID)
 
     override fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int):
-            Flow<List<ActionEntity>> =
+        Flow<List<ActionEntity>> =
         questDao.getUncompletedGoalsForQuestByUserID(userID, questID)
-
-    override suspend fun getQuestForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<Int>> =
-        questDao.getQuestForBadgeByUserID(userID, badgeID)
 
     override suspend fun updateAndCheckQuestProgressByUserID(
         userID: Int,
@@ -43,17 +39,11 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
     }
 
     private suspend fun isQuestCompleted(userID: Int, questID: Int): Boolean {
-        val questProgress = questDao.getProgressForQuestByUserID(userID, questID)
+        val questProgress = questDao.getProgressForQuestByUserID(userID, questID).first()
 
-        var isCompleted = false
-
-        withContext(Dispatchers.IO) {
-            questProgress.collect { progress ->
-                val currentGoalNumber = progress.currentGoalNumber
-                val targetGoalNumber = progress.targetGoalNumber
-                isCompleted = currentGoalNumber == targetGoalNumber
-            }
-        }
+        val currentGoalNumber = questProgress.currentGoalNumber
+        val targetGoalNumber = questProgress.targetGoalNumber
+        val isCompleted = currentGoalNumber == targetGoalNumber
 
         return isCompleted
     }

@@ -36,4 +36,5 @@ class MainPageViewModel(private val application: Application) : AndroidViewModel
         }
         return userID
     }
+     val riddleList = questRepository.getRiddleForAcceptedQuestsByUserID(userID).asLiveData()
 }

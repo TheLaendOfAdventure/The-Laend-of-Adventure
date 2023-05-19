@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.Manifest
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -100,6 +101,8 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
         val riddleObserver = Observer<List<RiddleDetails>> { riddles ->
             if (riddles.isNotEmpty()) {
+                QuestLogic(requireContext()).finishedQuestGoal(7, 1, 5)
+                Log.d("Angekommen", "Angekommen")
                 Navigation.findNavController(requireView()).navigate(
                     R.id.navigate_from_main_to_riddle_page
                 )

@@ -113,8 +113,8 @@ class MapHelper(
                 viewAnnotation
             }
             return viewAnnotationList
-        } catch (e: ExceptionInInitializerError) {
-            Log.e(TAG, "An error occurred: ${e.message}")
+        } catch (e: Exception) {
+            Log.d(TAG, "View Already existing")
         }
 
         return emptyList()
@@ -148,7 +148,6 @@ class MapHelper(
                 AppDataContainer(context).questRepository.assignQuestToUser(userID, questID)
             }
             viewAnnotationManager.removeViewAnnotation(viewAnnotation)
-            pointAnnotationManager.deleteAll()
         }
     }
 

@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
-import de.hdmstuttgart.thelaendofadventure.data.entity.*
+import de.hdmstuttgart.thelaendofadventure.data.entity.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -57,8 +57,8 @@ interface QuestDao {
     suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int)
 
     @Query(
-        "INSERT INTO user_quest (userID, questID)" +
-            "VALUES (:userID, :questID)"
+        "INSERT INTO user_quest (userID, questID, currentGoalNumber)" +
+            "VALUES (:userID, :questID, 0)"
     )
     suspend fun assignQuestToUser(userID: Int, questID: Int)
 

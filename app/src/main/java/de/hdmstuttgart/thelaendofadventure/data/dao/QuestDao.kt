@@ -69,7 +69,7 @@ interface QuestDao {
 
     @Query(
         "INSERT INTO user_quest (userID, questID, currentGoalNumber)" +
-            "VALUES (:userID, :questID, 0)"
+            "VALUES (:userID, :questID, 1)"
     )
     suspend fun assignQuestToUser(userID: Int, questID: Int)
 

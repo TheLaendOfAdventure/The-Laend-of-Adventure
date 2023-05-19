@@ -2,9 +2,12 @@ package de.hdmstuttgart.thelaendofadventure.data.repository
 
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleAnswersEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -45,6 +48,17 @@ interface QuestRepository {
      * @return A [Flow] emitting a list of [ActionEntity] objects representing the completed goals.
      */
     fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
+
+    /**
+     * Retrieves a mapping of RiddleEntity objects to a list of RiddleAnswersEntity objects
+     * for the accepted quests of a given userID.
+     *
+     * @param userID The ID of the user for which to retrieve the riddles for accepted quests.
+     * @return A [Flow] emitting a mapping of [RiddleEntity] objects to a list of [RiddleAnswersEntity] objects.
+     *         The mapping represents the riddles and their corresponding answers for the accepted quests.
+     */
+    fun getRiddleForAcceptedQuestsByUserID(userID: Int):
+        Flow<List<RiddleDetails>>
 
     /**
      * Retrieves a list of all uncompleted goals for the given quest and user.

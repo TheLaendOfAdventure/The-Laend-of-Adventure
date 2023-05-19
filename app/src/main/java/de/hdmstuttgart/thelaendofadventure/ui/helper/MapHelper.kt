@@ -9,6 +9,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
+import com.mapbox.maps.MapboxViewAnnotationException
 import com.mapbox.maps.ViewAnnotationAnchor
 import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
 import com.mapbox.maps.plugin.annotation.annotations
@@ -113,8 +114,8 @@ class MapHelper(
                 viewAnnotation
             }
             return viewAnnotationList
-        } catch (e: Exception) {
-            Log.d(TAG, "View Already existing")
+        } catch (e: MapboxViewAnnotationException) {
+            Log.d(TAG, "View Already existing $e")
         }
 
         return emptyList()

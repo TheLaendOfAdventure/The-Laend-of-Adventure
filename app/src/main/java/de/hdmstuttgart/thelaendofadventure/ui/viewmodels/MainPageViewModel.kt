@@ -13,6 +13,7 @@ class MainPageViewModel(application: Application) : AndroidViewModel(application
     private val userRepository: UserRepository = AppDataContainer(application).userRepository
     private val questRepository: QuestRepository = AppDataContainer(application).questRepository
 
+    private val questRepository: QuestRepository = AppDataContainer(application).questRepository
     val userID = application.getSharedPreferences(
         R.string.sharedPreferences.toString(),
         Context.MODE_PRIVATE
@@ -20,4 +21,5 @@ class MainPageViewModel(application: Application) : AndroidViewModel(application
 
     val user = userRepository.getUserByID(userID).asLiveData()
     val riddleList = questRepository.getRiddleForAcceptedQuestsByUserID(userID).asLiveData()
+    val quests = questRepository.getUnacceptedQuestsByUserID(userID).asLiveData()
 }

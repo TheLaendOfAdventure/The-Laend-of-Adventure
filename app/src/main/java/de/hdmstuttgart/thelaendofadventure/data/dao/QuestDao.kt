@@ -68,8 +68,8 @@ interface QuestDao {
     suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int)
 
     @Query(
-        "INSERT INTO user_quest (userID, questID)" +
-            "VALUES (:userID, :questID)"
+        "INSERT INTO user_quest (userID, questID, currentGoalNumber)" +
+            "VALUES (:userID, :questID, 0)"
     )
     suspend fun assignQuestToUser(userID: Int, questID: Int)
 

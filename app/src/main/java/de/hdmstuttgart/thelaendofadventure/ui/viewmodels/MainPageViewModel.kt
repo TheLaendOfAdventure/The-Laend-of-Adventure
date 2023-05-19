@@ -19,8 +19,4 @@ class MainPageViewModel(application: Application) : AndroidViewModel(application
 
     val user = userRepository.getUserByID(userID).asLiveData()
     val quests = questRepository.getUnacceptedQuestsByUserID(userID).asLiveData()
-
-    companion object {
-        private const val TAG = "MainPageViewModel"
-    }
 }

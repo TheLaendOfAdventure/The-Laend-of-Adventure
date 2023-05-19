@@ -29,8 +29,8 @@ import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
-import kotlin.system.exitProcess
 import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private lateinit var binding: FragmentMainPageBinding
@@ -137,9 +137,5 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
         mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
         mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
-    }
-
-    companion object {
-        private const val TAG = "MainPageFragment"
     }
 }

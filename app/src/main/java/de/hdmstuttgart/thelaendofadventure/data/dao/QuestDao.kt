@@ -5,7 +5,10 @@ import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.* // ktlint-disable no-wildcard-imports
+import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -82,6 +85,17 @@ interface QuestDao {
             "AND user_quest.currentGoalNumber = questGoal.goalNumber"
     )
     fun getLocationForAcceptedQuestsByUserID(userID: Int): Flow<List<LocationGoal>>
+
+    @Query(
+        "SELECT riddle.*, riddleAnswers.answer AS possibleAnswers FROM riddle " +
+            "JOIN riddleAnswers ON riddleAnswers.actionID = riddle.actionID " +
+            "JOIN questGoal ON questGoal.actionID = riddle.actionID " +
+            "JOIN user_quest ON user_quest.questID = questGoal.questID " +
+            "WHERE user_quest.userID = :userID " +
+            "AND user_quest.currentGoalNumber  = questGoal.goalNumber"
+    )
+    fun getRiddleForAcceptedQuestsByUserID(userID: Int):
+        Flow<List<RiddleDetails>>
 
     @Query(
         "SELECT achievement.questID " +

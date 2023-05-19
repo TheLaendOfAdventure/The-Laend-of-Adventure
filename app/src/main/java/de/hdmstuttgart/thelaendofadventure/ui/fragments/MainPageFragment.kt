@@ -1,11 +1,9 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
 import android.Manifest
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,9 +24,10 @@ import com.mapbox.maps.viewannotation.ViewAnnotationManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.Tracking
-import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
+import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
+import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
@@ -44,7 +43,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private lateinit var viewAnnotationManager: ViewAnnotationManager
 
     private val permissionResultLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions(),
+        ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         val granted = permissions.entries.all { it.value }
         if (granted) {
@@ -85,7 +84,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         super.onViewCreated(view, savedInstanceState)
         if (viewModel.userID == -1) {
             Navigation.findNavController(requireView()).navigate(
-                R.id.userCreationFragment,
+                R.id.userCreationFragment
             )
         } else {
             val userObserver = Observer<UserEntity> { user ->
@@ -101,6 +100,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
         val riddleObserver = Observer<List<RiddleDetails>> { riddles ->
             if (riddles.isNotEmpty()) {
+                QuestLogic(requireContext()).finishedQuestGoal(7, 2, 5)
                 Navigation.findNavController(requireView()).navigate(
                     R.id.navigate_from_main_to_riddle_page
                 )
@@ -112,7 +112,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private fun setUpProfileButton() {
         binding.mainPageProfileButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_main_to_user_page,
+                R.id.navigate_from_main_to_user_page
             )
         }
     }

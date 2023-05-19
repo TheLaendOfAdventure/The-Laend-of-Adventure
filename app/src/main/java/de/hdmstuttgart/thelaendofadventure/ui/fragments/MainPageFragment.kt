@@ -2,8 +2,10 @@ package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.Manifest
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,12 +30,13 @@ import de.hdmstuttgart.thelaendofadventure.data.Tracking
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleAnswersEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleEntity
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
-import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
+import kotlinx.coroutines.launch
 
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private lateinit var binding: FragmentMainPageBinding
@@ -93,6 +96,15 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
             permissionResultLauncher.launch(permissions)
         }
+
+        val riddleObserver = Observer<List<RiddleDetails>> { riddles ->
+            if (riddles.isNotEmpty()) {
+                Navigation.findNavController(requireView()).navigate(
+                    R.id.navigate_from_main_to_riddle_page
+                )
+            }
+        }
+        viewModel.riddleList.observe(viewLifecycleOwner, riddleObserver)
     }
 
     private fun setUpProfileButton() {

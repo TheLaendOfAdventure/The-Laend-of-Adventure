@@ -3,6 +3,7 @@ package de.hdmstuttgart.thelaendofadventure.data.offlinerepository
 import de.hdmstuttgart.thelaendofadventure.data.dao.QuestDao
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
@@ -30,6 +31,10 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
     override fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int):
         Flow<List<ActionEntity>> =
         questDao.getCompletedGoalsForQuestByUserID(userID, questID)
+
+    override fun getRiddleForAcceptedQuestsByUserID(userID: Int):
+        Flow<List<RiddleDetails>> =
+        questDao.getRiddleForAcceptedQuestsByUserID(userID)
 
     override fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int):
         Flow<List<ActionEntity>> =

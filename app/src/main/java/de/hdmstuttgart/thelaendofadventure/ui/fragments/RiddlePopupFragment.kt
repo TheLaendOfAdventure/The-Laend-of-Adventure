@@ -52,7 +52,7 @@ class RiddlePopupFragment : Fragment(R.layout.fragment_riddle_popup) {
             }
         }
         binding.answerOption1.setOnClickListener {
-            QuestLogic(requireContext()).finishedQuestGoal(1, 2, 1)
+            QuestLogic(requireContext()).finishedQuestGoal(7, 2, 5)
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_riddle_to_main_page
             )

@@ -31,6 +31,7 @@ import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleAnswersEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleEntity
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
+import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager

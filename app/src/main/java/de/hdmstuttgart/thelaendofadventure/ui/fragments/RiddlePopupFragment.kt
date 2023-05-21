@@ -16,6 +16,13 @@ import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.RiddlePopupViewModel
 
 class RiddlePopupFragment : Fragment(R.layout.fragment_riddle_popup) {
+
+    companion object {
+        private const val questID = 7
+        private const val questGoal = 2
+        private const val answer3 = 3
+    }
+
     private lateinit var binding: FragmentRiddlePopupBinding
     private lateinit var viewModel: RiddlePopupViewModel
 
@@ -47,12 +54,12 @@ class RiddlePopupFragment : Fragment(R.layout.fragment_riddle_popup) {
                 binding.answerOption1.text = answers[0]
                 binding.answerOption2.text = answers[1]
                 binding.answerOption3.text = answers[2]
-                binding.answerOption4.text = answers[3]
+                binding.answerOption4.text = answers[answer3]
                 // showRiddlePopup()
             }
         }
         binding.answerOption1.setOnClickListener {
-            QuestLogic(requireContext()).finishedQuestGoal(7, 2, 5)
+            QuestLogic(requireContext()).finishedQuestGoal(questID, questGoal, viewModel.userID)
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_riddle_to_main_page
             )

@@ -54,11 +54,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            Tracking(requireContext()).start()
-        }
-        permissionManager = PermissionManager(requireContext())
     }
 
     override fun onCreateView(
@@ -106,6 +101,10 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     }
 
     private fun showUserAtMap() = lifecycleScope.launch {
+        permissionManager = PermissionManager(requireContext())
+        lifecycleScope.launch {
+            Tracking(requireContext()).start()
+        }
         // Show user's location at the map
         mapView.location.updateSettings {
             enabled = true

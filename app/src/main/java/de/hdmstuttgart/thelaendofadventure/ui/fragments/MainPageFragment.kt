@@ -41,7 +41,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private lateinit var viewAnnotationManager: ViewAnnotationManager
 
     private val permissionResultLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions(),
+        ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         val granted = permissions.entries.all { it.value }
         if (granted) {
@@ -54,11 +54,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            Tracking(requireContext()).start()
-        }
-        permissionManager = PermissionManager(requireContext())
     }
 
     override fun onCreateView(
@@ -80,9 +75,9 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (viewModel.userID == -1) {
+        if (viewModel.getUserID() == -1) {
             Navigation.findNavController(requireView()).navigate(
-                R.id.userCreationFragment,
+                R.id.userCreationFragment
             )
         } else {
             val userObserver = Observer<UserEntity> { user ->
@@ -100,12 +95,16 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private fun setUpProfileButton() {
         binding.mainPageProfileButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_main_to_user_page,
+                R.id.navigate_from_main_to_user_page
             )
         }
     }
 
     private fun showUserAtMap() = lifecycleScope.launch {
+        permissionManager = PermissionManager(requireContext())
+        lifecycleScope.launch {
+            Tracking(requireContext()).start()
+        }
         // Show user's location at the map
         mapView.location.updateSettings {
             enabled = true

@@ -9,14 +9,31 @@ import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
 
-class MainPageViewModel(application: Application) : AndroidViewModel(application) {
+class MainPageViewModel(private val application: Application) : AndroidViewModel(application) {
+
+    companion object {
+        private const val sleepTimer = 100L
+    }
+
     private val userRepository: UserRepository = AppDataContainer(application).userRepository
     private val questRepository: QuestRepository = AppDataContainer(application).questRepository
-    val userID = application.getSharedPreferences(
+    private var userID = application.getSharedPreferences(
         R.string.sharedPreferences.toString(),
         Context.MODE_PRIVATE
     ).getInt(R.string.userID.toString(), -1)
 
-    val user = userRepository.getUserByID(userID).asLiveData()
-    val quests = questRepository.getUnacceptedQuestsByUserID(userID).asLiveData()
+    val user = userRepository.getUserByID(getUserID()).asLiveData()
+    val quests = questRepository.getUnacceptedQuestsByUserID(getUserID()).asLiveData()
+
+    fun getUserID(): Int {
+        if (userID == -1) {
+            // make sure SharedPreferences is updated
+            Thread.sleep(sleepTimer)
+            userID = application.getSharedPreferences(
+                R.string.sharedPreferences.toString(),
+                Context.MODE_PRIVATE
+            ).getInt(R.string.userID.toString(), -1)
+        }
+        return userID
+    }
 }

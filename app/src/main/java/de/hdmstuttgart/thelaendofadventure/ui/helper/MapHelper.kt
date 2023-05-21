@@ -110,7 +110,7 @@ class MapHelper(
 
                 viewAnnotation.visibility = View.GONE
 
-                questViewBinding(questList[index], viewAnnotation)
+                questViewBinding(questList[index], viewAnnotation, pointAnnotation)
                 viewAnnotation
             }
             return viewAnnotationList
@@ -120,7 +120,11 @@ class MapHelper(
 
         return emptyList()
     }
-    private fun questViewBinding(quest: QuestEntity, viewAnnotation: View) {
+    private fun questViewBinding(
+        quest: QuestEntity,
+        viewAnnotation: View,
+        pointAnnotation: PointAnnotation
+    ) {
         val binding = PopupDialogBinding.bind(viewAnnotation)
         binding.dialogPopupImage.setImageURI(quest.imagePath?.toUri())
         binding.popupDialogName.text = quest.name
@@ -136,9 +140,13 @@ class MapHelper(
         binding.popupDialogAcceptButton.text = context.getString(R.string.quest_accept)
         binding.popupDialogDeclineButton.text = context.getString(R.string.quest_decline)
 
-        configureViewAnnotationButtons(viewAnnotation, quest.questID)
+        configureViewAnnotationButtons(viewAnnotation, quest.questID, pointAnnotation)
     }
-    private fun configureViewAnnotationButtons(viewAnnotation: View, questID: Int) {
+    private fun configureViewAnnotationButtons(
+        viewAnnotation: View,
+        questID: Int,
+        pointAnnotation: PointAnnotation
+    ) {
         val binding = PopupDialogBinding.bind(viewAnnotation)
         binding.popupDialogDeclineButton.setOnClickListener {
             viewAnnotation.visibility = View.GONE
@@ -149,6 +157,7 @@ class MapHelper(
                 AppDataContainer(context).questRepository.assignQuestToUser(userID, questID)
             }
             viewAnnotationManager.removeViewAnnotation(viewAnnotation)
+            pointAnnotationManager.delete(pointAnnotation)
         }
     }
 

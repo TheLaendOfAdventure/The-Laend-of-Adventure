@@ -10,7 +10,7 @@ import de.hdmstuttgart.thelaendofadventure.data.entity.* // ktlint-disable no-wi
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import kotlinx.coroutines.flow.Flow
-
+@Suppress("TooManyFunctions")
 @Dao
 interface QuestDao {
 

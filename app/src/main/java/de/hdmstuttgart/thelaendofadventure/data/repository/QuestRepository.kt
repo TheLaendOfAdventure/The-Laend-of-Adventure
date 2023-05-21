@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Repository interface for accessing and modifying Quest related data from the database.
  */
+@Suppress("TooManyFunctions")
 interface QuestRepository {
 
     /**

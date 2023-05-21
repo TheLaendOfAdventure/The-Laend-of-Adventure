@@ -9,7 +9,7 @@ import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import kotlinx.coroutines.flow.Flow
-
+@Suppress("TooManyFunctions")
 class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
 
     override fun getAcceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>> =

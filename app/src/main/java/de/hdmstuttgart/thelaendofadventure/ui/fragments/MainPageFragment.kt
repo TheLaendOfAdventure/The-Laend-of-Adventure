@@ -2,14 +2,12 @@ package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.Manifest
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -27,9 +25,6 @@ import com.mapbox.maps.viewannotation.ViewAnnotationManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.Tracking
-import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleAnswersEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleEntity
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
@@ -41,6 +36,13 @@ import kotlin.system.exitProcess
 import kotlinx.coroutines.launch
 
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
+
+    companion object {
+        private const val TAG = "MainPageFragment"
+        private const val questID = 7
+        private const val questGoal = 1
+    }
+
     private lateinit var binding: FragmentMainPageBinding
     private lateinit var viewModel: MainPageViewModel
     private lateinit var mapView: MapView
@@ -101,8 +103,12 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
         val riddleObserver = Observer<List<RiddleDetails>> { riddles ->
             if (riddles.isNotEmpty()) {
-                QuestLogic(requireContext()).finishedQuestGoal(7, 1, 5)
-                Log.d("Angekommen", "Angekommen")
+                QuestLogic(requireContext()).finishedQuestGoal(
+                    questID,
+                    questGoal,
+                    viewModel.getUserID()
+                )
+                Log.d(TAG, "Angekommen")
                 Navigation.findNavController(requireView()).navigate(
                     R.id.navigate_from_main_to_riddle_page
                 )
@@ -155,34 +161,5 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
         mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
         mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
-    }
-
-    private fun showRiddlePopUp(
-        actionID: Number
-    ) {
-        val inflater = LayoutInflater.from(context)
-        val dialogView = inflater.inflate(R.layout.riddle_popup, null)
-
-        val answer1Button = dialogView.findViewById<Button>(R.id.answer_option_1)
-        answer1Button.text
-        answer1Button.setOnClickListener{}
-
-        val answer2Button = dialogView.findViewById<Button>(R.id.answer_option_2)
-        answer2Button.text
-        answer2Button.setOnClickListener{}
-
-        val answer3Button = dialogView.findViewById<Button>(R.id.answer_option_3)
-        answer3Button.text
-        answer3Button.setOnClickListener{}
-
-        val answer4Button = dialogView.findViewById<Button>(R.id.answer_option_4)
-        answer4Button.text
-        answer4Button.setOnClickListener{}
-
-        var buidler = AlertDialog.Builder(requireContext())
-        buidler.setView(dialogView)
-
-        buidler.create()
-        buidler.show()
     }
 }

@@ -33,7 +33,7 @@ import java.io.InputStream
 class MapHelper(
     private val mapview: MapView,
     private val questList: List<QuestEntity>,
-    private val context: Context,
+    private val context: Context
 
 ) {
     private lateinit var pointAnnotationManager: PointAnnotationManager
@@ -67,7 +67,7 @@ class MapHelper(
     }
 
     private fun prepareAnnotationMarker(
-        mapView: MapView,
+        mapView: MapView
     ): List<PointAnnotation> {
         val annotationPlugin = mapView.annotations
         pointAnnotationManager = annotationPlugin.createPointAnnotationManager()

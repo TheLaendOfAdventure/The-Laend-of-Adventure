@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="10dp"
-                    android:text="@string/antwort_1" />
+                    android:text="@string/answer_1" />
 
                 <TextView
                     android:id="@+id/answer_option_2"
@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:text="@string/antwort_2" />
+                    android:text="@string/answer_2" />
             </LinearLayout>
 
             <LinearLayout
@@ -77,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
-                    android:text="@string/antwort_3"
+                    android:text="@string/answer_3"
                     style="?android:attr/buttonBarButtonStyle" />
 
                 <TextView
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:text="@string/antwort_4"
+                    android:text="@string/answer_4"
                     style="?android:attr/buttonBarButtonStyle" />
             </LinearLayout>
         </LinearLayout>

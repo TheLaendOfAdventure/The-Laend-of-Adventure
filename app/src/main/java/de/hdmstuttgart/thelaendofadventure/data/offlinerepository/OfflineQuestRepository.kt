@@ -34,15 +34,14 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
         Flow<List<ActionEntity>> =
         questDao.getUncompletedGoalsForQuestByUserID(userID, questID)
 
+    override suspend fun getQuestForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<Int>> =
+        questDao.getQuestForBadgeByUserID(userID, badgeID)
+
     override suspend fun updateAndCheckQuestProgressByUserID(
         userID: Int,
         questID: Int,
         goalNumber: Int
     ): Boolean {
-    override suspend fun getQuestForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<Int>> =
-        questDao.getQuestForBadgeByUserID(userID, badgeID)
-
-    override suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int) {
         questDao.updateQuestProgressByUserID(userID, questID, goalNumber)
         return isQuestCompleted(userID, questID)
     }

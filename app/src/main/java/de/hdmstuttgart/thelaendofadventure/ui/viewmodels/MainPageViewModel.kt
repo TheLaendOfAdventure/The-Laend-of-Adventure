@@ -24,6 +24,7 @@ class MainPageViewModel(private val application: Application) : AndroidViewModel
 
     val user = userRepository.getUserByID(getUserID()).asLiveData()
     val quests = questRepository.getUnacceptedQuestsByUserID(getUserID()).asLiveData()
+    val riddleList = questRepository.getRiddleForAcceptedQuestsByUserID(getUserID()).asLiveData()
 
     fun getUserID(): Int {
         if (userID == -1) {

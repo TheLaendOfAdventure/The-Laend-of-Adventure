@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,8 +25,10 @@ import com.mapbox.maps.viewannotation.ViewAnnotationManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.Tracking
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
+import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
@@ -33,6 +36,13 @@ import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
+
+    companion object {
+        private const val TAG = "MainPageFragment"
+        private const val questID = 7
+        private const val questGoal = 1
+    }
+
     private lateinit var binding: FragmentMainPageBinding
     private lateinit var viewModel: MainPageViewModel
     private lateinit var mapView: MapView
@@ -90,6 +100,21 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
             permissionResultLauncher.launch(permissions)
         }
+
+        val riddleObserver = Observer<List<RiddleDetails>> { riddles ->
+            if (riddles.isNotEmpty()) {
+                QuestLogic(requireContext()).finishedQuestGoal(
+                    questID,
+                    questGoal,
+                    viewModel.getUserID()
+                )
+                Log.d(TAG, "Angekommen")
+                Navigation.findNavController(requireView()).navigate(
+                    R.id.navigate_from_main_to_riddle_page
+                )
+            }
+        }
+        viewModel.riddleList.observe(viewLifecycleOwner, riddleObserver)
     }
 
     private fun setUpProfileButton() {

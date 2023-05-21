@@ -56,4 +56,9 @@
     <string name="quest_details">%1$f, %2$f \n Aufgabe: %3$s</string>
     <string name="quest_accept">Accept</string>
     <string name="quest_decline">Decline</string>
+    <string name="riddle_text">Rätsel</string>
+    <string name="answer_1">Antwort_1</string>
+    <string name="answer_2">Antwort_2</string>
+    <string name="answer_3">Antwort_3</string>
+    <string name="answer_4">Antwort_4</string>
 </resources>

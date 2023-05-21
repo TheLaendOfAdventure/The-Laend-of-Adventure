@@ -4,9 +4,9 @@ import androidx.room.Dao
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -86,14 +86,14 @@ interface QuestDao {
 
     @Query(
         "SELECT achievement.questID " +
-                "FROM achievement " +
-                "JOIN [action] ON [action].actionID = achievement.actionID " +
-                "JOIN badgeGoal ON badgeGoal.actionID = [action].actionID " +
-                "JOIN badge ON badge.badgeID = badgeGoal.badgeID " +
-                "JOIN user_badge ON user_badge.badgeID = badge.badgeID " +
-                "WHERE badge.badgeID = :badgeID " +
-                "AND user_badge.currentGoalNumber = badgeGoal.goalNumber " +
-                "AND user_badge.userID = :userID "
+            "FROM achievement " +
+            "JOIN [action] ON [action].actionID = achievement.actionID " +
+            "JOIN badgeGoal ON badgeGoal.actionID = [action].actionID " +
+            "JOIN badge ON badge.badgeID = badgeGoal.badgeID " +
+            "JOIN user_badge ON user_badge.badgeID = badge.badgeID " +
+            "WHERE badge.badgeID = :badgeID " +
+            "AND user_badge.currentGoalNumber = badgeGoal.goalNumber " +
+            "AND user_badge.userID = :userID "
     )
     fun getQuestForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<Int>>
 }

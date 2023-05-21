@@ -10,6 +10,7 @@ import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
+@Suppress("TooManyFunctions")
 class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
 
     override fun getAcceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>> =
@@ -51,9 +52,8 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
 
         val currentGoalNumber = questProgress.currentGoalNumber
         val targetGoalNumber = questProgress.targetGoalNumber
-        val isCompleted = currentGoalNumber == targetGoalNumber
 
-        return isCompleted
+        return currentGoalNumber == targetGoalNumber
     }
 
     override suspend fun assignQuestToUser(userID: Int, questID: Int) {

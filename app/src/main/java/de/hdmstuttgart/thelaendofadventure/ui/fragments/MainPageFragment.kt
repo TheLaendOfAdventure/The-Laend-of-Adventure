@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -26,11 +25,6 @@ import com.mapbox.maps.viewannotation.ViewAnnotationManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.Tracking
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
-import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleAnswersEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleEntity
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity

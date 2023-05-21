@@ -6,14 +6,9 @@ import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
-import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
-import de.hdmstuttgart.thelaendofadventure.data.entity.* // ktlint-disable no-wildcard-imports
-import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.*
 import kotlinx.coroutines.flow.Flow
+
 @Suppress("TooManyFunctions")
 @Dao
 interface QuestDao {

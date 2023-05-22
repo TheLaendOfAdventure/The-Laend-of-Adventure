@@ -1,8 +1,7 @@
-package de.hdmstuttgart.the_laend_of_adventure
+package de.hdmstuttgart.thelaendofadventure
 
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

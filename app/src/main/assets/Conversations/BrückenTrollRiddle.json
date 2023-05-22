@@ -1,0 +1,29 @@
+{
+	"NPC" : "Brückentroll",
+	"dialogue": [
+		{
+			"speaker": "Brückentroll",
+			"message": "Halt! Was willst du hier."
+		},
+		{
+			"speaker": "Player",
+			"message": "Hallo, ich möchte die Wackelbrücke überqueren, um meine Stärke zu Beweisen. \n Darf ich passieren?"
+		},
+		{
+			"speaker": "Brückentroll",
+			"message": "Du kannst nicht einfach so über die Brücke gehen. Ich bin der Brückentroll und ich bewache diese Brücke."
+		},
+		{
+			"speaker": "Brückentroll",
+			"message": "Diese Brücke können nur die mächtigsten und schlausten Krieger überqueren."
+		},
+		{
+			"speaker": "Player",
+			"message": "Natürlich bin ich das niemand is schlauer und stärker als Ich."
+		},
+		{
+			"speaker": "Brückentroll",
+			"message": "Dann beweise das!"
+		}
+	]
+}

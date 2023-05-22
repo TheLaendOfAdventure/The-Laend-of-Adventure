@@ -6,10 +6,27 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
+    Properties mapBoxKey = new Properties()
+    mapBoxKey.load(file('mapbox.env').newDataInputStream())
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
+        maven {
+            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+            authentication {
+                basic(BasicAuthentication)
+            }
+            credentials {
+                // Do not change the username below.
+                // This should always be `mapbox`.
+                username = "mapbox"
+                password = System.getenv("MAPBOX_DOWNLOADS_TOKEN")
+                if(password == null){
+                    password = mapBoxKey.getProperty("MAPBOX_DOWNLOADS_TOKEN")
+                }
+             }
+        }
     }
 }
 rootProject.name = "The-Laend-of-Adventure"

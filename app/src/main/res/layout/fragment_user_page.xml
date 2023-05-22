@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.UserPageFragment">
+
+    <EditText
+        android:id="@+id/user_page_name_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle"
+        android:minWidth="250dp"
+        android:minHeight="50dp"
+        android:textColor="#000000"
+        android:hint="@string/userPage_name"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.224"
+        android:autofillHints="name"
+        tools:layout_goneMarginEnd="20dp" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/userPage_profileButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/circle"
+        android:contentDescription="@string/profileButton"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shapeAppearanceOverlay="@style/Circular"
+        tools:srcCompat="@android:drawable/ic_menu_my_calendar"
+        />
+
+    <TextView
+        android:id="@+id/userPage_profileButtonLevelDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/circle"
+        android:maxWidth="30dp"
+        android:maxHeight="30dp"
+        android:text="@string/profileLevel"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_max="30dp"
+        tools:ignore="TextViewEdits"
+        tools:layout_constraintHeight_max="30dp" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/userPage_profilePictureView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/circle"
+        android:contentDescription="@string/userPage_profileImage"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_page_name_field"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        app:shapeAppearanceOverlay="@style/Circular"/>
+
+    <TextView
+        android:id="@+id/userPage_levelDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="#000000"
+        android:background="@drawable/rectangle"
+        android:minWidth="50dp"
+        android:minHeight="50dp"
+        android:text="@string/profileLevel"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userPage_profilePictureView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="960dp">
+
+        <Button
+            android:id="@+id/user_page_navigation_button_to_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/profile_tab_text"
+            app:layout_constraintWidth_max="320dp"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/user_page_navigation_button_to_badges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/badges_tab_text"
+            app:layout_constraintWidth_max="320dp"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/user_page_navigation_button_to_quest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/quests_tab_text"
+            app:layout_constraintWidth_max="320dp"
+            style="?android:attr/buttonBarButtonStyle" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

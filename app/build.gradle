@@ -1,6 +1,32 @@
+import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id "io.gitlab.arturbosch.detekt" version "1.22.0"
+    id 'com.google.devtools.ksp'version '1.8.0-1.0.8'
+}
+
+detekt {
+    toolVersion = "1.22.0"
+    config = files("config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
+}
+
+// Groovy DSL
+tasks.withType(Detekt).configureEach {
+    jvmTarget = "1.8"
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        txt.required.set(true)
+        sarif.required.set(true)
+        md.required.set(true)
+    }
+}
+tasks.withType(DetektCreateBaselineTask).configureEach {
+    jvmTarget = "1.8"
 }
 
 android {
@@ -33,14 +59,57 @@ android {
     buildFeatures {
         viewBinding true
     }
+} buildFeatures {
+    viewBinding true
 }
 
 dependencies {
+    // Support libraries
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    // Mapbox library
+    implementation 'com.mapbox.maps:android:10.12.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+
+    //In App Navigation
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment:2.4.1'
+
+    // Room database
+    def room_version = "2.5.1"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    ksp "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+
+    //KTX-module
+    def activity_version = "1.7.1"
+    implementation "androidx.activity:activity-ktx:$activity_version"
+
+    // Fragment
+    def fragment_version = "1.5.7"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+
+    // Kotlin Coroutines
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+    implementation 'androidx.core:core-ktx:1.10.1'
+
+    // Material Design
+    implementation 'com.google.android.material:material:1.9.0'
+
+    // Testing dependencies
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Detekt plugin
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0"
 }

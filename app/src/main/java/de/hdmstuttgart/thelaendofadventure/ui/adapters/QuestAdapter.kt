@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
@@ -20,8 +21,11 @@ class QuestAdapter(private val questList: List<QuestDetails>) : RecyclerView.Ada
         context = parent.context
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.questpage_listitem, parent, false)
+        val viewHolder = ViewHolder(view)
 
-        return ViewHolder(view)
+        viewHolder.cardView.setOnClickListener(QuestCardClickListener(viewHolder.descriptionField))
+
+        return viewHolder
     }
 
     // binds the list items to a view
@@ -55,5 +59,6 @@ class QuestAdapter(private val questList: List<QuestDetails>) : RecyclerView.Ada
         val progressBar: ProgressBar = itemView.findViewById(R.id.quest_progress)
         val progressNumeric: TextView = itemView.findViewById(R.id.quest_progress_numeric)
         val descriptionField: TextView = itemView.findViewById(R.id.quest_description)
+        val cardView: CardView = itemView.findViewById(R.id.quest_card_view)
     }
 }

@@ -82,6 +82,10 @@ class UserPageViewModel(application: Application) : AndroidViewModel(application
         userRepository.updateUserImagePath(userID, imagePath)
     }
 
+    fun updateUserName(newName: String) = viewModelScope.launch(Dispatchers.IO) {
+        userRepository.updateUserName(userID, newName)
+    }
+
     companion object {
         const val TAG = "UserPageViewModel"
     }

@@ -30,6 +30,9 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
     override fun getBadgesByUserIDAndQuestID(userID: Int, questID: Int):
         Flow<List<BadgeDetails>> = badgeDao.getBadgesByUserIDAndQuestID(userID, questID)
 
+    override fun getAllActionDescriptionsByBadgeID(badgeID: Int):
+        Flow<List<String>> = badgeDao.getAllActionDescriptionsByBadgeID(badgeID)
+
     override suspend fun updateBadgeProgressByUserID(userID: Int, badgeID: Int, goalNumber: Int) {
         val badgeProgress = badgeDao.getProgressForBadgeByUserID(userID, badgeID).first()
 

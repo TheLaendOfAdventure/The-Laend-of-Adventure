@@ -74,4 +74,13 @@ interface BadgeDao {
             "VALUES (:userID, (:badgeIDs))"
     )
     suspend fun assignAllBadgesToUser(userID: Int, badgeIDs: List<Int>)
+
+    @Query(
+        "SELECT action.description " +
+            "FROM action " +
+            "INNER JOIN badgeGoal ON action.actionID = badgeGoal.actionID " +
+            "WHERE badgeGoal.badgeID = :badgeID " +
+            "ORDER BY action.actionID "
+    )
+    fun getAllActionDescriptionsByBadgeID(badgeID: Int): Flow<List<String>>
 }

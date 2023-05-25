@@ -1,6 +1,5 @@
 package de.hdmstuttgart.thelaendofadventure.ui.adapters
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,6 @@ class BadgesAdapter(private val badgeList: List<BadgeEntity>) :
     }
 
     // binds the list items to a view
-    @SuppressLint("MissingPermission")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val badge = badgeList[position]
 

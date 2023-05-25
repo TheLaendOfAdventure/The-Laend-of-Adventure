@@ -1,6 +1,5 @@
 package de.hdmstuttgart.thelaendofadventure.ui.helper
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
@@ -122,7 +121,6 @@ class MapHelper(
         return emptyList()
     }
 
-    @SuppressLint("MissingPermission")
     private fun questViewBinding(
         quest: QuestEntity,
         viewAnnotation: View,

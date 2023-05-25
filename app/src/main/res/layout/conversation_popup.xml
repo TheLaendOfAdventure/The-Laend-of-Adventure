@@ -1,0 +1,98 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/quest_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        app:cardBackgroundColor="#D9DDDC"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Textbox für den Benutzer -->
+        <LinearLayout
+            android:id="@+id/userTextbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userTextbox"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="rtl"
+            android:visibility="gone"
+            tools:ignore="UseCompoundDrawables">
+
+            <!-- Profilbild des Benutzer -->
+            <ImageView
+                android:id="@+id/userProfileImage"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:srcCompat="@drawable/circle"
+                android:contentDescription="@string/userprofileimage" />
+
+            <!-- Text des Benutzer -->
+            <TextView
+                android:id="@+id/userTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/partner_text_placeholder"
+                android:padding="8dp"
+                android:maxLines="3" />
+        </LinearLayout>
+
+
+        <!-- Textbox für den Gesprächspartner -->
+        <LinearLayout
+            android:id="@+id/partnerTextbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userTextbox"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="visible"
+            tools:ignore="UseCompoundDrawables">
+
+            <!-- Profilbild des Gesprächspartners -->
+            <ImageView
+                android:id="@+id/partnerProfileImage"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:srcCompat="@drawable/circle"
+                android:contentDescription="@string/partnerprofileimage" />
+
+
+            <!-- Text des Gesprächspartners -->
+            <TextView
+                android:id="@+id/partnerTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/partner_text_placeholder"
+                android:padding="8dp"
+                android:maxLines="3"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+

@@ -61,4 +61,9 @@
     <string name="answer_2">Antwort_2</string>
     <string name="answer_3">Antwort_3</string>
     <string name="answer_4">Antwort_4</string>
+    <string name="user_text_placeholder">User Text</string>
+    <string name="partner_text_placeholder">Partner text</string>
+    <string name="nextText">Weiter</string>
+    <string name="userprofileimage">userProfileImage</string>
+    <string name="partnerprofileimage">partnerProfileImage</string>
 </resources>

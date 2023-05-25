@@ -1,5 +1,7 @@
 package de.hdmstuttgart.thelaendofadventure.ui.adapters
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +12,7 @@ import com.bumptech.glide.Glide
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 
-class BadgesAdapter(private val badgeList: List<BadgeEntity>) :
+class BadgesAdapter(private val badgeList: List<BadgeEntity>, val accepted: Boolean) :
     RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,7 +33,12 @@ class BadgesAdapter(private val badgeList: List<BadgeEntity>) :
         Glide.with(holder.imageView.context)
             .load(imagePath)
             .into(holder.imageView)
-
+        if (!accepted) {
+            holder.imageView.setColorFilter(
+                Color.parseColor("#70000000"),
+                PorterDuff.Mode.DARKEN
+            )
+        }
         // sets the text to the textview from our itemHolder class
         holder.textView.text = badge.name
     }

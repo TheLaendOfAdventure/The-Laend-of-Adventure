@@ -31,16 +31,31 @@ class BadgesPageFragment : Fragment() {
 
         binding = FragmentBadgesPageBinding.inflate(inflater, container, false)
 
-        val recycleView = binding.badgesPageRecyclerview
-        recycleView.layoutManager = LinearLayoutManager(requireContext())
+        val acceptedRecycleView = binding.badgesPageRecyclerview
+        acceptedRecycleView.layoutManager = LinearLayoutManager(requireContext())
+        acceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = true)
 
-        val badgeObserver = Observer<List<BadgeEntity>> { badgeList ->
+        val acceptedBadgeObserver = Observer<List<BadgeEntity>> { badgeList ->
             // Handle the badgeList
-            val adapter = BadgesAdapter(badgeList)
-            recycleView.adapter = adapter
+            val adapter = BadgesAdapter(badgeList, accepted = true)
+            acceptedRecycleView.adapter = adapter
+            println(badgeList)
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.badges.observe(viewLifecycleOwner, badgeObserver)
+        viewModel.acceptedBadges.observe(viewLifecycleOwner, acceptedBadgeObserver)
+
+        val unacceptedRecycleView = binding.badgesPageRecyclerview
+        unacceptedRecycleView.layoutManager = LinearLayoutManager(requireContext())
+        unacceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = false)
+
+        val unacceptedBadgeObserver = Observer<List<BadgeEntity>> { badgeList ->
+            // Handle the badgeList
+            val adapter = BadgesAdapter(badgeList, accepted = false)
+            unacceptedRecycleView.adapter = adapter
+            println(badgeList)
+        }
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        viewModel.unacceptedBadges.observe(viewLifecycleOwner, unacceptedBadgeObserver)
 
         val userObserver = Observer<UserEntity> { user ->
             binding.badgesProfileButtonLevelDisplay.text = user.level.toString()

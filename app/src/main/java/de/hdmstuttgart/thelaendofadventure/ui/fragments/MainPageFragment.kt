@@ -31,8 +31,8 @@ import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
-import kotlin.system.exitProcess
 import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 

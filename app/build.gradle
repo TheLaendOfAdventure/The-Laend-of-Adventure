@@ -55,6 +55,8 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    lintOptions {
         lintConfig = file("$rootDir/notificationpermission.xml")
     }
     buildFeatures {

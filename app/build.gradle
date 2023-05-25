@@ -55,6 +55,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        lintConfig = file("$rootDir/notificationpermission.xml")
     }
     buildFeatures {
         viewBinding true
@@ -102,9 +103,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.10.1'
 
     // Glide Images
-    implementation('com.github.bumptech.glide:glide:4.14.2') {
-        exclude group: 'com.bumptech.glide', module: 'glide-integration-notifications'
-    }
+    implementation('com.github.bumptech.glide:glide:4.14.2')
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 
 

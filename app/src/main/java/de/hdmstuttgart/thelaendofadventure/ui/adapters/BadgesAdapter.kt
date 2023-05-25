@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 
@@ -27,7 +27,10 @@ class BadgesAdapter(private val badgeList: List<BadgeEntity>) :
         val badge = badgeList[position]
 
         // sets the image to the imageview from our itemHolder class
-        holder.imageView.setImageURI(badge.imagePath.toUri())
+        val imagePath = "file:///android_asset/badgeimages/" + badge.imagePath
+        Glide.with(holder.imageView.context)
+            .load(imagePath)
+            .into(holder.imageView)
 
         // sets the text to the textview from our itemHolder class
         holder.textView.text = badge.name

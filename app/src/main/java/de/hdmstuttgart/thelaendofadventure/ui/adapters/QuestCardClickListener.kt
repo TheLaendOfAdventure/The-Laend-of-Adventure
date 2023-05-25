@@ -1,14 +1,14 @@
 package de.hdmstuttgart.thelaendofadventure.ui.adapters
 
 import android.view.View
-import android.widget.TextView
+import android.widget.LinearLayout
 
-class QuestCardClickListener(val textView: TextView) : View.OnClickListener {
+class QuestCardClickListener(val innerInfo: LinearLayout) : View.OnClickListener {
     override fun onClick(view: View) {
-        if (textView.visibility == View.VISIBLE) {
-            textView.visibility = View.GONE
+        if (innerInfo.visibility == View.VISIBLE) {
+            innerInfo.visibility = View.GONE
         } else {
-            textView.visibility = View.VISIBLE
+            innerInfo.visibility = View.VISIBLE
         }
     }
 }

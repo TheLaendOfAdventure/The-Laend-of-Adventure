@@ -108,4 +108,13 @@ interface QuestDao {
             "AND user_badge.userID = :userID "
     )
     fun getQuestForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<Int>>
+
+    @Query(
+        "SELECT action.description " +
+            "FROM action " +
+            "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
+            "WHERE questGoal.questID = :questID " +
+            "ORDER BY action.actionID "
+    )
+    fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>>
 }

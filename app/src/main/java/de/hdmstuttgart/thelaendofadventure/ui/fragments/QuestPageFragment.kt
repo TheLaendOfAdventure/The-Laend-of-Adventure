@@ -36,7 +36,7 @@ class QuestPageFragment : Fragment() {
 
         val questObserver = Observer<List<QuestDetails>> { questList ->
             // Handle the questList
-            val adapter = QuestAdapter(questList)
+            val adapter = QuestAdapter(questList, this)
 
             recycleView.adapter = adapter
         }

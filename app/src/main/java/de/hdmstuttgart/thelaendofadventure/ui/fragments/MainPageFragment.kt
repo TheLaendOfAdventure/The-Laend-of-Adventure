@@ -128,10 +128,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             enabled = true
             pulsingEnabled = true
         }
-        passUserLocationToCamera()
-    }
-
-    private fun passUserLocationToCamera() {
+        // Pass the user's location to camera
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
         mapView.location.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
     }

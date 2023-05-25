@@ -70,7 +70,7 @@ class QuestAdapter(
                 if (quest.currentGoalNumber > index + 1) {
                     line = StringHelper.strikethroughText(line)
                 }
-                if (index < descriptions.size) {
+                if (index < descriptions.size - 1) {
                     line += "\n"
                 }
                 textList += line

@@ -35,7 +35,7 @@ class QuestAdapter(
             .inflate(R.layout.questpage_listitem, parent, false)
         val viewHolder = ViewHolder(view)
 
-        viewHolder.cardView.setOnClickListener(QuestCardClickListener(viewHolder.infoInner))
+        viewHolder.cardView.setOnClickListener(ListItemClickListener(viewHolder.infoInner))
 
         return viewHolder
     }

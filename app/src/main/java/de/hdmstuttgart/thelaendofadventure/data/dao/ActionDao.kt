@@ -31,4 +31,14 @@ interface ActionDao {
     )
     fun getRiddleAndAnswersByActionID(actionID: Int):
         Flow<Map<RiddleEntity, List<RiddleAnswersEntity>>>
+
+    @Query(
+        "SELECT  dialogPath FROM [action] " +
+            "JOIN questGoal ON questGoal.actionID = [action].actionID " +
+            "JOIN user_quest ON user_quest.questID = questGoal.questID " +
+            "WHERE questGoal.questID = :questID " +
+            "AND questGoal.goalNumber = :goalNumber " +
+            "AND user_quest.userID = :userID "
+    )
+    suspend fun getDialogPath(userID: Int, goalNumber: Int, questID: Int): String?
 }

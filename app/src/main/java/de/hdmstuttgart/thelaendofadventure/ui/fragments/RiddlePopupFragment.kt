@@ -1,21 +1,20 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
+import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentRiddlePopupBinding
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.RiddlePopupViewModel
 
-class RiddlePopupFragment : Fragment(R.layout.fragment_riddle_popup) {
+class RiddlePopupFragment(private val riddles: List<RiddleDetails>) : DialogFragment() {
 
     companion object {
         private const val questID = 7
@@ -26,8 +25,11 @@ class RiddlePopupFragment : Fragment(R.layout.fragment_riddle_popup) {
     private lateinit var binding: FragmentRiddlePopupBinding
     private lateinit var viewModel: RiddlePopupViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setContentView(R.layout.fragment_riddle_popup)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        return dialog
     }
 
     override fun onCreateView(
@@ -44,31 +46,35 @@ class RiddlePopupFragment : Fragment(R.layout.fragment_riddle_popup) {
 
         viewModel = ViewModelProvider(this)[RiddlePopupViewModel::class.java]
 
-        val riddleObserver = Observer<List<RiddleDetails>> { riddles ->
-            if (riddles.isNotEmpty()) {
-                Log.d("Popup", "List is not Empty!")
-                val answers = riddles.map { riddle ->
-                    riddle.possibleAnswers
-                }
-                binding.riddleTextView.text = riddles[0].question
-                binding.answerOption1.text = answers[0]
-                binding.answerOption2.text = answers[1]
-                binding.answerOption3.text = answers[2]
-                binding.answerOption4.text = answers[answer3]
-                // showRiddlePopup()
-            }
-        }
-        binding.answerOption1.setOnClickListener {
-            QuestLogic(requireContext()).finishedQuestGoal(questID, questGoal, viewModel.userID)
-            Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_riddle_to_main_page
-            )
-        }
-        viewModel.riddleList.observe(viewLifecycleOwner, riddleObserver)
+        setupViews()
+        setOnClickListeners()
     }
 
-    fun showRiddlePopup() {
-        Log.d("Popup", "Visibilty is visible")
-        binding.riddleMainLayout.visibility = View.VISIBLE
+    private fun setupViews() {
+        val answers = riddles.map { riddle -> riddle.possibleAnswers }
+
+        binding.riddleTextView.text = riddles[0].question
+        binding.answerOption1.text = answers[0]
+        binding.answerOption2.text = answers[1]
+        binding.answerOption3.text = answers[2]
+        binding.answerOption4.text = answers[answer3]
+    }
+
+    private fun setOnClickListeners() {
+        binding.answerOption1.setOnClickListener {
+            QuestLogic(requireContext()).finishedQuestGoal(questID, questGoal, viewModel.userID)
+            dismiss()
+        }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        dismissListener?.invoke()
+    }
+
+    private var dismissListener: (() -> Unit)? = null
+
+    fun setOnDismissListener(listener: () -> Unit) {
+        dismissListener = listener
     }
 }

@@ -18,7 +18,6 @@ import androidx.navigation.Navigation
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.gestures.gestures
-import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.viewannotation.ViewAnnotationManager
@@ -138,7 +137,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
         // Pass the user's location to camera
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        mapView.location.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
     }
 
     private fun showGpsAlertDialog() {
@@ -155,9 +153,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         builder.create().show()
     }
 
-    private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
-        mapView.getMapboxMap().setCamera(CameraOptions.Builder().bearing(it).build())
-    }
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
         mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
         mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)

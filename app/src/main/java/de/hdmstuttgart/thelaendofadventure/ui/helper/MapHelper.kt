@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.net.toUri
+import com.bumptech.glide.Glide
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxViewAnnotationException
@@ -126,7 +126,10 @@ class MapHelper(
         pointAnnotation: PointAnnotation
     ) {
         val binding = PopupDialogBinding.bind(viewAnnotation)
-        binding.dialogPopupImage.setImageURI(quest.imagePath?.toUri())
+        val imagePath = "file:///android_asset/questimages" + quest.imagePath
+        Glide.with(context)
+            .load(imagePath)
+            .into(binding.dialogPopupImage)
         binding.popupDialogName.text = quest.name
         val npcName = readNpcNameFromJsonFile(quest.dialogPath)
         binding.popupDialogQuestDescription.text = context.getString(R.string.npc_name, npcName)

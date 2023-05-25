@@ -112,4 +112,5 @@ interface QuestRepository {
      * @param userID The ID of the user
      */
     fun getLocationForAcceptedQuestsByUserID(userID: Int): Flow<List<LocationGoal>>
+    fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>>
 }

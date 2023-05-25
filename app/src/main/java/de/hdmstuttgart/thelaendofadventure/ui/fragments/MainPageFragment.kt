@@ -138,7 +138,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
         // Pass the user's location to camera
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        mapView.location.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
     }
 
     private fun showGpsAlertDialog() {

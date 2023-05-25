@@ -27,7 +27,7 @@ class BadgesAdapter(private val badgeList: List<BadgeEntity>) :
         val badge = badgeList[position]
 
         // sets the image to the imageview from our itemHolder class
-        val imagePath = "file:///android_asset/badgeimages" + badge.imagePath
+        val imagePath = "file:///android_asset/badgeimages/" + badge.imagePath
         Glide.with(holder.imageView.context)
             .load(imagePath)
             .into(holder.imageView)

@@ -126,7 +126,7 @@ class MapHelper(
         pointAnnotation: PointAnnotation
     ) {
         val binding = PopupDialogBinding.bind(viewAnnotation)
-        val imagePath = "file:///android_asset/questimages" + quest.imagePath
+        val imagePath = "file:///android_asset/questimages/" + quest.imagePath
         Glide.with(context)
             .load(imagePath)
             .into(binding.dialogPopupImage)

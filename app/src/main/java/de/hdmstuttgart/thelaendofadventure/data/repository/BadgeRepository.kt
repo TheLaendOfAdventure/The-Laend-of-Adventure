@@ -78,11 +78,4 @@ interface BadgeRepository {
      * @param userID the ID of the user to assign the badges to.
      */
     suspend fun assignAllBadgesToUser(userID: Int)
-
-    /**
-     * Retrieves all Action descriptions of the Badge.
-     *
-     * @param badgeID the ID of the badge
-     */
-    fun getAllActionDescriptionsByBadgeID(badgeID: Int): Flow<List<String>>
 }

@@ -39,10 +39,18 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/badge_goals"
+                android:id="@+id/badge_goals_uncompleted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                tools:text="@string/badge_Goals" />
+
+            <TextView
+                android:id="@+id/badge_goals_completed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:textSize="16sp"
                 tools:text="@string/badge_Goals" />
         </LinearLayout>

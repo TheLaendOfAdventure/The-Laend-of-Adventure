@@ -16,6 +16,7 @@ import androidx.navigation.Navigation
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.gestures.gestures
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import de.hdmstuttgart.the_laend_of_adventure.R
@@ -127,13 +128,16 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             enabled = true
             pulsingEnabled = true
         }
-        // Pass the user's location to camera
+        passUserLocationToCamera()
+    }
+
+    private fun passUserLocationToCamera() {
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
+        mapView.location.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
     }
 
     private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
         mapView.getMapboxMap().setCamera(CameraOptions.Builder().bearing(it).build())
-
     }
 
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {

@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class QuestLogic(private val context: Context) {
 
@@ -52,9 +53,9 @@ class QuestLogic(private val context: Context) {
             ) {
                 Log.d(TAG, "User userID: $userID completed Quest questID: $questID")
                 UserLogic(context).addExperience(userID, EXPERIENCE_PER_QUEST)
-                showConversation(userID, questID, updatedGoalNumber)
                 updateBadgeProgress(userID, questID)
             }
+            showConversation(userID, questID, goalNumber)
         }
     }
 
@@ -75,9 +76,12 @@ class QuestLogic(private val context: Context) {
 
     private suspend fun showConversation(userID: Int, questID: Int, goalNumber: Int) {
         val dialogPath: String? = actionRepository.getDialogPath(userID, goalNumber, questID)
+        Log.d(TAG, "dialogPath: $dialogPath")
         if (dialogPath != null) {
-            val conversationPopupDialog = ConversationPopupDialog(context, dialogPath)
-            conversationPopupDialog.show()
+            withContext(Dispatchers.Main) {
+                val conversationPopupDialog = ConversationPopupDialog(context, dialogPath)
+                conversationPopupDialog.show()
+            }
         }
     }
 }

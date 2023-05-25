@@ -39,6 +39,8 @@ class BadgesPageFragment : Fragment() {
             val adapter = BadgesAdapter(badgeList)
             recycleView.adapter = adapter
         }
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        viewModel.badges.observe(viewLifecycleOwner, badgeObserver)
 
         val userObserver = Observer<UserEntity> { user ->
             binding.badgesProfileButtonLevelDisplay.text = user.level.toString()
@@ -46,8 +48,6 @@ class BadgesPageFragment : Fragment() {
         }
         viewModel.user.observe(viewLifecycleOwner, userObserver)
 
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.badges.observe(viewLifecycleOwner, badgeObserver)
         return binding.root
     }
 

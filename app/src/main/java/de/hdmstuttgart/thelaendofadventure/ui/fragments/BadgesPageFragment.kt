@@ -33,10 +33,11 @@ class BadgesPageFragment : Fragment() {
 
         val recycleView = binding.badgesPageRecyclerview
         recycleView.layoutManager = LinearLayoutManager(requireContext())
+        recycleView.adapter = BadgesAdapter(emptyList(), this)
 
         val badgeObserver = Observer<List<BadgeEntity>> { badgeList ->
             // Handle the badgeList
-            val adapter = BadgesAdapter(badgeList)
+            val adapter = BadgesAdapter(badgeList, this)
             recycleView.adapter = adapter
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.

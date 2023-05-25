@@ -2,6 +2,7 @@ package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
@@ -49,6 +50,18 @@ interface BadgeDao {
             "AND user_badge.userID = :userID AND badgeGoal.badgeID = :badgeID"
     )
     fun getUncompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
+
+    @Query(
+        "SELECT badge.*, user_badge.currentGoalNumber FROM badge " +
+            "JOIN badgeGoal ON badge.badgeID = badgeGoal.badgeID " +
+            "JOIN user_badge ON user_badge.badgeID = badge.badgeID " +
+            "JOIN action ON badgeGoal.actionID = action.actionID " +
+            "JOIN achievement ON action.actionID = achievement.actionID " +
+            "WHERE user_badge.currentGoalNumber = badgeGoal.goalNumber " +
+            "AND user_badge.userID = :userID " +
+            "AND achievement.questID = :questID"
+    )
+    fun getBadgesByUserIDAndQuestID(userID: Int, questID: Int): Flow<List<BadgeDetails>>
 
     @Query(
         "UPDATE user_badge SET currentGoalNumber = :goalNumber " +

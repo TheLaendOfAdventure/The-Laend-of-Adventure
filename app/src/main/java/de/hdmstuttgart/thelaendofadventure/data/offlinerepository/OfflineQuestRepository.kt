@@ -4,11 +4,14 @@ import de.hdmstuttgart.thelaendofadventure.data.dao.QuestDao
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 
+@Suppress("TooManyFunctions")
 class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
 
     override fun getAcceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>> =
@@ -29,6 +32,10 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
         Flow<List<ActionEntity>> =
         questDao.getCompletedGoalsForQuestByUserID(userID, questID)
 
+    override fun getRiddleForAcceptedQuestsByUserID(userID: Int):
+        Flow<List<RiddleDetails>> =
+        questDao.getRiddleForAcceptedQuestsByUserID(userID)
+
     override fun getUncompletedGoalsForQuestByUserID(userID: Int, questID: Int):
         Flow<List<ActionEntity>> =
         questDao.getUncompletedGoalsForQuestByUserID(userID, questID)
@@ -36,8 +43,22 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
     override suspend fun getQuestForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<Int>> =
         questDao.getQuestForBadgeByUserID(userID, badgeID)
 
-    override suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int) {
+    override suspend fun updateAndCheckQuestProgressByUserID(
+        userID: Int,
+        questID: Int,
+        goalNumber: Int
+    ): Boolean {
         questDao.updateQuestProgressByUserID(userID, questID, goalNumber)
+        return isQuestCompleted(userID, questID)
+    }
+
+    private suspend fun isQuestCompleted(userID: Int, questID: Int): Boolean {
+        val questProgress = questDao.getProgressForQuestByUserID(userID, questID).first()
+
+        val currentGoalNumber = questProgress.currentGoalNumber
+        val targetGoalNumber = questProgress.targetGoalNumber
+
+        return currentGoalNumber == targetGoalNumber
     }
 
     override suspend fun assignQuestToUser(userID: Int, questID: Int) {
@@ -46,5 +67,9 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
 
     override fun getLocationForAcceptedQuestsByUserID(userID: Int): Flow<List<LocationGoal>> {
         return questDao.getLocationForAcceptedQuestsByUserID(userID)
+    }
+
+    override fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>> {
+        return questDao.getAllActionDescriptionsByQuestID(questID)
     }
 }

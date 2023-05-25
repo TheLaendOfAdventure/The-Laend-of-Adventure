@@ -3,13 +3,17 @@ package de.hdmstuttgart.thelaendofadventure.data.repository
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleAnswersEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
  * Repository interface for accessing and modifying Quest related data from the database.
  */
+@Suppress("TooManyFunctions")
 interface QuestRepository {
 
     /**
@@ -47,6 +51,17 @@ interface QuestRepository {
     fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     /**
+     * Retrieves a mapping of RiddleEntity objects to a list of RiddleAnswersEntity objects
+     * for the accepted quests of a given userID.
+     *
+     * @param userID The ID of the user for which to retrieve the riddles for accepted quests.
+     * @return A [Flow] emitting a mapping of [RiddleEntity] objects to a list of [RiddleAnswersEntity] objects.
+     *         The mapping represents the riddles and their corresponding answers for the accepted quests.
+     */
+    fun getRiddleForAcceptedQuestsByUserID(userID: Int):
+        Flow<List<RiddleDetails>>
+
+    /**
      * Retrieves a list of all uncompleted goals for the given quest and user.
      *
      * @param userID ID of the user whose uncompleted goals should be retrieved.
@@ -73,13 +88,15 @@ interface QuestRepository {
     suspend fun getQuestForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<Int>>
 
     /**
-     * Updates the progress of the current goal for the given quest and user.
+     * Updates the progress of the current goal for the given quest and user and checks if the quest is completed.
      *
      * @param userID ID of the user whose quest progress should be updated.
      * @param questID ID of the quest whose progress should be updated.
      * @param goalNumber The new goal number to set.
+     * @return True if the quest is completed, otherwise False.
      */
-    suspend fun updateQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int)
+    suspend fun updateAndCheckQuestProgressByUserID(userID: Int, questID: Int, goalNumber: Int):
+        Boolean
 
     /**
      * Accepts a quest for a user with the given user ID.
@@ -95,4 +112,5 @@ interface QuestRepository {
      * @param userID The ID of the user
      */
     fun getLocationForAcceptedQuestsByUserID(userID: Int): Flow<List<LocationGoal>>
+    fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>>
 }

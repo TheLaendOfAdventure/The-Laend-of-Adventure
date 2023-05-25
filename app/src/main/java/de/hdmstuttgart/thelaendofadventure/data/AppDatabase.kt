@@ -4,7 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import de.hdmstuttgart.thelaendofadventure.data.dao.*
+import de.hdmstuttgart.thelaendofadventure.data.dao.ActionDao
+import de.hdmstuttgart.thelaendofadventure.data.dao.BadgeDao
+import de.hdmstuttgart.thelaendofadventure.data.dao.QuestDao
+import de.hdmstuttgart.thelaendofadventure.data.dao.UserDao
 import de.hdmstuttgart.thelaendofadventure.data.entity.*
 
 @Database(

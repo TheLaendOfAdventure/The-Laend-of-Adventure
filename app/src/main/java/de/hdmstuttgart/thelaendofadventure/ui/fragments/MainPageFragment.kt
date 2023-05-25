@@ -1,8 +1,10 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
-import android.Manifest // ktlint-disable import-ordering
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,24 +18,36 @@ import androidx.navigation.Navigation
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.gestures.gestures
-import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
+import com.mapbox.maps.viewannotation.ViewAnnotationManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.Tracking
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
+import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
+import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
+import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
+    companion object {
+        private const val TAG = "MainPageFragment"
+        private const val questID = 7
+        private const val questGoal = 1
+    }
+
     private lateinit var binding: FragmentMainPageBinding
     private lateinit var viewModel: MainPageViewModel
     private lateinit var mapView: MapView
+    private lateinit var mapHelper: MapHelper
     private lateinit var permissionManager: PermissionManager
+    private lateinit var viewAnnotationManager: ViewAnnotationManager
 
     private val permissionResultLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -46,14 +60,9 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            Tracking(requireContext()).start()
-        }
-
-        permissionManager = PermissionManager(requireContext())
     }
 
     override fun onCreateView(
@@ -61,20 +70,21 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
         binding = FragmentMainPageBinding.inflate(inflater, container, false)
-
+        viewAnnotationManager = binding.mapView.viewAnnotationManager
         mapView = binding.mapView
-        mapView.getMapboxMap().loadStyleUri(getString(R.string.mapbox_styleURL))
-
+        val questObserver = Observer<List<QuestEntity>> { questList ->
+            mapHelper = MapHelper(mapView, questList, requireContext())
+            mapHelper.setUpMap()
+        }
+        viewModel.quests.observe(viewLifecycleOwner, questObserver)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
-
-        if (viewModel.userID == -1) {
+        if (viewModel.getUserID() == -1) {
             Navigation.findNavController(requireView()).navigate(
                 R.id.userCreationFragment
             )
@@ -89,6 +99,21 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
             permissionResultLauncher.launch(permissions)
         }
+
+        val riddleObserver = Observer<List<RiddleDetails>> { riddles ->
+            if (riddles.isNotEmpty()) {
+                QuestLogic(requireContext()).finishedQuestGoal(
+                    questID,
+                    questGoal,
+                    viewModel.getUserID()
+                )
+                Log.d(TAG, "Angekommen")
+                Navigation.findNavController(requireView()).navigate(
+                    R.id.navigate_from_main_to_riddle_page
+                )
+            }
+        }
+        viewModel.riddleList.observe(viewLifecycleOwner, riddleObserver)
     }
 
     private fun setUpProfileButton() {
@@ -100,6 +125,10 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     }
 
     private fun showUserAtMap() = lifecycleScope.launch {
+        permissionManager = PermissionManager(requireContext())
+        lifecycleScope.launch {
+            Tracking(requireContext()).start()
+        }
         // Show user's location at the map
         mapView.location.updateSettings {
             enabled = true
@@ -108,7 +137,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
         // Pass the user's location to camera
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        mapView.location.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
     }
 
     private fun showGpsAlertDialog() {
@@ -125,9 +153,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         builder.create().show()
     }
 
-    private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
-        mapView.getMapboxMap().setCamera(CameraOptions.Builder().bearing(it).build())
-    }
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
         mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
         mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)

@@ -87,6 +87,7 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
 
     private fun setUpUserPageProfileButton() {
         binding.userPageProfileButton.setOnClickListener {
+            viewModel.updateUserName(binding.userPageNameField.text.toString())
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_user_to_main_page
             )
@@ -95,11 +96,13 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
 
     private fun setUpUserPageNavigationButtons() {
         binding.userPageNavigationButtonToBadges.setOnClickListener {
+            viewModel.updateUserName(binding.userPageNameField.text.toString())
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_user_to_badges_page
             )
         }
         binding.userPageNavigationButtonToQuest.setOnClickListener {
+            viewModel.updateUserName(binding.userPageNameField.text.toString())
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_user_to_quest_page
             )

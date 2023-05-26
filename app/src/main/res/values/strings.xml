@@ -12,7 +12,7 @@
     <string name="badge1_image">badgeImage</string>
     <string name="badge1_name">Badge Name</string>
     <string name="badge2_image">badgeImage</string>
-    <string name="badge2_name">Badge Name</string>
+    <string name="badge_Goals">Badge Goals</string>
     <string name="profile_image">profile_image</string>
     <string name="profile_level">2</string>
     <string name="popup_name_NPC">Name</string>
@@ -66,4 +66,6 @@
     <string name="nextText">Weiter</string>
     <string name="userprofileimage">userProfileImage</string>
     <string name="partnerprofileimage">partnerProfileImage</string>
+    <string name="partner_name">Partner name</string>
+    <string name="user_name">User name</string>
 </resources>

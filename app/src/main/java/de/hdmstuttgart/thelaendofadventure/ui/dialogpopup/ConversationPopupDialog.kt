@@ -16,7 +16,7 @@ class ConversationPopupDialog(private val context: Context, private val dialogPa
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
         binding.partnerTextView.text = "Dennis"
-        binding.questCardView.setOnClickListener {
+        binding.dialogCard.setOnClickListener {
             dismissDialog()
         }
         dialog.show()

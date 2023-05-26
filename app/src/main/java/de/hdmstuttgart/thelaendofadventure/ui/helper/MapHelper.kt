@@ -201,6 +201,6 @@ class MapHelper(
 
     companion object {
         private const val TAG = "MapHelper"
-        private const val START_GOAL = 1
+        private const val START_GOAL = 0
     }
 }

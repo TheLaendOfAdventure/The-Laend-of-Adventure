@@ -17,6 +17,14 @@ import kotlinx.coroutines.flow.Flow
 interface QuestRepository {
 
     /**
+     * Retrieves the dialog path for a given quest ID.
+     *
+     * @param questID The ID of the quest.
+     * @return The dialog path associated with the quest ID, or an empty string if no dialog path is found.
+     */
+    suspend fun getDialogPathByQuestID(questID: Int): String
+
+    /**
      * Retrieves a list of all quests accepted by the user with the given ID.
      *
      * @param userID ID of the user whose accepted quests should be retrieved.

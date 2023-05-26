@@ -14,6 +14,12 @@ import kotlinx.coroutines.flow.Flow
 interface QuestDao {
 
     @Query(
+        "SELECT dialogPath FROM quest " +
+            "WHERE quest.questID = :questID"
+    )
+    suspend fun getDialogPathByQuestID(questID: Int): String
+
+    @Query(
         "SELECT quest.* FROM quest " +
             "INNER JOIN user_quest ON quest.questID = user_quest.questID " +
             "WHERE user_quest.userID = :userID"

@@ -69,8 +69,16 @@ class QuestLogic(private val context: Context) {
     }
 
     private suspend fun showConversation(questID: Int, goalNumber: Int) {
-        val dialogPath: String? = actionRepository.getDialogPath(userID, goalNumber, questID)
+        val dialogPath: String?
+
+        if (goalNumber == 1) {
+            dialogPath = questRepository.getDialogPathByQuestID(questID)
+        } else {
+            dialogPath = actionRepository.getDialogPath(userID, goalNumber, questID)
+        }
+
         Log.d(TAG, "dialogPath: $dialogPath")
+
         if (dialogPath != null) {
             withContext(Dispatchers.Main) {
                 val conversationPopupDialog = ConversationPopupDialog(context, dialogPath)

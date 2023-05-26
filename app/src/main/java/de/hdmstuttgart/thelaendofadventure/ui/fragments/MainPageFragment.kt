@@ -20,9 +20,9 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListen
 import com.mapbox.maps.plugin.locationcomponent.location
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
-import de.hdmstuttgart.thelaendofadventure.data.Tracking
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
+import de.hdmstuttgart.thelaendofadventure.logic.TrackingLogic
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
@@ -114,7 +114,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private fun showUserAtMap() = lifecycleScope.launch {
         permissionManager = PermissionManager(requireContext())
         lifecycleScope.launch {
-            Tracking(requireContext()).start()
+            TrackingLogic(requireContext()).start()
         }
         mapView.location.updateSettings {
             enabled = true

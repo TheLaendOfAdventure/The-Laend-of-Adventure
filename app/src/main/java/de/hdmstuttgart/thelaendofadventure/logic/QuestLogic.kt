@@ -88,7 +88,7 @@ class QuestLogic(private val context: Context) {
         Log.d(TAG, "RiddleList: $riddleList")
         if (riddleList.isNotEmpty()) {
             withContext(Dispatchers.Main) {
-                val riddlePopupDialog = RiddlePopupDialog(context, riddleList, userID)
+                val riddlePopupDialog = RiddlePopupDialog(context, riddleList)
                 riddlePopupDialog.show()
                 Log.d(TAG, "Riddle should be shown!")
                 riddlePopupDialog.setOnDismissListener {

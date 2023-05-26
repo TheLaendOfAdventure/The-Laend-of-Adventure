@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/riddle_main_layout"
-    tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.RiddlePopupFragment">
+    tools:context="de.hdmstuttgart.thelaendofadventure.ui.dialogpopup.RiddlePopupDialog">
 
 
     <androidx.cardview.widget.CardView

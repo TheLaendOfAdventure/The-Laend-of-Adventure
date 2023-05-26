@@ -20,8 +20,8 @@ import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogAcceptQuestPopupBinding
-import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
+import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -161,7 +161,7 @@ class MapHelper(
 
         binding.dialogAcceptQuestAcceptButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                AppDataContainer(context).questRepository.assignQuestToUser(userID, questID)
+                QuestLogic(context).finishedQuestGoal(questID, START_GOAL)
             }
             viewAnnotationManager.removeViewAnnotation(viewAnnotation)
             pointAnnotationManager.delete(pointAnnotation)
@@ -201,5 +201,6 @@ class MapHelper(
 
     companion object {
         private const val TAG = "MapHelper"
+        private const val START_GOAL = 1
     }
 }

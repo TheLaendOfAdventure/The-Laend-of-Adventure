@@ -33,7 +33,7 @@ interface ActionDao {
         Flow<Map<RiddleEntity, List<RiddleAnswersEntity>>>
 
     @Query(
-        "SELECT  dialogPath FROM [action] " +
+        "SELECT dialogPath FROM [action] " +
             "JOIN questGoal ON questGoal.actionID = [action].actionID " +
             "JOIN user_quest ON user_quest.questID = questGoal.questID " +
             "WHERE questGoal.questID = :questID " +

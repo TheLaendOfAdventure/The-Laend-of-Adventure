@@ -2,7 +2,7 @@ package de.hdmstuttgart.thelaendofadventure.ui.dialogpopup
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
-import de.hdmstuttgart.the_laend_of_adventure.databinding.ConversationPopupBinding
+import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogConversationPopupBinding
 
 class ConversationPopupDialog(private val context: Context, private val dialogPath: String) {
 
@@ -11,7 +11,7 @@ class ConversationPopupDialog(private val context: Context, private val dialogPa
     fun show() {
         dialog = Dialog(context)
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val binding = ConversationPopupBinding.inflate(inflater)
+        val binding = DialogConversationPopupBinding.inflate(inflater)
         dialog.setContentView(binding.root)
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
@@ -25,6 +25,7 @@ class ConversationPopupDialog(private val context: Context, private val dialogPa
     private var dismissListener: (() -> Unit)? = null
 
     fun setOnDismissListener(listener: () -> Unit) {
+        println(dialogPath)
         dismissListener = listener
     }
 

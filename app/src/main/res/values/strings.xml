@@ -66,4 +66,6 @@
     <string name="nextText">Weiter</string>
     <string name="userprofileimage">userProfileImage</string>
     <string name="partnerprofileimage">partnerProfileImage</string>
+    <string name="partner_name">Partner name</string>
+    <string name="user_name">User name</string>
 </resources>

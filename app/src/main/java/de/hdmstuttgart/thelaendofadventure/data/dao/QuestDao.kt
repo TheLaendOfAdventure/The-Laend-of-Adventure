@@ -68,7 +68,7 @@ interface QuestDao {
 
     @Query(
         "INSERT INTO user_quest (userID, questID, currentGoalNumber)" +
-            "VALUES (:userID, :questID, 1)"
+            "VALUES (:userID, :questID, 0)"
     )
     suspend fun assignQuestToUser(userID: Int, questID: Int)
 
@@ -111,7 +111,7 @@ interface QuestDao {
 
     @Query(
         "SELECT action.description " +
-            "FROM action " +
+            "FROM [action] " +
             "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
             "WHERE questGoal.questID = :questID " +
             "ORDER BY action.actionID "

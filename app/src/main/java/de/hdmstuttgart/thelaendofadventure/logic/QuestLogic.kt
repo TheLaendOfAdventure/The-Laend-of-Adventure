@@ -48,6 +48,10 @@ class QuestLogic(private val context: Context) {
                 "User userID: $userID completed QuestGoal questID: $questID, questGoal: $goalNumber"
             )
 
+            if (goalNumber == 0) {
+                questRepository.assignQuestToUser(userID, questID)
+            }
+
             val updatedGoalNumber = goalNumber + 1
 
             if (questRepository.updateAndCheckQuestProgressByUserID(

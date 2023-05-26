@@ -1,12 +1,12 @@
 package de.hdmstuttgart.thelaendofadventure.logic
 
-import ConversationPopupDialog
 import android.content.Context
 import android.util.Log
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.ActionRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
+import de.hdmstuttgart.thelaendofadventure.ui.fragments.ConversationPopupDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -79,7 +79,13 @@ class QuestLogic(private val context: Context) {
         Log.d(TAG, "dialogPath: $dialogPath")
         if (dialogPath != null) {
             withContext(Dispatchers.Main) {
-                val conversationPopupDialog = ConversationPopupDialog(context, dialogPath)
+                val questImage = questRepository.getQuestImageByQuestID(questID)
+                val conversationPopupDialog = ConversationPopupDialog(
+                    context,
+                    dialogPath,
+                    userID,
+                    questImage
+                )
                 conversationPopupDialog.show()
             }
         }

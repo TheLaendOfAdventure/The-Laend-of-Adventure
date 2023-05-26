@@ -22,15 +22,17 @@ import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.Tracking
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
+import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
-    private var isPopupShown = false
     private lateinit var binding: FragmentMainPageBinding
     private lateinit var viewModel: MainPageViewModel
     private lateinit var mapView: MapView
@@ -46,6 +48,11 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         } else {
             showGpsAlertDialog()
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        CoroutineScope(Dispatchers.IO).launch { QuestLogic(requireContext()).checkRiddle() }
     }
 
     override fun onCreateView(
@@ -70,7 +77,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             requestLocationPermission()
             observeUser()
             setUpProfileButton()
-            observeRiddles()
         }
     }
 
@@ -102,19 +108,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_main_to_user_page
             )
-        }
-    }
-
-    private fun observeRiddles() {
-        viewModel.riddleList.observe(viewLifecycleOwner) { riddles ->
-            if (riddles.isNotEmpty() && !isPopupShown) {
-                isPopupShown = true
-                val riddlePopupFragment = RiddlePopupFragment(riddles)
-                riddlePopupFragment.setOnDismissListener {
-                    isPopupShown = false
-                }
-                riddlePopupFragment.show(parentFragmentManager, "RiddlePopup")
-            }
         }
     }
 

@@ -1,6 +1,7 @@
 package de.hdmstuttgart.thelaendofadventure.ui.adapters
 
 import android.content.Context
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,12 +65,17 @@ class BadgesAdapter(
             badge.badgeID
         ).asLiveData()
         val actionObserverUncompleted = Observer<List<ActionEntity>> { actions ->
+            if (actions.isEmpty()) {
+                holder.badgeGoalsUncompleted.visibility = View.GONE
+            } else {
+                holder.badgeGoalsUncompleted.visibility = View.VISIBLE
+            }
             // Handle the questList
             var textList = ""
             for ((index, action) in actions.withIndex()) {
                 // Perform your desired operations with the item
                 var line = action.description
-                // check if goal is reached and strike through if so
+                // check for next line
                 if (index < actions.size - 1) {
                     line += "\n"
                 }
@@ -85,12 +91,17 @@ class BadgesAdapter(
             badge.badgeID
         ).asLiveData()
         val actionObserverCompleted = Observer<List<ActionEntity>> { actions ->
+            if (actions.isEmpty()) {
+                holder.badgeGoalsCompleted.visibility = View.GONE
+            } else {
+                holder.badgeGoalsCompleted.visibility = View.VISIBLE
+            }
             // Handle the questList
             var textList = ""
             for ((index, action) in actions.withIndex()) {
                 // Perform your desired operations with the item
                 var line = StringHelper.strikethroughText(action.description)
-                // check if goal is reached and strike through if so
+                // check for next line
                 if (index < actions.size - 1) {
                     line += "\n"
                 }

@@ -35,7 +35,7 @@ class QuestAdapter(
             .inflate(R.layout.questpage_listitem, parent, false)
         val viewHolder = ViewHolder(view)
 
-        viewHolder.cardView.setOnClickListener(QuestCardClickListener(viewHolder.infoInner))
+        viewHolder.cardView.setOnClickListener(ListItemClickListener(viewHolder.infoInner))
 
         return viewHolder
     }
@@ -70,7 +70,7 @@ class QuestAdapter(
                 if (quest.currentGoalNumber > index + 1) {
                     line = StringHelper.strikethroughText(line)
                 }
-                if (index < descriptions.size) {
+                if (index < descriptions.size - 1) {
                     line += "\n"
                 }
                 textList += line

@@ -49,8 +49,8 @@ interface QuestDao {
     fun getQuestsWithDetailsByUserID(userID: Int): Flow<List<QuestDetails>>
 
     @Query(
-        "SELECT [action].* From [action] " +
-            "INNER JOIN questGoal ON [action].actionID = questGoal.actionID " +
+        "SELECT action.* From action " +
+            "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
             "INNER JOIN user_quest ON user_quest.questID = questGoal.questID " +
             "WHERE user_quest.currentGoalNumber >= questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"
@@ -58,8 +58,8 @@ interface QuestDao {
     fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     @Query(
-        "SELECT [action].* From [action] " +
-            "INNER JOIN questGoal ON [action].actionID = questGoal.actionID " +
+        "SELECT action.* From action " +
+            "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
             "INNER JOIN user_quest ON user_quest.questID = questGoal.questID " +
             "WHERE user_quest.currentGoalNumber < questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"
@@ -105,8 +105,8 @@ interface QuestDao {
     @Query(
         "SELECT achievement.questID " +
             "FROM achievement " +
-            "JOIN [action] ON [action].actionID = achievement.actionID " +
-            "JOIN badgeGoal ON badgeGoal.actionID = [action].actionID " +
+            "JOIN action ON action.actionID = achievement.actionID " +
+            "JOIN badgeGoal ON badgeGoal.actionID = action.actionID " +
             "JOIN badge ON badge.badgeID = badgeGoal.badgeID " +
             "JOIN user_badge ON user_badge.badgeID = badge.badgeID " +
             "WHERE badge.badgeID = :badgeID " +
@@ -117,7 +117,7 @@ interface QuestDao {
 
     @Query(
         "SELECT action.description " +
-            "FROM [action] " +
+            "FROM action " +
             "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
             "WHERE questGoal.questID = :questID " +
             "ORDER BY action.actionID "

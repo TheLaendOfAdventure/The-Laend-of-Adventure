@@ -37,4 +37,14 @@ interface ActionRepository {
      */
     fun getRiddleAndAnswersByActionID(actionID: Int):
         Flow<Map<RiddleEntity, List<RiddleAnswersEntity>>>
+
+    /**
+     * Retrieves the dialog path for a specific quest goal, quest and user.
+     *
+     * @param userID The ID of the user.
+     * @param goalNumber The goal number of the quest.
+     * @param questID The ID of the quest.
+     * @return The dialog path associated with the given quest goal as a String.
+     */
+    suspend fun getDialogPath(userID: Int, goalNumber: Int, questID: Int): String?
 }

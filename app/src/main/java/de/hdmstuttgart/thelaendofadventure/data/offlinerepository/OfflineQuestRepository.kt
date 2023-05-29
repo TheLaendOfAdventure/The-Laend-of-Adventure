@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.first
 
 @Suppress("TooManyFunctions")
 class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
+    override suspend fun getDialogPathByQuestID(questID: Int): String {
+        return questDao.getDialogPathByQuestID(questID)
+    }
 
     override fun getAcceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>> =
         questDao.getAcceptedQuestsByUserID(userID)

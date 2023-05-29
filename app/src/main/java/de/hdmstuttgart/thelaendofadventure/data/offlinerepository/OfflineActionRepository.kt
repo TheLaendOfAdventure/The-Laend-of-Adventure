@@ -18,4 +18,8 @@ class OfflineActionRepository(private val actionDao: ActionDao) : ActionReposito
     override fun getRiddleAndAnswersByActionID(actionID: Int):
         Flow<Map<RiddleEntity, List<RiddleAnswersEntity>>> =
         actionDao.getRiddleAndAnswersByActionID(actionID)
+
+    override suspend fun getDialogPath(userID: Int, goalNumber: Int, questID: Int): String? {
+        return actionDao.getDialogPath(userID, goalNumber, questID)
+    }
 }

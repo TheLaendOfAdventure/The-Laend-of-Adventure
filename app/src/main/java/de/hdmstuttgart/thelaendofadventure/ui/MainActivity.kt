@@ -1,4 +1,4 @@
-package de.hdmstuttgart.thelaendofadventure
+package de.hdmstuttgart.thelaendofadventure.ui
 
 import android.os.Bundle
 import android.util.Log

@@ -1,4 +1,4 @@
-package de.hdmstuttgart.thelaendofadventure.ui.fragments
+package de.hdmstuttgart.thelaendofadventure.ui.popupwindow
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -35,7 +35,7 @@ class ConversationPopupDialog(
     private val context: Context,
     private val dialogPath: String,
     userID: Int,
-    private val partnerImagePath: String
+    private val partnerImagePath: String,
 ) {
     private val userRepository: UserRepository = AppDataContainer(context).userRepository
     val user = userRepository.getUserByID(userID).asLiveData()
@@ -75,7 +75,7 @@ class ConversationPopupDialog(
             popupView,
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
+            true,
         )
 
         userTextBox = popupView.findViewById(R.id.userTextbox)
@@ -185,6 +185,11 @@ class ConversationPopupDialog(
                 popupWindow.dismiss()
             }
         }
+    }
+
+    private var dismissListener: (() -> Unit)? = null
+    fun setOnDismissListener(listener: () -> Unit) {
+        dismissListener = listener
     }
 
     companion object {

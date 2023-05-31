@@ -7,9 +7,8 @@ import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.ActionRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
-import de.hdmstuttgart.thelaendofadventure.ui.fragments.ConversationPopupDialog
-import de.hdmstuttgart.thelaendofadventure.ui.dialogpopup.ConversationPopupDialog
 import de.hdmstuttgart.thelaendofadventure.ui.dialogpopup.RiddlePopupDialog
+import de.hdmstuttgart.thelaendofadventure.ui.popupwindow.ConversationPopupDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -29,7 +28,7 @@ class QuestLogic(private val context: Context) {
 
     val userID = context.getSharedPreferences(
         R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE
+        Context.MODE_PRIVATE,
     ).getInt(R.string.userID.toString(), -1)
 
     /**
@@ -41,12 +40,12 @@ class QuestLogic(private val context: Context) {
      */
     fun finishedQuestGoal(
         questID: Int,
-        goalNumber: Int
+        goalNumber: Int,
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             Log.d(
                 TAG,
-                "User userID: $userID completed QuestGoal questID: $questID, questGoal: $goalNumber"
+                "User userID: $userID completed QuestGoal questID: $questID, questGoal: $goalNumber",
             )
 
             if (goalNumber == 0) {
@@ -58,7 +57,7 @@ class QuestLogic(private val context: Context) {
             if (questRepository.updateAndCheckQuestProgressByUserID(
                     userID,
                     questID,
-                    updatedGoalNumber
+                    updatedGoalNumber,
                 )
             ) {
                 Log.d(TAG, "User userID: $userID completed Quest questID: $questID")
@@ -81,8 +80,14 @@ class QuestLogic(private val context: Context) {
         Log.d(TAG, "dialogPath: $dialogPath")
 
         if (dialogPath != null) {
+            val questImage = questRepository.getQuestImageByQuestID(questID)
             withContext(Dispatchers.Main) {
-                val conversationPopupDialog = ConversationPopupDialog(context, dialogPath)
+                val conversationPopupDialog = ConversationPopupDialog(
+                    context,
+                    dialogPath,
+                    userID,
+                    questImage ?: "no path needed", // is needed for null pointer exception
+                )
                 conversationPopupDialog.show()
                 conversationPopupDialog.setOnDismissListener {
                     CoroutineScope(Dispatchers.IO).launch {
@@ -123,23 +128,6 @@ class QuestLogic(private val context: Context) {
             badgeRepository.updateBadgeProgressByUserID(userID, badgeID, currentGoalNumber + 1)
 
             Log.d(TAG, "Badge progress updated for User userID: $userID, badgeID: $badgeID")
-        }
-    }
-
-    private suspend fun showConversation(userID: Int, questID: Int, goalNumber: Int) {
-        val dialogPath: String? = actionRepository.getDialogPath(userID, goalNumber, questID)
-        Log.d(TAG, "dialogPath: $dialogPath")
-        if (dialogPath != null) {
-            withContext(Dispatchers.Main) {
-                val questImage = questRepository.getQuestImageByQuestID(questID)
-                val conversationPopupDialog = ConversationPopupDialog(
-                    context,
-                    dialogPath,
-                    userID,
-                    questImage
-                )
-                conversationPopupDialog.show()
-            }
         }
     }
 }

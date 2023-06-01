@@ -183,6 +183,7 @@ class ConversationPopupDialog(
             displayNextDialogue()
             if (currentIndex > dialogueList.size) {
                 popupWindow.dismiss()
+                dismissListener?.invoke()
             }
         }
     }

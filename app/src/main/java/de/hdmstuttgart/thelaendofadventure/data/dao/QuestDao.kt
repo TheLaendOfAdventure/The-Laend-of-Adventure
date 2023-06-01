@@ -123,4 +123,11 @@ interface QuestDao {
             "ORDER BY action.actionID "
     )
     fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>>
+
+    @Query(
+        "SELECT imagePath " +
+            "FROM quest " +
+            "WHERE quest.questID = :questID "
+    )
+    fun getQuestImageByQuestID(questID: Int): String
 }

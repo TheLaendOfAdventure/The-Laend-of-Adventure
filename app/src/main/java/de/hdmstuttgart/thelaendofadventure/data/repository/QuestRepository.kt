@@ -120,5 +120,18 @@ interface QuestRepository {
      * @param userID The ID of the user
      */
     fun getLocationForAcceptedQuestsByUserID(userID: Int): Flow<List<LocationGoal>>
+
+    /**
+     * Retrieves a list of [String] of all quest actions descriptions.
+     *
+     * @param userID The ID of the user
+     */
     fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>>
+
+    /**
+     * Retrieves a [String] of the quest image path.
+     *
+     * @param userID The ID of the user
+     */
+    fun getQuestImageByQuestID(questID: Int): String
 }

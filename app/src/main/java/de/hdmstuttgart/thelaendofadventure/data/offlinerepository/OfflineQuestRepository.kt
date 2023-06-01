@@ -75,4 +75,8 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
     override fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>> {
         return questDao.getAllActionDescriptionsByQuestID(questID)
     }
+
+    override fun getQuestImageByQuestID(questID: Int): String {
+        return questDao.getQuestImageByQuestID(questID)
+    }
 }

@@ -33,7 +33,7 @@ import java.io.InputStream
 class MapHelper(
     private val mapview: MapView,
     private val questList: List<QuestEntity>,
-    private val context: Context
+    private val context: Context,
 
 ) {
     private lateinit var pointAnnotationManager: PointAnnotationManager
@@ -42,12 +42,12 @@ class MapHelper(
     private val viewAnnotationManager = mapview.viewAnnotationManager
     val userID = context.getSharedPreferences(
         R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE
+        Context.MODE_PRIVATE,
     ).getInt(R.string.userID.toString(), -1)
 
     fun setUpMap() {
         mapview.getMapboxMap().loadStyleUri(
-            context.getString(R.string.mapbox_styleURL)
+            context.getString(R.string.mapbox_styleURL),
         ) {
             val pointAnnotationList = prepareAnnotationMarker(mapview)
 
@@ -67,7 +67,7 @@ class MapHelper(
     }
 
     private fun prepareAnnotationMarker(
-        mapView: MapView
+        mapView: MapView,
     ): List<PointAnnotation> {
         val annotationPlugin = mapView.annotations
         pointAnnotationManager = annotationPlugin.createPointAnnotationManager()
@@ -92,7 +92,7 @@ class MapHelper(
 
     private fun prepareViewAnnotation(
         pointAnnotationList: List<PointAnnotation>,
-        questList: List<QuestEntity>
+        questList: List<QuestEntity>,
     ): List<View> {
         try {
             val viewAnnotationList = pointAnnotationList.mapIndexed { index, pointAnnotation ->
@@ -105,7 +105,7 @@ class MapHelper(
 
                 val viewAnnotation = viewAnnotationManager.addViewAnnotation(
                     R.layout.dialog_accept_quest_popup,
-                    options
+                    options,
                 )
 
                 viewAnnotation.visibility = View.GONE
@@ -124,7 +124,7 @@ class MapHelper(
     private fun questViewBinding(
         quest: QuestEntity,
         viewAnnotation: View,
-        pointAnnotation: PointAnnotation
+        pointAnnotation: PointAnnotation,
     ) {
         val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
         val imagePath = "file:///android_asset/questimages/" + quest.imagePath
@@ -135,13 +135,13 @@ class MapHelper(
         val npcName = readNpcNameFromJsonFile(quest.dialogPath)
         binding.dialogAcceptQuestQuestDescription.text = context.getString(
             R.string.npc_name,
-            npcName
+            npcName,
         )
-        binding.dialogAcceptQuestQuestDescription.text = context.getString(
+        binding.dialogAcceptQuestQuestDetails.text = context.getString(
             R.string.quest_details,
             quest.latitude,
             quest.longitude,
-            quest.description
+            quest.description,
         )
 
         binding.dialogAcceptQuestAcceptButton.text = context.getString(R.string.quest_accept)
@@ -152,7 +152,7 @@ class MapHelper(
     private fun configureViewAnnotationButtons(
         viewAnnotation: View,
         questID: Int,
-        pointAnnotation: PointAnnotation
+        pointAnnotation: PointAnnotation,
     ) {
         val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
         binding.dialogAcceptQuestDeclineButton.setOnClickListener {

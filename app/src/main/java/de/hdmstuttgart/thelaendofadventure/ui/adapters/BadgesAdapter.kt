@@ -24,7 +24,7 @@ import de.hdmstuttgart.thelaendofadventure.ui.helper.StringHelper
 class BadgesAdapter(
     private val badgeList: List<BadgeEntity>,
     val accepted: Boolean,
-    private val lifecycleOwner: LifecycleOwner,
+    private val lifecycleOwner: LifecycleOwner
 ) :
     RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
 
@@ -46,7 +46,7 @@ class BadgesAdapter(
     // binds the list items to a view
     override fun onBindViewHolder(
         holder: ViewHolder,
-        position: Int,
+        position: Int
     ) {
         val badge = badgeList[position]
 
@@ -58,7 +58,7 @@ class BadgesAdapter(
         if (!accepted) {
             holder.imageView.setColorFilter(
                 Color.parseColor("#70000000"),
-                PorterDuff.Mode.DARKEN,
+                PorterDuff.Mode.DARKEN
             )
         }
         // sets the text to the textview from our itemHolder class
@@ -66,13 +66,13 @@ class BadgesAdapter(
 
         val userID = context.getSharedPreferences(
             R.string.sharedPreferences.toString(),
-            Context.MODE_PRIVATE,
+            Context.MODE_PRIVATE
         ).getInt(R.string.userID.toString(), -1)
 
         // show uncompleted BadgesGoals
         val actionUncompleted = badgeRepository.getUncompletedGoalsForBadgeByUserID(
             userID,
-            badge.badgeID,
+            badge.badgeID
         ).asLiveData()
         val actionObserverUncompleted = Observer<List<ActionEntity>> { actions ->
             if (actions.isEmpty()) {
@@ -98,7 +98,7 @@ class BadgesAdapter(
         // show already completed BadgesGoals
         val actionCompleted = badgeRepository.getCompletedGoalsForBadgeByUserID(
             userID,
-            badge.badgeID,
+            badge.badgeID
         ).asLiveData()
         val actionObserverCompleted = Observer<List<ActionEntity>> { actions ->
             if (actions.isEmpty()) {

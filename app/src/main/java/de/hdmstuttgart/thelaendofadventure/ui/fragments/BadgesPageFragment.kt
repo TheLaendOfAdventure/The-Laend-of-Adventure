@@ -25,7 +25,7 @@ class BadgesPageFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         viewModel = ViewModelProvider(this)[BadgesPageViewModel::class.java]
 
@@ -73,7 +73,7 @@ class BadgesPageFragment : Fragment() {
     private fun setUpBadgePageProfileButton() {
         binding.badgesPageProfileButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_badges_to_main_page,
+                R.id.navigate_from_badges_to_main_page
             )
         }
     }
@@ -81,12 +81,12 @@ class BadgesPageFragment : Fragment() {
     private fun setUpUserPageNavigationButtons() {
         binding.badgesPageNavigationButtonToUser.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_badges_to_user_page,
+                R.id.navigate_from_badges_to_user_page
             )
         }
         binding.badgesPageNavigationButtonToQuest.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_badges_to_quest_page,
+                R.id.navigate_from_badges_to_quest_page
             )
         }
     }

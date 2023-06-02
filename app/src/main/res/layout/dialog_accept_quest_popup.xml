@@ -9,7 +9,7 @@
 
 
     <ImageView
-        android:id="@+id/dialogPopup_image"
+        android:id="@+id/dialog_accept_quest_image"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_alignParentStart="true"
@@ -21,7 +21,7 @@
         tools:layout_marginTop="20dp" />
 
     <TextView
-        android:id="@+id/popupDialog_name"
+        android:id="@+id/dialog_accept_quest_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -29,16 +29,16 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="85dp"
         android:layout_marginEnd="35dp"
-        android:layout_toEndOf="@+id/dialogPopup_image"
+        android:layout_toEndOf="@+id/dialog_accept_quest_image"
         android:background="@drawable/rectangle"
         android:textAlignment="center"
         tools:text="@string/popup_name_NPC" />
 
     <TextView
-        android:id="@+id/popupDialog_questDescription"
+        android:id="@+id/dialog_accept_quest_quest_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/popupDialog_name"
+        android:layout_below="@+id/dialog_accept_quest_name"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
@@ -50,10 +50,10 @@
         android:textAlignment="center" />
 
     <TextView
-        android:id="@+id/popupDialog_questDetails"
+        android:id="@+id/dialog_accept_quest_quest_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/popupDialog_questDescription"
+        android:layout_below="@+id/dialog_accept_quest_quest_description"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
@@ -66,10 +66,10 @@
         android:textAlignment="center" />
 
     <Button
-        android:id="@+id/popupDialog_declineButton"
+        android:id="@+id/dialog_accept_quest_decline_button"
         android:layout_width="139dp"
         android:layout_height="48dp"
-        android:layout_below="@+id/popupDialog_questDetails"
+        android:layout_below="@+id/dialog_accept_quest_quest_details"
         android:layout_alignParentStart="true"
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
@@ -79,10 +79,10 @@
         tools:text="@string/popup_declineButton" />
 
     <Button
-        android:id="@+id/popupDialog_acceptButton"
+        android:id="@+id/dialog_accept_quest_accept_button"
         android:layout_width="139dp"
         android:layout_height="48dp"
-        android:layout_below="@+id/popupDialog_questDetails"
+        android:layout_below="@+id/dialog_accept_quest_quest_details"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"

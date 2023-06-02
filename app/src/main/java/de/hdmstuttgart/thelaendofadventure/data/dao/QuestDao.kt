@@ -14,6 +14,12 @@ import kotlinx.coroutines.flow.Flow
 interface QuestDao {
 
     @Query(
+        "SELECT dialogPath FROM quest " +
+            "WHERE quest.questID = :questID"
+    )
+    suspend fun getDialogPathByQuestID(questID: Int): String
+
+    @Query(
         "SELECT quest.* FROM quest " +
             "INNER JOIN user_quest ON quest.questID = user_quest.questID " +
             "WHERE user_quest.userID = :userID"
@@ -43,8 +49,8 @@ interface QuestDao {
     fun getQuestsWithDetailsByUserID(userID: Int): Flow<List<QuestDetails>>
 
     @Query(
-        "SELECT [action].* From [action] " +
-            "INNER JOIN questGoal ON [action].actionID = questGoal.actionID " +
+        "SELECT action.* From action " +
+            "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
             "INNER JOIN user_quest ON user_quest.questID = questGoal.questID " +
             "WHERE user_quest.currentGoalNumber >= questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"
@@ -52,8 +58,8 @@ interface QuestDao {
     fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     @Query(
-        "SELECT [action].* From [action] " +
-            "INNER JOIN questGoal ON [action].actionID = questGoal.actionID " +
+        "SELECT action.* From action " +
+            "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
             "INNER JOIN user_quest ON user_quest.questID = questGoal.questID " +
             "WHERE user_quest.currentGoalNumber < questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"
@@ -68,7 +74,7 @@ interface QuestDao {
 
     @Query(
         "INSERT INTO user_quest (userID, questID, currentGoalNumber)" +
-            "VALUES (:userID, :questID, 1)"
+            "VALUES (:userID, :questID, 0)"
     )
     suspend fun assignQuestToUser(userID: Int, questID: Int)
 
@@ -99,8 +105,8 @@ interface QuestDao {
     @Query(
         "SELECT achievement.questID " +
             "FROM achievement " +
-            "JOIN [action] ON [action].actionID = achievement.actionID " +
-            "JOIN badgeGoal ON badgeGoal.actionID = [action].actionID " +
+            "JOIN action ON action.actionID = achievement.actionID " +
+            "JOIN badgeGoal ON badgeGoal.actionID = action.actionID " +
             "JOIN badge ON badge.badgeID = badgeGoal.badgeID " +
             "JOIN user_badge ON user_badge.badgeID = badge.badgeID " +
             "WHERE badge.badgeID = :badgeID " +
@@ -108,4 +114,13 @@ interface QuestDao {
             "AND user_badge.userID = :userID "
     )
     fun getQuestForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<Int>>
+
+    @Query(
+        "SELECT action.description " +
+            "FROM action " +
+            "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
+            "WHERE questGoal.questID = :questID " +
+            "ORDER BY action.actionID "
+    )
+    fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>>
 }

@@ -4,26 +4,38 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.RecyclerView
 import de.hdmstuttgart.the_laend_of_adventure.R
+import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
+import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
+import de.hdmstuttgart.thelaendofadventure.ui.helper.StringHelper
 
-class QuestAdapter(private val questList: List<QuestDetails>) : RecyclerView.Adapter<QuestAdapter.ViewHolder>() { // ktlint-disable max-line-length
+class QuestAdapter(
+    private val questList: List<QuestDetails>,
+    private val lifecycleOwner: LifecycleOwner
+) : RecyclerView.Adapter<QuestAdapter.ViewHolder>() { // ktlint-disable max-line-length
 
     lateinit var context: Context
+    lateinit var questRepository: QuestRepository
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item
         context = parent.context
+        questRepository = AppDataContainer(context).questRepository
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.questpage_listitem, parent, false)
         val viewHolder = ViewHolder(view)
 
-        viewHolder.cardView.setOnClickListener(QuestCardClickListener(viewHolder.descriptionField))
+        viewHolder.cardView.setOnClickListener(ListItemClickListener(viewHolder.infoInner))
 
         return viewHolder
     }
@@ -46,6 +58,26 @@ class QuestAdapter(private val questList: List<QuestDetails>) : RecyclerView.Ada
         )
         // sets the description to the description textfield
         holder.descriptionField.text = (quest.description)
+
+        var actionDescription = questRepository.getAllActionDescriptionsByQuestID(quest.questID).asLiveData()
+        val actionObserver = Observer<List<String>> { descriptions ->
+            // Handle the questList
+            var textList = ""
+            for ((index, description) in descriptions.withIndex()) {
+                // Perform your desired operations with the item
+                var line = "${index + 1}: $description"
+                // check if goal is reached and strike through if so
+                if (quest.currentGoalNumber > index + 1) {
+                    line = StringHelper.strikethroughText(line)
+                }
+                if (index < descriptions.size - 1) {
+                    line += "\n"
+                }
+                textList += line
+            }
+            holder.questGoals.text = textList
+        }
+        actionDescription.observe(lifecycleOwner, actionObserver)
     }
 
     // return the number of the items in the list
@@ -59,6 +91,8 @@ class QuestAdapter(private val questList: List<QuestDetails>) : RecyclerView.Ada
         val progressBar: ProgressBar = itemView.findViewById(R.id.quest_progress)
         val progressNumeric: TextView = itemView.findViewById(R.id.quest_progress_numeric)
         val descriptionField: TextView = itemView.findViewById(R.id.quest_description)
+        val infoInner: LinearLayout = itemView.findViewById(R.id.inner_info)
+        val questGoals: TextView = itemView.findViewById(R.id.quest_goals)
         val cardView: CardView = itemView.findViewById(R.id.quest_card_view)
     }
 }

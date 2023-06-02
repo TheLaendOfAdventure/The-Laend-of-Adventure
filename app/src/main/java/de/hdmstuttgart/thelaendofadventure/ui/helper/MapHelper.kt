@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.helper
 
-import android.content.Context
+import android.content.Context // ktlint-disable import-ordering
 import android.graphics.Bitmap
 import android.util.Log
 import android.view.View
@@ -19,9 +19,9 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import de.hdmstuttgart.the_laend_of_adventure.R
-import de.hdmstuttgart.the_laend_of_adventure.databinding.PopupDialogBinding
-import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
+import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogAcceptQuestPopupBinding
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
+import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -104,7 +104,7 @@ class MapHelper(
                 }
 
                 val viewAnnotation = viewAnnotationManager.addViewAnnotation(
-                    R.layout.popup_dialog,
+                    R.layout.dialog_accept_quest_popup,
                     options
                 )
 
@@ -126,23 +126,26 @@ class MapHelper(
         viewAnnotation: View,
         pointAnnotation: PointAnnotation
     ) {
-        val binding = PopupDialogBinding.bind(viewAnnotation)
+        val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
         val imagePath = "file:///android_asset/questimages/" + quest.imagePath
         Glide.with(context)
             .load(imagePath)
-            .into(binding.dialogPopupImage)
-        binding.popupDialogName.text = quest.name
+            .into(binding.dialogAcceptQuestImage)
+        binding.dialogAcceptQuestName.text = quest.name
         val npcName = readNpcNameFromJsonFile(quest.dialogPath)
-        binding.popupDialogQuestDescription.text = context.getString(R.string.npc_name, npcName)
-        binding.popupDialogQuestDetails.text = context.getString(
+        binding.dialogAcceptQuestQuestDescription.text = context.getString(
+            R.string.npc_name,
+            npcName
+        )
+        binding.dialogAcceptQuestQuestDescription.text = context.getString(
             R.string.quest_details,
             quest.latitude,
             quest.longitude,
             quest.description
         )
 
-        binding.popupDialogAcceptButton.text = context.getString(R.string.quest_accept)
-        binding.popupDialogDeclineButton.text = context.getString(R.string.quest_decline)
+        binding.dialogAcceptQuestAcceptButton.text = context.getString(R.string.quest_accept)
+        binding.dialogAcceptQuestDeclineButton.text = context.getString(R.string.quest_decline)
 
         configureViewAnnotationButtons(viewAnnotation, quest.questID, pointAnnotation)
     }
@@ -151,14 +154,14 @@ class MapHelper(
         questID: Int,
         pointAnnotation: PointAnnotation
     ) {
-        val binding = PopupDialogBinding.bind(viewAnnotation)
-        binding.popupDialogDeclineButton.setOnClickListener {
+        val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
+        binding.dialogAcceptQuestDeclineButton.setOnClickListener {
             viewAnnotation.visibility = View.GONE
         }
 
-        binding.popupDialogAcceptButton.setOnClickListener {
+        binding.dialogAcceptQuestAcceptButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                AppDataContainer(context).questRepository.assignQuestToUser(userID, questID)
+                QuestLogic(context).finishedQuestGoal(questID, START_GOAL)
             }
             viewAnnotationManager.removeViewAnnotation(viewAnnotation)
             pointAnnotationManager.delete(pointAnnotation)
@@ -198,5 +201,6 @@ class MapHelper(
 
     companion object {
         private const val TAG = "MapHelper"
+        private const val START_GOAL = 0
     }
 }

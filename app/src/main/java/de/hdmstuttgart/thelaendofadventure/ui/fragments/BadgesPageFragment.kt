@@ -43,6 +43,9 @@ class BadgesPageFragment : Fragment() {
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         viewModel.acceptedBadges.observe(viewLifecycleOwner, acceptedBadgeObserver)
+        val recycleView = binding.badgesPageRecyclerview
+        recycleView.layoutManager = LinearLayoutManager(requireContext())
+        recycleView.adapter = BadgesAdapter(emptyList(), this)
 
         val unacceptedRecycleView = binding.badgesPageRecyclerview
         unacceptedRecycleView.layoutManager = LinearLayoutManager(requireContext())
@@ -53,6 +56,8 @@ class BadgesPageFragment : Fragment() {
             val adapter = BadgesAdapter(badgeList, accepted = false)
             unacceptedRecycleView.adapter = adapter
             println(badgeList)
+            val adapter = BadgesAdapter(badgeList, this)
+            recycleView.adapter = adapter
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         viewModel.unacceptedBadges.observe(viewLifecycleOwner, unacceptedBadgeObserver)

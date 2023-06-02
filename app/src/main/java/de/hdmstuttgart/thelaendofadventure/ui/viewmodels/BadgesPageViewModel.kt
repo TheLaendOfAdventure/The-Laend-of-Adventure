@@ -18,6 +18,7 @@ class BadgesPageViewModel(application: Application) : AndroidViewModel(applicati
         Context.MODE_PRIVATE
     ).getInt(R.string.userID.toString(), -1)
 
-    val badges = badgeRepository.getAcceptedBadgesByUserID(userID).asLiveData()
+    val acceptedBadges = badgeRepository.getAcceptedBadgesByUserID(userID).asLiveData()
+    val unacceptedBadges = badgeRepository.getUnacceptedBadgesByUserID(userID).asLiveData()
     val user = userRepository.getUserByID(userID).asLiveData()
 }

@@ -31,17 +31,29 @@ class BadgesPageFragment : Fragment() {
 
         binding = FragmentBadgesPageBinding.inflate(inflater, container, false)
 
-        val recycleView = binding.badgesPageRecyclerview
-        recycleView.layoutManager = LinearLayoutManager(requireContext())
-        recycleView.adapter = BadgesAdapter(emptyList(), this)
+        val acceptedRecycleView = binding.badgesPageRecyclerviewAccepted
+        acceptedRecycleView.layoutManager = LinearLayoutManager(requireContext())
+        acceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = true, this)
 
-        val badgeObserver = Observer<List<BadgeEntity>> { badgeList ->
-            // Handle the badgeList
-            val adapter = BadgesAdapter(badgeList, this)
-            recycleView.adapter = adapter
+        val acceptedBadgeObserver = Observer<List<BadgeEntity>> { badgeList ->
+            // Handle the accepted badgeList
+            val adapter = BadgesAdapter(badgeList, accepted = true, this)
+            acceptedRecycleView.adapter = adapter
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.badges.observe(viewLifecycleOwner, badgeObserver)
+        viewModel.acceptedBadges.observe(viewLifecycleOwner, acceptedBadgeObserver)
+
+        val unacceptedRecycleView = binding.badgesPageRecyclerviewUnaccepted
+        unacceptedRecycleView.layoutManager = LinearLayoutManager(requireContext())
+        unacceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = false, this)
+
+        val unacceptedBadgeObserver = Observer<List<BadgeEntity>> { badgeList ->
+            // Handle the unaccepted badgeList
+            val adapter = BadgesAdapter(badgeList, accepted = false, this)
+            unacceptedRecycleView.adapter = adapter
+        }
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        viewModel.unacceptedBadges.observe(viewLifecycleOwner, unacceptedBadgeObserver)
 
         val userObserver = Observer<UserEntity> { user ->
             binding.badgesProfileButtonLevelDisplay.text = user.level.toString()

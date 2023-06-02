@@ -21,10 +21,10 @@ import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.ui.helper.StringHelper
 
-class BadgesAdapter(private val badgeList: List<BadgeEntity>, val accepted: Boolean) :
 class BadgesAdapter(
     private val badgeList: List<BadgeEntity>,
-    private val lifecycleOwner: LifecycleOwner
+    val accepted: Boolean,
+    private val lifecycleOwner: LifecycleOwner,
 ) :
     RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
 
@@ -44,7 +44,10 @@ class BadgesAdapter(
     }
 
     // binds the list items to a view
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         val badge = badgeList[position]
 
         // sets the image to the imageview from our itemHolder class
@@ -55,7 +58,7 @@ class BadgesAdapter(
         if (!accepted) {
             holder.imageView.setColorFilter(
                 Color.parseColor("#70000000"),
-                PorterDuff.Mode.DARKEN
+                PorterDuff.Mode.DARKEN,
             )
         }
         // sets the text to the textview from our itemHolder class
@@ -63,13 +66,13 @@ class BadgesAdapter(
 
         val userID = context.getSharedPreferences(
             R.string.sharedPreferences.toString(),
-            Context.MODE_PRIVATE
+            Context.MODE_PRIVATE,
         ).getInt(R.string.userID.toString(), -1)
 
         // show uncompleted BadgesGoals
-        var actionUncompleted = badgeRepository.getUncompletedGoalsForBadgeByUserID(
+        val actionUncompleted = badgeRepository.getUncompletedGoalsForBadgeByUserID(
             userID,
-            badge.badgeID
+            badge.badgeID,
         ).asLiveData()
         val actionObserverUncompleted = Observer<List<ActionEntity>> { actions ->
             if (actions.isEmpty()) {
@@ -93,9 +96,9 @@ class BadgesAdapter(
         actionUncompleted.observe(lifecycleOwner, actionObserverUncompleted)
 
         // show already completed BadgesGoals
-        var actionCompleted = badgeRepository.getCompletedGoalsForBadgeByUserID(
+        val actionCompleted = badgeRepository.getCompletedGoalsForBadgeByUserID(
             userID,
-            badge.badgeID
+            badge.badgeID,
         ).asLiveData()
         val actionObserverCompleted = Observer<List<ActionEntity>> { actions ->
             if (actions.isEmpty()) {

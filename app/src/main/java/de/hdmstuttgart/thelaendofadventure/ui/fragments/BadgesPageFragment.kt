@@ -25,7 +25,7 @@ class BadgesPageFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         viewModel = ViewModelProvider(this)[BadgesPageViewModel::class.java]
 
@@ -33,31 +33,26 @@ class BadgesPageFragment : Fragment() {
 
         val acceptedRecycleView = binding.badgesPageRecyclerview
         acceptedRecycleView.layoutManager = LinearLayoutManager(requireContext())
-        acceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = true)
+        acceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = true, this)
 
         val acceptedBadgeObserver = Observer<List<BadgeEntity>> { badgeList ->
-            // Handle the badgeList
-            val adapter = BadgesAdapter(badgeList, accepted = true)
+            // Handle the accepted badgeList
+            val adapter = BadgesAdapter(badgeList, accepted = true, this)
             acceptedRecycleView.adapter = adapter
-            println(badgeList)
+            println("accepted" + badgeList)
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         viewModel.acceptedBadges.observe(viewLifecycleOwner, acceptedBadgeObserver)
-        val recycleView = binding.badgesPageRecyclerview
-        recycleView.layoutManager = LinearLayoutManager(requireContext())
-        recycleView.adapter = BadgesAdapter(emptyList(), this)
 
         val unacceptedRecycleView = binding.badgesPageRecyclerview
         unacceptedRecycleView.layoutManager = LinearLayoutManager(requireContext())
-        unacceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = false)
+        unacceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = false, this)
 
         val unacceptedBadgeObserver = Observer<List<BadgeEntity>> { badgeList ->
-            // Handle the badgeList
-            val adapter = BadgesAdapter(badgeList, accepted = false)
+            // Handle the unaccepted badgeList
+            val adapter = BadgesAdapter(badgeList, accepted = false, this)
             unacceptedRecycleView.adapter = adapter
-            println(badgeList)
-            val adapter = BadgesAdapter(badgeList, this)
-            recycleView.adapter = adapter
+            println("unnacepted" + badgeList)
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         viewModel.unacceptedBadges.observe(viewLifecycleOwner, unacceptedBadgeObserver)
@@ -80,7 +75,7 @@ class BadgesPageFragment : Fragment() {
     private fun setUpBadgePageProfileButton() {
         binding.badgesPageProfileButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_badges_to_main_page
+                R.id.navigate_from_badges_to_main_page,
             )
         }
     }
@@ -88,12 +83,12 @@ class BadgesPageFragment : Fragment() {
     private fun setUpUserPageNavigationButtons() {
         binding.badgesPageNavigationButtonToUser.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_badges_to_user_page
+                R.id.navigate_from_badges_to_user_page,
             )
         }
         binding.badgesPageNavigationButtonToQuest.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_badges_to_quest_page
+                R.id.navigate_from_badges_to_quest_page,
             )
         }
     }

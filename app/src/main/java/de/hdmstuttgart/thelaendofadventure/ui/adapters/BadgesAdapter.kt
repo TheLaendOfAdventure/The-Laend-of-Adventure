@@ -69,32 +69,11 @@ class BadgesAdapter(
             Context.MODE_PRIVATE
         ).getInt(R.string.userID.toString(), -1)
 
-        // show uncompleted BadgesGoals
-        val actionUncompleted = badgeRepository.getUncompletedGoalsForBadgeByUserID(
-            userID,
-            badge.badgeID
-        ).asLiveData()
-        val actionObserverUncompleted = Observer<List<ActionEntity>> { actions ->
-            if (actions.isEmpty()) {
-                holder.badgeGoalsUncompleted.visibility = View.GONE
-            } else {
-                holder.badgeGoalsUncompleted.visibility = View.VISIBLE
-            }
-            // Handle the questList
-            var textList = ""
-            for ((index, action) in actions.withIndex()) {
-                // Perform your desired operations with the item
-                var line = action.description
-                // check for next line
-                if (index < actions.size - 1) {
-                    line += "\n"
-                }
-                textList += line
-            }
-            holder.badgeGoalsUncompleted.text = textList
-        }
-        actionUncompleted.observe(lifecycleOwner, actionObserverUncompleted)
+        bindUnacceptedBadges(userID, badge, holder)
+        bindAcceptedBadges(userID, badge, holder)
+    }
 
+    private fun bindAcceptedBadges(userID: Int, badge: BadgeEntity, holder: ViewHolder) {
         // show already completed BadgesGoals
         val actionCompleted = badgeRepository.getCompletedGoalsForBadgeByUserID(
             userID,
@@ -120,6 +99,34 @@ class BadgesAdapter(
             holder.badgeGoalsCompleted.text = textList
         }
         actionCompleted.observe(lifecycleOwner, actionObserverCompleted)
+    }
+
+    private fun bindUnacceptedBadges(userID: Int, badge: BadgeEntity, holder: ViewHolder) {
+        // show uncompleted BadgesGoals
+        val actionUncompleted = badgeRepository.getUncompletedGoalsForBadgeByUserID(
+            userID,
+            badge.badgeID
+        ).asLiveData()
+        val actionObserverUncompleted = Observer<List<ActionEntity>> { actions ->
+            if (actions.isEmpty()) {
+                holder.badgeGoalsUncompleted.visibility = View.GONE
+            } else {
+                holder.badgeGoalsUncompleted.visibility = View.VISIBLE
+            }
+            // Handle the questList
+            var textList = ""
+            for ((index, action) in actions.withIndex()) {
+                // Perform your desired operations with the item
+                var line = action.description
+                // check for next line
+                if (index < actions.size - 1) {
+                    line += "\n"
+                }
+                textList += line
+            }
+            holder.badgeGoalsUncompleted.text = textList
+        }
+        actionUncompleted.observe(lifecycleOwner, actionObserverUncompleted)
     }
 
     // return the number of the items in the list

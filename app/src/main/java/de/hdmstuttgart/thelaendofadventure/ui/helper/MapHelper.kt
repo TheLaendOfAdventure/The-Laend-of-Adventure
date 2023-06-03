@@ -28,7 +28,6 @@ import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-import java.io.InputStream
 
 class MapHelper(
     private val mapview: MapView,
@@ -176,7 +175,9 @@ class MapHelper(
         val applicationContext = context.applicationContext
         val jsonString: String? = try {
             // Open the JSON file from the assets folder
-            val inputStream: InputStream = applicationContext.assets.open(filePath)
+            val completeFilePath = "conversations/$filePath"
+            println(completeFilePath)
+            val inputStream = applicationContext.assets.open(completeFilePath)
             val size = inputStream.available()
             val buffer = ByteArray(size)
             inputStream.read(buffer)

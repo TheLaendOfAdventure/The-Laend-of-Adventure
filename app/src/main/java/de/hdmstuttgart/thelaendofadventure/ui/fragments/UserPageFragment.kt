@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentUserPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
@@ -59,8 +59,12 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
             binding.userPageNameField.hint = user.name
             binding.userPageLevelDisplay.text = user.level.toString()
             binding.userPageProfileButtonLevelDisplay.text = user.level.toString()
-            binding.userPageProfileButton.setImageURI(user.imagePath?.toUri())
-            binding.userPageProfilePictureView.setImageURI(user.imagePath?.toUri())
+            Glide.with(requireContext())
+                .load(user.imagePath)
+                .into(binding.userPageProfileButton)
+            Glide.with(requireContext())
+                .load(user.imagePath)
+                .into(binding.userPageProfilePictureView)
         }
         viewModel.user.observe(viewLifecycleOwner, userObserver)
 

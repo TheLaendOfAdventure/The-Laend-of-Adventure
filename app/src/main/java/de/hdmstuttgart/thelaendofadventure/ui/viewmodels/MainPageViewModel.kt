@@ -6,11 +6,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestWithUserLevel
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 class MainPageViewModel(private val application: Application) : AndroidViewModel(application) {
 
@@ -25,17 +25,16 @@ class MainPageViewModel(private val application: Application) : AndroidViewModel
         Context.MODE_PRIVATE
     ).getInt(R.string.userID.toString(), -1)
     val user = userRepository.getUserByID(getUserID()).asLiveData()
-    val quests = questRepository.getUnacceptedQuestsByUserID(getUserID()).asLiveData()
+    val quests = questRepository.getUnacceptedQuestsByUserID(getUserID())
     val riddleList = questRepository.getRiddleForAcceptedQuestsByUserID(getUserID()).asLiveData()
-    private var userLevel = -1
-    fun getUserLevel(): Int = runBlocking {
-        if (userLevel == -1) {
-            val levelDeferred = async(Dispatchers.IO) {
-                userRepository.getLevelByUserID(getUserID())
+    val userLevel = userRepository.getLevelByUserID(getUserID())
+    val combinedList = combineQuestWithLevel().asLiveData()
+    private fun combineQuestWithLevel(): Flow<QuestWithUserLevel> {
+        return (
+            combine(quests, userLevel) { value1, value2 ->
+                QuestWithUserLevel(value1, value2)
             }
-            userLevel = levelDeferred.await()
-        }
-        userLevel
+            )
     }
     fun getUserID(): Int {
         if (userID == -1) {

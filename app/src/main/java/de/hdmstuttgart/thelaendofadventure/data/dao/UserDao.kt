@@ -19,7 +19,7 @@ interface UserDao {
     fun getUserById(id: Int): Flow<UserEntity>
 
     @Query("SELECT level FROM user WHERE userID = :id")
-    fun getLevelByUserID(id: Int): Int
+    fun getLevelByUserID(id: Int): Flow<Int>
 
     @Query(
         "UPDATE user SET name = :name " +

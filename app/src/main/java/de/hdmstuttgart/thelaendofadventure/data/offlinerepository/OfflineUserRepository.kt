@@ -19,7 +19,7 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
         return userDao.getUserById(userID)
     }
 
-    override fun getLevelByUserID(userID: Int): Int {
+    override fun getLevelByUserID(userID: Int): Flow<Int> {
         return userDao.getLevelByUserID(userID)
     }
 

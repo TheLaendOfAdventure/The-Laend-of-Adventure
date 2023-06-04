@@ -31,6 +31,14 @@ interface UserRepository {
     fun getUserByID(userID: Int): Flow<UserEntity>
 
     /**
+     * Get the level of a specific user in the database.
+     *
+     * @param userID the ID of the user to update.
+     * @return the level as [Int].
+     */
+    fun getLevelByUserID(userID: Int): Int
+
+    /**
      * Update the name of a specific user in the database.
      *
      * @param userID the ID of the user to update.

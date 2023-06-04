@@ -129,7 +129,8 @@ class ConversationPopupDialog(
     private fun readDialogueFromJsonFile(): List<Pair<String, String>> {
         val dialogueList = mutableListOf<Pair<String, String>>()
         try {
-            val inputStream = context.assets.open(dialogPath)
+            val filePath = "conversations/$dialogPath"
+            val inputStream = context.assets.open(filePath)
             val size = inputStream.available()
             val buffer = ByteArray(size)
             inputStream.read(buffer)

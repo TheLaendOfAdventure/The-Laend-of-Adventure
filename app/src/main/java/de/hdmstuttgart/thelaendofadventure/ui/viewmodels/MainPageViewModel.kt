@@ -8,6 +8,9 @@ import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 class MainPageViewModel(private val application: Application) : AndroidViewModel(application) {
 
@@ -21,11 +24,19 @@ class MainPageViewModel(private val application: Application) : AndroidViewModel
         R.string.sharedPreferences.toString(),
         Context.MODE_PRIVATE
     ).getInt(R.string.userID.toString(), -1)
-
     val user = userRepository.getUserByID(getUserID()).asLiveData()
     val quests = questRepository.getUnacceptedQuestsByUserID(getUserID()).asLiveData()
     val riddleList = questRepository.getRiddleForAcceptedQuestsByUserID(getUserID()).asLiveData()
-
+    private var userLevel = -1
+    fun getUserLevel(): Int = runBlocking {
+        if (userLevel == -1) {
+            val levelDeferred = async(Dispatchers.IO) {
+                userRepository.getLevelByUserID(getUserID())
+            }
+            userLevel = levelDeferred.await()
+        }
+        userLevel
+    }
     fun getUserID(): Int {
         if (userID == -1) {
             // make sure SharedPreferences is updated

@@ -63,14 +63,14 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
         binding = FragmentMainPageBinding.inflate(inflater, container, false)
         mapView = binding.mapView
+        val userLevel = viewModel.getUserLevel()
         val questObserver = Observer<List<QuestEntity>> { questList ->
-            mapHelper = MapHelper(mapView, questList, requireContext())
+            mapHelper = MapHelper(mapView, questList, requireContext(), userLevel)
             mapHelper.setUpMap()
         }
         viewModel.quests.observe(viewLifecycleOwner, questObserver)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (isUserLoggedIn()) {

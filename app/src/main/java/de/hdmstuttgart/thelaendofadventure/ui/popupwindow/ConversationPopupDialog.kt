@@ -130,7 +130,6 @@ class ConversationPopupDialog(
         val dialogueList = mutableListOf<Pair<String, String>>()
         try {
             val filePath = "conversations/$dialogPath"
-            println(filePath)
             val inputStream = context.assets.open(filePath)
             val size = inputStream.available()
             val buffer = ByteArray(size)

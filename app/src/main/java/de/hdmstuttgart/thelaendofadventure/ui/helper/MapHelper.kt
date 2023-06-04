@@ -176,7 +176,6 @@ class MapHelper(
         val jsonString: String? = try {
             // Open the JSON file from the assets folder
             val completeFilePath = "conversations/$filePath"
-            println(completeFilePath)
             val inputStream = applicationContext.assets.open(completeFilePath)
             val size = inputStream.available()
             val buffer = ByteArray(size)

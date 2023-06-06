@@ -6,17 +6,12 @@ import android.view.LayoutInflater
 import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogRiddlePopupBinding
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
+import de.hdmstuttgart.thelaendofadventure.ui.adapters.RiddleAnswerAdapter
 
 class RiddlePopupDialog(
     private val context: Context,
     private val riddles: List<RiddleDetails>
 ) {
-
-    companion object {
-        private const val questID = 7
-        private const val questGoal = 2
-        private const val answer3 = 3
-    }
 
     private lateinit var binding: DialogRiddlePopupBinding
     private val dialog = Dialog(context)
@@ -30,25 +25,28 @@ class RiddlePopupDialog(
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
         setupViews()
-        setOnClickListeners()
         dialog.show()
     }
 
     private fun setupViews() {
-        val answers = riddles.map { riddle -> riddle.possibleAnswers }
-
         binding.riddleTextView.text = riddles[0].question
-        binding.answerOption1.text = answers[0]
-        binding.answerOption2.text = answers[1]
-        binding.answerOption3.text = answers[2]
-        binding.answerOption4.text = answers[answer3]
-    }
-
-    private fun setOnClickListeners() {
-        binding.answerOption1.setOnClickListener {
-            QuestLogic(context).finishedQuestGoal(questID, questGoal)
-            dismissDialog()
-        }
+        val adapter = RiddleAnswerAdapter(
+            riddles,
+            object : RiddleAnswerAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    if (riddles[position].answer == riddles[position].possibleAnswers) {
+                        QuestLogic(context).finishedQuestGoal(
+                            riddles[position].questID,
+                            riddles[position].goalNumber
+                        )
+                        dismissDialog()
+                    } else {
+                        // @todo handle wrong answer
+                    }
+                }
+            }
+        )
+        binding.answerList.adapter = adapter
     }
 
     private var dismissListener: (() -> Unit)? = null

@@ -92,7 +92,8 @@ interface QuestDao {
     fun getLocationForAcceptedQuestsByUserID(userID: Int): Flow<List<LocationGoal>>
 
     @Query(
-        "SELECT riddle.*, riddleAnswers.answer AS possibleAnswers FROM riddle " +
+        "SELECT questGoal.questID , questGoal.goalNumber, " +
+            "riddle.*, riddleAnswers.answer AS possibleAnswers FROM riddle " +
             "JOIN riddleAnswers ON riddleAnswers.actionID = riddle.actionID " +
             "JOIN questGoal ON questGoal.actionID = riddle.actionID " +
             "JOIN user_quest ON user_quest.questID = questGoal.questID " +

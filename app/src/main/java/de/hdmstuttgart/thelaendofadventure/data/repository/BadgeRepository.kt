@@ -78,4 +78,12 @@ interface BadgeRepository {
      * @param userID the ID of the user to assign the badges to.
      */
     suspend fun assignAllBadgesToUser(userID: Int)
+
+    /**
+     * Retrieves a badge entity by the specified badge ID.
+     *
+     * @param badgeID The ID of the badge to retrieve.
+     * @return The badge entity with the specified badge ID, or null if no badge is found.
+     */
+    suspend fun getBadgesByBadgeID(badgeID: Int): BadgeEntity
 }

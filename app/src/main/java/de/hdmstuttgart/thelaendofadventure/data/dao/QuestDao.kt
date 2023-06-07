@@ -20,6 +20,12 @@ interface QuestDao {
     suspend fun getDialogPathByQuestID(questID: Int): String
 
     @Query(
+        "SELECT * FROM quest " +
+            "WHERE quest.questID = :questID"
+    )
+    suspend fun getQuestByQuestID(questID: Int): QuestEntity
+
+    @Query(
         "SELECT quest.* FROM quest " +
             "INNER JOIN user_quest ON quest.questID = user_quest.questID " +
             "WHERE user_quest.userID = :userID"

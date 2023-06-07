@@ -63,24 +63,42 @@ class QuestLogic(private val context: Context) {
                 )
             ) {
                 Log.d(TAG, "User userID: $userID completed Quest questID: $questID")
-                notifyUser(questID)
+                notifyQuest(questID)
 
                 UserLogic(context).addExperience(userID, EXPERIENCE_PER_QUEST)
                 updateBadgeProgress(userID)
+            } else {
+                notifyGoal(questID, goalNumber)
             }
             showConversation(questID, updatedGoalNumber)
         }
     }
 
-    private suspend fun notifyUser(questID: Int) {
+    private suspend fun notifyGoal(questID: Int, goalNumber: Int) {
+        val name: String
+        val message: String
+        if (goalNumber == 0) {
+            val quest = questRepository.getQuestByQuestID(questID)
+            name = quest.name
+            message = context.getString(R.string.quest_accept_message, name)
+        } else {
+            name = questRepository.getNameByQuestByGoal(questID, goalNumber)
+            message = context.getString(R.string.goal_completed_message, name)
+        }
+        val imageResID = getImageResourceID("")
+        showSnackbar(message, imageResID)
+    }
+
+    private suspend fun notifyQuest(questID: Int) {
         val quest = questRepository.getQuestByQuestID(questID)
-        val imageResID = getImageResourceID(quest.imagePath!!)
+        val imageResID = getImageResourceID(quest.imagePath)
         showSnackbar(context.getString(R.string.quest_completed_message, quest.name), imageResID)
     }
 
     @SuppressLint("DiscouragedApi")
-    private fun getImageResourceID(imagePath: String): Int {
-        return context.resources.getIdentifier(imagePath, "drawable", context.packageName)
+    private fun getImageResourceID(imagePath: String?): Int {
+        val path = imagePath ?: ""
+        return context.resources.getIdentifier(path, "drawable", context.packageName)
     }
 
     private suspend fun showSnackbar(message: String, imageResID: Int) {

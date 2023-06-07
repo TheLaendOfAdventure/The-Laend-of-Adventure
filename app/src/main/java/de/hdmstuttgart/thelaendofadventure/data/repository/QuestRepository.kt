@@ -124,14 +124,22 @@ interface QuestRepository {
     /**
      * Retrieves a list of [String] of all quest actions descriptions.
      *
-     * @param userID The ID of the user
+     * @param questID The ID of the user
      */
     fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>>
 
     /**
      * Retrieves a [String] of the quest image path.
      *
-     * @param userID The ID of the user
+     * @param questID The ID of the user
      */
     fun getQuestImageByQuestID(questID: Int): String
+
+    /**
+     * Retrieves a QuestEntity object from the database based on the provided quest ID.
+     *
+     * @param questID The ID of the quest to retrieve.
+     * @return The QuestEntity object representing the quest with the specified ID, or null if not found.
+     */
+    suspend fun getQuestByQuestID(questID: Int): QuestEntity
 }

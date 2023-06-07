@@ -79,4 +79,8 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
     override fun getQuestImageByQuestID(questID: Int): String {
         return questDao.getQuestImageByQuestID(questID)
     }
+
+    override suspend fun getQuestByQuestID(questID: Int): QuestEntity {
+        return questDao.getQuestByQuestID(questID)
+    }
 }

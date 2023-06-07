@@ -71,4 +71,5 @@
     <string name="quest_completed_message">Du hast die Quest: "%1$s" abgeschlossen!\n\nHerzlichen Glückwunsch, du erhältst 50 Erfahrungspunkte!</string>
     <string name="image_icon">image_icon</string>
     <string name="snackbar_message">Snackbar Message</string>
+    <string name="image_frame">image_frame</string>
 </resources>

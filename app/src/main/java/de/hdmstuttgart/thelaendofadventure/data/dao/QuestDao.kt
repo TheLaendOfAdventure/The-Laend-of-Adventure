@@ -136,5 +136,13 @@ interface QuestDao {
             "FROM quest " +
             "WHERE quest.questID = :questID "
     )
-    fun getQuestImageByQuestID(questID: Int): String
+    suspend fun getQuestImageByQuestID(questID: Int): String
+
+    @Query(
+        "SELECT name FROM action " +
+            "JOIN questGoal ON questGoal.actionID = action.actionID " +
+            "WHERE questGoal.questID = :questID " +
+            "AND goalNumber = :goalNumber"
+    )
+    suspend fun getNameByQuestByGoal(questID: Int, goalNumber: Int): String
 }

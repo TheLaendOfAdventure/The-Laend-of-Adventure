@@ -133,7 +133,7 @@ interface QuestRepository {
      *
      * @param questID The ID of the user
      */
-    fun getQuestImageByQuestID(questID: Int): String
+    suspend fun getQuestImageByQuestID(questID: Int): String
 
     /**
      * Retrieves a QuestEntity object from the database based on the provided quest ID.
@@ -142,4 +142,13 @@ interface QuestRepository {
      * @return The QuestEntity object representing the quest with the specified ID, or null if not found.
      */
     suspend fun getQuestByQuestID(questID: Int): QuestEntity
+
+    /**
+     * Retrieves the name of a goal based on the quest ID and goal number.
+     *
+     * @param questID The ID of the quest.
+     * @param goalNumber The goal number of the quest.
+     * @return The name of the quest.
+     */
+    suspend fun getNameByQuestByGoal(questID: Int, goalNumber: Int): String
 }

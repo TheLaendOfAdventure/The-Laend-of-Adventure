@@ -68,6 +68,7 @@
     <string name="partnerprofileimage">partnerProfileImage</string>
     <string name="partner_name">Partner name</string>
     <string name="user_name">User name</string>
+    <string name="quest_accept_message">Du hast die Quest: &quot;%1$s&quot; angenommen!\n\Viel Erfolg!</string>
     <string name="quest_completed_message">Du hast die Quest: &quot;%1$s&quot; abgeschlossen!\n\nHerzlichen Glückwunsch, du erhältst 50 Erfahrungspunkte!</string>
     <string name="goal_completed_message">Du hast die Aufgabe: &quot;%1$s&quot; abgeschlossen!</string>
     <string name="image_icon">image_icon</string>

@@ -75,9 +75,18 @@ class QuestLogic(private val context: Context) {
     }
 
     private suspend fun notifyGoal(questID: Int, goalNumber: Int) {
-        val name = questRepository.getNameByQuestByGoal(questID, goalNumber)
+        val name: String
+        val message: String
+        if (goalNumber == 0) {
+            val quest = questRepository.getQuestByQuestID(questID)
+            name = quest.name
+            message = context.getString(R.string.quest_accept_message, name)
+        } else {
+            name = questRepository.getNameByQuestByGoal(questID, goalNumber)
+            message = context.getString(R.string.goal_completed_message, name)
+        }
         val imageResID = getImageResourceID("")
-        showSnackbar(context.getString(R.string.goal_completed_message, name), imageResID)
+        showSnackbar(message, imageResID)
     }
 
     private suspend fun notifyQuest(questID: Int) {

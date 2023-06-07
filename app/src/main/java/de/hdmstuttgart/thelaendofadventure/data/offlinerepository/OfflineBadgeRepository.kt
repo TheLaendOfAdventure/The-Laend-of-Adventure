@@ -46,4 +46,8 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
         val badgesIDs = badges.map { it.badgeID }
         badgeDao.assignAllBadgesToUser(userID, badgesIDs)
     }
+
+    override suspend fun getBadgesByBadgeID(badgeID: Int): BadgeEntity {
+        return badgeDao.getBadgesByBadgeID(badgeID)
+    }
 }

@@ -3,6 +3,7 @@ package de.hdmstuttgart.thelaendofadventure.ui.helper
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.graphics.Color
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ class SnackbarHelper(private val context: Context) {
         snackbar = Snackbar.make(rootView!!, "", Snackbar.LENGTH_INDEFINITE)
         val snackbarLayout = snackbar!!.view as Snackbar.SnackbarLayout
         snackbarLayout.setPadding(0, 0, 0, 0)
+        snackbarLayout.setBackgroundColor(Color.TRANSPARENT)
         snackbarLayout.addView(binding.root, 0)
 
         setupTimer(progressBar)

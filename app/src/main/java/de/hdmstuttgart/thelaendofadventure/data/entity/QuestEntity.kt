@@ -12,5 +12,6 @@ data class QuestEntity(
     val description: String,
     val targetGoalNumber: Int,
     val longitude: Double,
-    val latitude: Double
+    val latitude: Double,
+    val level: Int
 )

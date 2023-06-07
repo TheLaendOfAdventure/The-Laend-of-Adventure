@@ -19,6 +19,10 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
         return userDao.getUserById(userID)
     }
 
+    override fun getLevelByUserID(userID: Int): Flow<Int> {
+        return userDao.getLevelByUserID(userID)
+    }
+
     override suspend fun updateUserName(userID: Int, name: String) {
         userDao.updateNameForUserID(userID, name)
     }

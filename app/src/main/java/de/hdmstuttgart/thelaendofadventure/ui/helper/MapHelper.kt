@@ -33,6 +33,7 @@ class MapHelper(
     private val mapview: MapView,
     private val questList: List<QuestEntity>,
     private val context: Context,
+    private val userLevel: Int,
 
 ) {
     private lateinit var pointAnnotationManager: PointAnnotationManager
@@ -44,13 +45,16 @@ class MapHelper(
         Context.MODE_PRIVATE,
     ).getInt(R.string.userID.toString(), -1)
 
+    private val filteredQuestList = questList.filter { quest ->
+        quest.level <= userLevel
+    }
+
     fun setUpMap() {
         mapview.getMapboxMap().loadStyleUri(
             context.getString(R.string.mapbox_styleURL),
         ) {
             val pointAnnotationList = prepareAnnotationMarker(mapview)
-
-            val viewList = prepareViewAnnotation(pointAnnotationList, questList)
+            val viewList = prepareViewAnnotation(pointAnnotationList, filteredQuestList)
             // show / hide view annotation based on a marker click
             pointAnnotationManager.addClickListener { clickedAnnotation ->
                 pointAnnotationList.forEach { pointAnnotation ->
@@ -70,12 +74,11 @@ class MapHelper(
     ): List<PointAnnotation> {
         val annotationPlugin = mapView.annotations
         pointAnnotationManager = annotationPlugin.createPointAnnotationManager()
-        val pointAnnotationOptionsList = getPointAnnotationOptionsList(questList)
+        val pointAnnotationOptionsList = getPointAnnotationOptionsList(filteredQuestList)
         return pointAnnotationOptionsList.map { pointAnnotationOptions ->
             pointAnnotationManager.create(pointAnnotationOptions)
         }
     }
-
     private fun getPointAnnotationOptionsList(questList: List<QuestEntity>):
         List<PointAnnotationOptions> {
         return questList.map { quest ->

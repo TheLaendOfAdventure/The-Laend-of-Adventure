@@ -20,7 +20,7 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListen
 import com.mapbox.maps.plugin.locationcomponent.location
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
-import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestWithUserLevel
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.logic.TrackingLogic
 import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
@@ -63,14 +63,13 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
         binding = FragmentMainPageBinding.inflate(inflater, container, false)
         mapView = binding.mapView
-        val questObserver = Observer<List<QuestEntity>> { questList ->
-            mapHelper = MapHelper(mapView, questList, requireContext())
+        val questObserver = Observer<QuestWithUserLevel> { questList ->
+            mapHelper = MapHelper(mapView, questList.quest, requireContext(), questList.userLevel)
             mapHelper.setUpMap()
         }
-        viewModel.quests.observe(viewLifecycleOwner, questObserver)
+        viewModel.combinedList.observe(viewLifecycleOwner, questObserver)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (isUserLoggedIn()) {

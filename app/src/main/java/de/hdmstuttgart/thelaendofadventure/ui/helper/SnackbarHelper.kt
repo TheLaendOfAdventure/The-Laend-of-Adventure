@@ -79,7 +79,7 @@ class SnackbarHelper(private val context: Context) {
     }
 
     companion object {
-        private const val TIMER_STEP_SIZE: Long = 100
+        private const val TIMER_STEP_SIZE: Long = 20
         private const val TIMER_DURATION: Long = 5000
     }
 }

@@ -19,6 +19,12 @@ interface BadgeDao {
     fun getAcceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>>
 
     @Query(
+        "SELECT * FROM badge " +
+            "WHERE badge.badgeID = :badgeID"
+    )
+    suspend fun getBadgesByBadgeID(badgeID: Int): BadgeEntity
+
+    @Query(
         "SELECT badge.* FROM badge " +
             "LEFT JOIN user_badge ON badge.badgeID = user_badge.badgeID " +
             "AND user_badge.userID = :userID " +

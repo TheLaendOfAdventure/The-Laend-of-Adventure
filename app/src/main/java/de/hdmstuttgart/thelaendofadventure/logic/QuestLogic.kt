@@ -163,8 +163,15 @@ class QuestLogic(private val context: Context) {
             Log.d(TAG, "Updating badge progress for User userID: $userID, badgeID: $badgeID")
 
             badgeRepository.updateBadgeProgressByUserID(userID, badgeID, currentGoalNumber + 1)
+            notifyBadge(badgeID)
 
             Log.d(TAG, "Badge progress updated for User userID: $userID, badgeID: $badgeID")
         }
+    }
+
+    private suspend fun notifyBadge(badgeID: Int) {
+        val badge = badgeRepository.getBadgesByBadgeID(badgeID)
+        val imageResID = getImageResourceID(badge.imagePath)
+        showSnackbar(context.getString(R.string.goal_completed_message, badge.name), imageResID)
     }
 }

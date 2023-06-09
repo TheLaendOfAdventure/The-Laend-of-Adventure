@@ -5,42 +5,19 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Color
 import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ProgressBar
 import com.google.android.material.snackbar.Snackbar
 import de.hdmstuttgart.the_laend_of_adventure.databinding.SnackbarDefaultBinding
-import java.util.LinkedList
-import java.util.Queue
 
-class SnackbarHelper private constructor() {
+class SnackbarHelper(private val context: Context) {
 
     private var snackbar: Snackbar? = null
-    private val snackbarQueue: Queue<SnackbarData> = LinkedList()
+    private var timer: CountDownTimer? = null
 
-    data class SnackbarData(val context: Context, val message: String, val iconResource: Int)
-
-    fun enqueueSnackbar(context: Context, message: String, iconResource: Int) {
-        val snackbarData = SnackbarData(context, message, iconResource)
-        snackbarQueue.offer(snackbarData)
-        if (snackbar == null) {
-            showNextSnackbar()
-        }
-    }
-
-    private fun showNextSnackbar() {
-        if (snackbarQueue.isNotEmpty()) {
-            val (context, message, iconResource) = snackbarQueue.poll()!!
-            Handler(Looper.getMainLooper()).postDelayed({
-                showSnackbar(context, message, iconResource)
-            }, DELAY_DURATION)
-        }
-    }
-
-    private fun showSnackbar(context: Context, message: String, iconResource: Int) {
-        val binding = SnackbarDefaultBinding.inflate(LayoutInflater.from(context))
+    fun showTimerSnackbar(message: String, iconResource: Int) {
+        val binding = SnackbarDefaultBinding.inflate(LayoutInflater.from(context), null, false)
         binding.textMessage.text = message
         binding.imageIcon.setImageResource(iconResource)
 
@@ -58,10 +35,11 @@ class SnackbarHelper private constructor() {
         setupSnackbarCallbacks()
 
         snackbar?.show()
+        timer?.start()
     }
 
     private fun setupTimer(progressBar: ProgressBar) {
-        val timer = object : CountDownTimer(TIMER_DURATION, TIMER_STEP_SIZE) {
+        timer = object : CountDownTimer(TIMER_DURATION, TIMER_STEP_SIZE) {
             override fun onTick(millisUntilFinished: Long) {
                 val progress = (TIMER_DURATION - millisUntilFinished) / TIMER_DURATION.toFloat()
                 val progressValue = (progress * progressBar.max).toInt()
@@ -72,14 +50,13 @@ class SnackbarHelper private constructor() {
                 dismissSnackbar()
             }
         }
-        timer.start()
     }
 
     private fun setupSnackbarCallbacks() {
         snackbar?.addCallback(object : Snackbar.Callback() {
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                 super.onDismissed(transientBottomBar, event)
-                showNextSnackbar()
+                timer?.cancel()
             }
         })
     }
@@ -94,7 +71,8 @@ class SnackbarHelper private constructor() {
         if (context is Activity) {
             rootView = context.window.decorView.rootView
         } else if (context is ContextWrapper) {
-            rootView = getRootViewFromContext(context.baseContext)
+            val baseContext = context.baseContext
+            rootView = getRootViewFromContext(baseContext)
         }
 
         return rootView
@@ -102,14 +80,6 @@ class SnackbarHelper private constructor() {
 
     companion object {
         private const val TIMER_STEP_SIZE: Long = 20
-        private const val DELAY_DURATION: Long = 3000
         private const val TIMER_DURATION: Long = 10000
-
-        private val instance: SnackbarHelper by lazy { SnackbarHelper() }
-
-        @JvmStatic
-        fun getSnackbarInstance(): SnackbarHelper {
-            return instance
-        }
     }
 }

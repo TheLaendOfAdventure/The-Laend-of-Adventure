@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.Flow
 interface BadgeDao {
 
     @Query(
-        "SELECT badge.* FROM badge " +
+        "SELECT badge.*, user_badge.currentGoalNumber FROM badge " +
             "INNER JOIN user_badge ON badge.badgeID = user_badge.badgeID " +
             "WHERE user_badge.userID = :userID"
     )
-    fun getAcceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>>
+    fun getAcceptedBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
 
     @Query(
         "SELECT * FROM badge " +
@@ -25,12 +25,12 @@ interface BadgeDao {
     suspend fun getBadgesByBadgeID(badgeID: Int): BadgeEntity
 
     @Query(
-        "SELECT badge.* FROM badge " +
+        "SELECT badge.*, user_badge.currentGoalNumber FROM badge " +
             "LEFT JOIN user_badge ON badge.badgeID = user_badge.badgeID " +
             "AND user_badge.userID = :userID " +
             "WHERE user_badge.userID IS NULL"
     )
-    fun getUnacceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>>
+    fun getUnacceptedBadgesByUserID(userID: Int): Flow<List<BadgeDetails>>
 
     @Query(
         "SELECT user_badge.currentGoalNumber, badge.targetGoalNumber FROM user_badge " +
@@ -77,7 +77,7 @@ interface BadgeDao {
 
     @Query(
         "INSERT INTO user_badge (userID, badgeID)" +
-            "VALUES (:userID, (:badgeIDs))"
+            "VALUES (:userID, :badgeID)"
     )
-    suspend fun assignAllBadgesToUser(userID: Int, badgeIDs: List<Int>)
+    suspend fun assignAllBadgesToUser(userID: Int, badgeID: Int)
 }

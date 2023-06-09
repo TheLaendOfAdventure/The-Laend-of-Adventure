@@ -1,7 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.data.offlinerepository
 
 import de.hdmstuttgart.thelaendofadventure.data.dao.UserDao
-import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -50,9 +49,5 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
 
     override suspend fun updateWrongRiddleAnswersByUserID(userID: Int, wrongRiddleAnswers: Int) {
         return userDao.updateWrongRiddleAnswersByUserID(userID, wrongRiddleAnswers)
-    }
-
-    override suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity { // ktlint-disable max-line-length
-        return userDao.getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID)
     }
 }

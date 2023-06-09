@@ -5,6 +5,7 @@ import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -50,5 +51,9 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
 
     override suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity {
         return badgeDao.getBadgeByBadgeID(badgeID)
+    }
+
+    override suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity { // ktlint-disable max-line-length
+        return badgeDao.getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID)
     }
 }

@@ -3,7 +3,6 @@ package de.hdmstuttgart.thelaendofadventure.data.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -63,17 +62,4 @@ interface UserDao {
             "WHERE userID = :userID"
     )
     suspend fun updateWrongRiddleAnswersByUserID(userID: Int, wrongRiddleAnswers: Int)
-
-    @Query(
-        "SELECT badgeGoal.* " +
-            "FROM badgeGoal " +
-            "JOIN action ON badgeGoal.actionID = action.actionID " +
-            "JOIN user_badge ON badgeGoal.badgeID = user_badge.badgeID " +
-            "JOIN user ON user_badge.userID = user.userID " +
-            "JOIN statTracking ON action.actionID = statTracking.actionID " +
-            "WHERE user.userID = :userID " +
-            "AND statTracking.goal = user.wrongRiddleAnswers " +
-            "AND statTracking.goalUnit = 'wrongRiddleAnswers'"
-    )
-    suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity
 }

@@ -1,6 +1,5 @@
 package de.hdmstuttgart.thelaendofadventure.data.repository
 
-import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -94,12 +93,4 @@ interface UserRepository {
      * @param wrongRiddleAnswers the new count for wrong Riddle-answers for the user.
      */
     suspend fun updateWrongRiddleAnswersByUserID(userID: Int, wrongRiddleAnswers: Int)
-
-    /**
-     * Get a [BadgeGoalEntity] for a specific user if the wrong Riddle-answers is reached.
-     *
-     * @param userID the ID of the user to update.
-     * @return a [BadgeGoalEntity] when the wrong Riddle-answers is reached for a Badge for the user.
-     */
-    suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity
 }

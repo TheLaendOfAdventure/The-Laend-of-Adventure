@@ -6,7 +6,6 @@ import android.util.Log
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.ActionRepository
-import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.ui.dialogpopup.RiddlePopupDialog
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SnackbarHelper
@@ -25,8 +24,8 @@ class QuestLogic(private val context: Context) {
     }
 
     private val questRepository: QuestRepository = AppDataContainer(context).questRepository
-    private val badgeRepository: BadgeRepository = AppDataContainer(context).badgeRepository
     private val actionRepository: ActionRepository = AppDataContainer(context).actionRepository
+    private val badgeLogic: BadgeLogic = BadgeLogic(context)
 
     val userID = context.getSharedPreferences(
         R.string.sharedPreferences.toString(),
@@ -66,7 +65,7 @@ class QuestLogic(private val context: Context) {
                 notifyQuest(questID)
 
                 UserLogic(context).addExperience(userID, EXPERIENCE_PER_QUEST)
-                updateBadgeProgress(questID)
+                badgeLogic.updateBadgeProgress(questID)
             } else {
                 notifyGoal(questID, goalNumber)
             }
@@ -152,27 +151,5 @@ class QuestLogic(private val context: Context) {
                 }
             }
         }
-    }
-
-    private suspend fun updateBadgeProgress(questID: Int) {
-        val badgeList = badgeRepository.getBadgesByUserIDAndQuestID(userID, questID).first()
-
-        for (badge in badgeList) {
-            val badgeID = badge.badgeID
-            val currentGoalNumber = badge.currentGoalNumber
-
-            Log.d(TAG, "Updating badge progress for User userID: $userID, badgeID: $badgeID")
-
-            badgeRepository.updateBadgeProgressByUserID(userID, badgeID, currentGoalNumber + 1)
-            notifyBadge(badgeID)
-
-            Log.d(TAG, "Badge progress updated for User userID: $userID, badgeID: $badgeID")
-        }
-    }
-
-    private suspend fun notifyBadge(badgeID: Int) {
-        val badge = badgeRepository.getBadgeByBadgeID(badgeID)
-        val imageResID = getImageResourceID(badge.imagePath)
-        showSnackbar(context.getString(R.string.goal_completed_message, badge.name), imageResID)
     }
 }

@@ -94,5 +94,5 @@ interface BadgeRepository {
      * @param userID the ID of the user to update.
      * @return a [BadgeGoalEntity] when the wrong Riddle-answers is reached for a Badge for the user.
      */
-    suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity
+    suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity?
 }

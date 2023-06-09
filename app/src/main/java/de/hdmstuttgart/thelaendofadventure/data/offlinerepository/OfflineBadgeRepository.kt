@@ -8,14 +8,13 @@ import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.toList
 
 class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
 
-    override fun getAcceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>> =
-        badgeDao.getAcceptedBadgesByUserID(userID)
+    override fun getAcceptedBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>> =
+        badgeDao.getAcceptedBadgesDetailsByUserID(userID)
 
-    override fun getUnacceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>> =
+    override fun getUnacceptedBadgesByUserID(userID: Int): Flow<List<BadgeDetails>> =
         badgeDao.getUnacceptedBadgesByUserID(userID)
 
     override fun getProgressForBadgeByUserID(userID: Int, badgeID: Int):
@@ -42,9 +41,11 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
     }
 
     override suspend fun assignAllBadgesToUser(userID: Int) {
-        val badges = badgeDao.getUnacceptedBadgesByUserID(userID).toList().flatten()
+        val badges = badgeDao.getUnacceptedBadgesByUserID(userID).first()
         val badgesIDs = badges.map { it.badgeID }
-        badgeDao.assignAllBadgesToUser(userID, badgesIDs)
+        badgesIDs.forEach { badgesID ->
+            badgeDao.assignAllBadgesToUser(userID, badgesID)
+        }
     }
 
     override suspend fun getBadgesByBadgeID(badgeID: Int): BadgeEntity {

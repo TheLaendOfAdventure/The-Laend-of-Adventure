@@ -15,17 +15,17 @@ interface BadgeRepository {
      * Gets all the accepted badges for a given user.
      *
      * @param userID the ID of the user to get the badges for
-     * @return a [Flow] emitting a list of [BadgeEntity] objects representing the accepted badges
+     * @return a [Flow] emitting a list of [BadgeDetails] objects representing the accepted badges
      */
-    fun getAcceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>>
+    fun getAcceptedBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
 
     /**
      * Gets all the unaccepted badges for a given user.
      *
      * @param userID the ID of the user to get the badges for
-     * @return a [Flow] emitting a list of [BadgeEntity] objects representing the unaccepted badges
+     * @return a [Flow] emitting a list of [BadgeDetails] objects representing the unaccepted badges
      */
-    fun getUnacceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>>
+    fun getUnacceptedBadgesByUserID(userID: Int): Flow<List<BadgeDetails>>
 
     /**
      * Gets the progress of a specific badge for a specific user.

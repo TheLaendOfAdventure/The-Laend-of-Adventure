@@ -1,5 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.data.repository
 
+import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -33,7 +34,7 @@ interface UserRepository {
     /**
      * Get the level of a specific user in the database.
      *
-     * @param userID the ID of the user to update.
+     * @param userID the ID of the user.
      * @return the level as Flow<Int>.
      */
     fun getLevelByUserID(userID: Int): Flow<Int>
@@ -77,4 +78,28 @@ interface UserRepository {
      * @param walkedKm the new walked kilometers for the user.
      */
     suspend fun updateUserWalkedKm(userID: Int, walkedKm: Int)
+
+    /**
+     * Get the wrong Riddle-answers of a specific user in the database.
+     *
+     * @param userID the ID of the user.
+     * @return the wrong Riddle-answers as [Int].
+     */
+    suspend fun getWrongRiddleAnswersByUserID(userID: Int): Int
+
+    /**
+     * increase the WrongRiddleAnswers field in the database by 1.
+     *
+     * @param userID the ID of the user to update.
+     * @param wrongRiddleAnswers the new count for wrong Riddle-answers for the user.
+     */
+    suspend fun updateWrongRiddleAnswersByUserID(userID: Int, wrongRiddleAnswers: Int)
+
+    /**
+     * Get a [BadgeGoalEntity] for a specific user if the wrong Riddle-answers is reached.
+     *
+     * @param userID the ID of the user to update.
+     * @return a [BadgeGoalEntity] when the wrong Riddle-answers is reached for a Badge for the user.
+     */
+    suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity
 }

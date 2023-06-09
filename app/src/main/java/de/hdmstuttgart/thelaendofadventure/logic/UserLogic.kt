@@ -45,6 +45,22 @@ class UserLogic(private val context: Context) {
         }
     }
 
+    fun increaseWrongAnswerRiddle(userID: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val newWrongRiddleAnswers: Int = userRepository.getWrongRiddleAnswersByUserID(userID) + 1 // ktlint-disable max-line-length
+            userRepository.updateWrongRiddleAnswersByUserID(userID, newWrongRiddleAnswers)
+            val badgeGoalEntity = userRepository.getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(
+                userID
+            )
+            println("bitte helpen sie mir")
+            println(badgeGoalEntity)
+            if (badgeGoalEntity != null) {
+                // @todo set badgeGoal.isCompleted true
+                // notifyBadge(badgeGoalEntity.badgeID)
+            }
+        }
+    }
+
     private suspend fun notifyLevel(level: Int) {
         delay(DELAY_TIMER)
         val imageResID = R.drawable.chat_icon // @todo implement new Icon

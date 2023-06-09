@@ -22,7 +22,7 @@ interface BadgeDao {
         "SELECT * FROM badge " +
             "WHERE badge.badgeID = :badgeID"
     )
-    suspend fun getBadgesByBadgeID(badgeID: Int): BadgeEntity
+    suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity
 
     @Query(
         "SELECT badge.* FROM badge " +

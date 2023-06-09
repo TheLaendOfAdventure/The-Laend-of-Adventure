@@ -12,7 +12,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentBadgesPageBinding
-import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.ui.adapters.BadgesAdapter
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.BadgesPageViewModel
@@ -35,7 +35,7 @@ class BadgesPageFragment : Fragment() {
         acceptedRecycleView.layoutManager = LinearLayoutManager(requireContext())
         acceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = true, this)
 
-        val acceptedBadgeObserver = Observer<List<BadgeEntity>> { badgeList ->
+        val acceptedBadgeObserver = Observer<List<BadgeDetails>> { badgeList ->
             // Handle the accepted badgeList
             val adapter = BadgesAdapter(badgeList, accepted = true, this)
             acceptedRecycleView.adapter = adapter
@@ -47,7 +47,7 @@ class BadgesPageFragment : Fragment() {
         unacceptedRecycleView.layoutManager = LinearLayoutManager(requireContext())
         unacceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = false, this)
 
-        val unacceptedBadgeObserver = Observer<List<BadgeEntity>> { badgeList ->
+        val unacceptedBadgeObserver = Observer<List<BadgeDetails>> { badgeList ->
             // Handle the unaccepted badgeList
             val adapter = BadgesAdapter(badgeList, accepted = false, this)
             unacceptedRecycleView.adapter = adapter

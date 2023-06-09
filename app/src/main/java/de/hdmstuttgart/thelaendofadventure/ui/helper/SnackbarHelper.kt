@@ -30,15 +30,6 @@ class SnackbarHelper private constructor() {
         }
     }
 
-//    private fun showNextSnackbar() {
-//        if (snackbarQueue.isNotEmpty() && snackbar == null) {
-//            val (context, message, iconResource) = snackbarQueue.poll()!!
-//            Handler(Looper.getMainLooper()).postDelayed({
-//                showSnackbar(context, message, iconResource)
-//            }, DELAY_DURATION)
-//        }
-//    }
-
     private fun showNextSnackbar() {
         if (snackbarQueue.isNotEmpty() && snackbar == null) {
             val (context, message, iconResource) = snackbarQueue.poll()!!

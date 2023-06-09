@@ -15,7 +15,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
@@ -53,12 +52,9 @@ class BadgesAdapter(
         val badge = badgeList[position]
 
         // sets the image to the imageview from our itemHolder class
-        val imageName = "badgeimages/" + badge.imagePath
-        val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
-        val imagePath = "drawable://$resourceId"
-        Glide.with(holder.imageView.context)
-            .load(imagePath)
-            .into(holder.imageView)
+        val imageName = badge.imagePath
+        val resourceID = context.resources.getIdentifier(imageName, "drawable", context.packageName)
+        holder.imageView.setImageResource(resourceID)
         if (!accepted) {
             holder.imageView.setColorFilter(
                 Color.parseColor("#70000000"),

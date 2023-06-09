@@ -129,7 +129,9 @@ class MapHelper(
         pointAnnotation: PointAnnotation,
     ) {
         val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
-        val imagePath = "file:///android_asset/questimages/" + quest.imagePath
+        val imageName = "questimages/" + quest.imagePath
+        val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
+        val imagePath = "drawable://$resourceId"
         Glide.with(context)
             .load(imagePath)
             .into(binding.dialogAcceptQuestImage)

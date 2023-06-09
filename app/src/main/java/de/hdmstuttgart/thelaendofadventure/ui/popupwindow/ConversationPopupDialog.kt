@@ -98,7 +98,9 @@ class ConversationPopupDialog(
      * Sets up the popup window and its click listener.
      */
     private fun setupPopupWindow() {
-        val imagePath = "file:///android_asset/questimages/$partnerImagePath"
+        val imageName = "questimages/$partnerImagePath"
+        val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
+        val imagePath = "drawable://$resourceId"
         Glide.with(userProfile.context)
             .load(imagePath)
             .into(partnerProfile)

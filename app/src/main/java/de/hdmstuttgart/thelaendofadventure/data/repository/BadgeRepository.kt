@@ -85,5 +85,5 @@ interface BadgeRepository {
      * @param badgeID The ID of the badge to retrieve.
      * @return The badge entity with the specified badge ID, or null if no badge is found.
      */
-    suspend fun getBadgesByBadgeID(badgeID: Int): BadgeEntity
+    suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity
 }

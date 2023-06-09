@@ -48,7 +48,7 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
         }
     }
 
-    override suspend fun getBadgesByBadgeID(badgeID: Int): BadgeEntity {
-        return badgeDao.getBadgesByBadgeID(badgeID)
+    override suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity {
+        return badgeDao.getBadgeByBadgeID(badgeID)
     }
 }

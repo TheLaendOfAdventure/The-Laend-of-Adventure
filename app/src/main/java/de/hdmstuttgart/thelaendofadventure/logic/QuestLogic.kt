@@ -103,7 +103,8 @@ class QuestLogic(private val context: Context) {
 
     private suspend fun showSnackbar(message: String, imageResID: Int) {
         withContext(Dispatchers.Main) {
-            SnackbarHelper(context).showTimerSnackbar(message, imageResID)
+            val snackbarHelper = SnackbarHelper.getSnackbarInstance()
+            snackbarHelper.enqueueSnackbar(context, message, imageResID)
         }
     }
 
@@ -170,7 +171,7 @@ class QuestLogic(private val context: Context) {
     }
 
     private suspend fun notifyBadge(badgeID: Int) {
-        val badge = badgeRepository.getBadgesByBadgeID(badgeID)
+        val badge = badgeRepository.getBadgeByBadgeID(badgeID)
         val imageResID = getImageResourceID(badge.imagePath)
         showSnackbar(context.getString(R.string.goal_completed_message, badge.name), imageResID)
     }

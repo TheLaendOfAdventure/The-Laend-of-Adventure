@@ -66,7 +66,7 @@ class QuestLogic(private val context: Context) {
                 notifyQuest(questID)
 
                 UserLogic(context).addExperience(userID, EXPERIENCE_PER_QUEST)
-                updateBadgeProgress(userID)
+                updateBadgeProgress(questID)
             } else {
                 notifyGoal(questID, goalNumber)
             }

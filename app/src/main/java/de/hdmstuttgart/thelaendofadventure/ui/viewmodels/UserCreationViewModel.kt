@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
+import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ class UserCreationViewModel(application: Application) : AndroidViewModel(applica
 
     // Repository for accessing user data
     private val userRepository: UserRepository = AppDataContainer(application).userRepository
+    private val badgeRepository: BadgeRepository = AppDataContainer(application).badgeRepository
 
     // Saving the userID to SharedPreferences
     private val sharedPreferences =
@@ -48,6 +50,7 @@ class UserCreationViewModel(application: Application) : AndroidViewModel(applica
     fun createUser() = viewModelScope.launch(Dispatchers.IO) {
         val user = UserEntity(name = name, imagePath = imagePath)
         val userID = userRepository.addUser(user).toInt()
+        badgeRepository.assignAllBadgesToUser(userID)
 
         editor.putInt(R.string.userID.toString(), userID)
         editor.apply()

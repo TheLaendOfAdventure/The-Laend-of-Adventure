@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
@@ -16,13 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.ui.helper.StringHelper
 
 class BadgesAdapter(
-    private val badgeList: List<BadgeEntity>,
+    private val badgeList: List<BadgeDetails>,
     val accepted: Boolean,
     private val lifecycleOwner: LifecycleOwner
 ) :
@@ -63,6 +65,16 @@ class BadgesAdapter(
         }
         // sets the text to the textview from our itemHolder class
         holder.badgeName.text = badge.name
+        // sets the max to the progressBar from our itemHolder class
+        holder.progressBar.max = badge.targetGoalNumber
+        // sets the progress to the progressBar from our itemHolder class
+        holder.progressBar.setProgress(badge.currentGoalNumber, true)
+        // sets the progress to the progress textfield
+        holder.progressNumeric.text = context.getString(
+            R.string.quest_progress_numeric_text,
+            badge.currentGoalNumber,
+            badge.targetGoalNumber
+        )
 
         val userID = context.getSharedPreferences(
             R.string.sharedPreferences.toString(),
@@ -73,7 +85,7 @@ class BadgesAdapter(
         bindAcceptedBadges(userID, badge, holder)
     }
 
-    private fun bindAcceptedBadges(userID: Int, badge: BadgeEntity, holder: ViewHolder) {
+    private fun bindAcceptedBadges(userID: Int, badge: BadgeDetails, holder: ViewHolder) {
         // show already completed BadgesGoals
         val actionCompleted = badgeRepository.getCompletedGoalsForBadgeByUserID(
             userID,
@@ -101,7 +113,7 @@ class BadgesAdapter(
         actionCompleted.observe(lifecycleOwner, actionObserverCompleted)
     }
 
-    private fun bindUnacceptedBadges(userID: Int, badge: BadgeEntity, holder: ViewHolder) {
+    private fun bindUnacceptedBadges(userID: Int, badge: BadgeDetails, holder: ViewHolder) {
         // show uncompleted BadgesGoals
         val actionUncompleted = badgeRepository.getUncompletedGoalsForBadgeByUserID(
             userID,
@@ -141,6 +153,8 @@ class BadgesAdapter(
         val badgeGoalsUncompleted: TextView = itemView.findViewById(R.id.badge_goals_uncompleted)
         val badgeGoalsCompleted: TextView = itemView.findViewById(R.id.badge_goals_completed)
         val innerInfo: LinearLayout = itemView.findViewById(R.id.inner_info)
-        val wrapper: LinearLayout = itemView.findViewById(R.id.wrapper)
+        val wrapper: CardView = itemView.findViewById(R.id.wrapper)
+        val progressBar: ProgressBar = itemView.findViewById(R.id.badge_progress)
+        val progressNumeric: TextView = itemView.findViewById(R.id.badge_progress_numeric)
     }
 }

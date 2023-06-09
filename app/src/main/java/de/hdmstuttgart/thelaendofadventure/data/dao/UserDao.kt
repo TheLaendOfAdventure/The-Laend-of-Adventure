@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.StatTracking
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -77,10 +76,4 @@ interface UserDao {
             "AND statTracking.goalUnit = 'wrongRiddleAnswers'"
     )
     suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity
-
-    @Query(
-        "SELECT * " +
-            "FROM statTracking "
-    )
-    suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID2(): StatTracking
 }

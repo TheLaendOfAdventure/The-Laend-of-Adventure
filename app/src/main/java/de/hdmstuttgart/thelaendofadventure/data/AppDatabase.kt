@@ -23,7 +23,8 @@ import de.hdmstuttgart.thelaendofadventure.data.entity.*
         BadgeGoalEntity::class,
         BadgeEntity::class,
         ActionEntity::class,
-        AchievementEntity::class
+        AchievementEntity::class,
+        StatTrackingEntity::class,
     ],
     version = 7,
     exportSchema = false

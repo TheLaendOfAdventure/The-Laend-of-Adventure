@@ -8,6 +8,7 @@ import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SnackbarHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -17,6 +18,7 @@ class UserLogic(private val context: Context) {
     companion object {
         private const val TAG = "UserLogic"
         private const val EXPERIENCE_FOR_LEVEL = 100
+        private const val DELAY_TIMER: Long = 13000
     }
 
     private val userRepository: UserRepository = AppDataContainer(context).userRepository
@@ -44,14 +46,14 @@ class UserLogic(private val context: Context) {
     }
 
     private suspend fun notifyLevel(level: Int) {
+        delay(DELAY_TIMER)
         val imageResID = R.drawable.chat_icon // @todo implement new Icon
         showSnackbar(context.getString(R.string.level_up_message, level), imageResID)
     }
 
     private suspend fun showSnackbar(message: String, imageResID: Int) {
         withContext(Dispatchers.Main) {
-            val snackbarHelper = SnackbarHelper.getSnackbarInstance()
-            snackbarHelper.enqueueSnackbar(context, message, imageResID)
+            SnackbarHelper(context).showTimerSnackbar(message, imageResID)
         }
     }
 }

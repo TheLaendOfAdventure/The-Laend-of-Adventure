@@ -103,8 +103,7 @@ class QuestLogic(private val context: Context) {
 
     private suspend fun showSnackbar(message: String, imageResID: Int) {
         withContext(Dispatchers.Main) {
-            val snackbarHelper = SnackbarHelper.getSnackbarInstance()
-            snackbarHelper.enqueueSnackbar(context, message, imageResID)
+            SnackbarHelper(context).showTimerSnackbar(message, imageResID)
         }
     }
 

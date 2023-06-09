@@ -108,7 +108,6 @@ class QuestLogic(private val context: Context) {
         }
     }
 
-    @Suppress("USELESS_ELVIS")
     private suspend fun showConversation(questID: Int, goalNumber: Int) {
         val dialogPath: String? = if (goalNumber == 1) {
             questRepository.getDialogPathByQuestID(questID)

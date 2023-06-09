@@ -1,9 +1,11 @@
 package de.hdmstuttgart.thelaendofadventure.logic
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
+import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SnackbarHelper
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +22,7 @@ class UserLogic(private val context: Context) {
     }
 
     private val userRepository: UserRepository = AppDataContainer(context).userRepository
+    private val badgeRepository: BadgeRepository = AppDataContainer(context).badgeRepository
 
     fun addExperience(userID: Int, experience: Int) {
         Log.d(TAG, "User userID: $userID added $experience experience")
@@ -54,9 +57,21 @@ class UserLogic(private val context: Context) {
             println(badgeGoalEntity)
             if (badgeGoalEntity != null) {
                 // @todo set badgeGoal.isCompleted true
-                // notifyBadge(badgeGoalEntity.badgeID)
+                notifyBadge(badgeGoalEntity.badgeID)
             }
         }
+    }
+
+    private suspend fun notifyBadge(badgeID: Int) {
+        val badge = badgeRepository.getBadgesByBadgeID(badgeID)
+        val imageResID = getImageResourceID(badge.imagePath)
+        showSnackbar(context.getString(R.string.goal_completed_message, badge.name), imageResID)
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private fun getImageResourceID(imagePath: String?): Int {
+        val path = imagePath ?: ""
+        return context.resources.getIdentifier(path, "drawable", context.packageName)
     }
 
     private suspend fun notifyLevel(level: Int) {

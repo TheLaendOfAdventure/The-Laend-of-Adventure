@@ -15,7 +15,7 @@ import androidx.room.PrimaryKey
         )
     ]
 )
-data class StatTracking(
+data class StatTrackingEntity(
     @PrimaryKey
     @ColumnInfo(index = true)
     val actionID: Int,

@@ -133,7 +133,7 @@ interface QuestRepository {
      *
      * @param questID The ID of the quest
      */
-    suspend fun getQuestImageByQuestID(questID: Int): String
+    suspend fun getQuestImageByQuestID(questID: Int): String?
 
     /**
      * Retrieves a QuestEntity object from the database based on the provided quest ID.

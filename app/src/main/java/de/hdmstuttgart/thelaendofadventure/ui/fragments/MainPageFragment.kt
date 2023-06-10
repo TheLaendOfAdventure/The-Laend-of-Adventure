@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
-import android.Manifest
+import android.Manifest // ktlint-disable import-ordering
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -41,22 +41,14 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private lateinit var mapView: MapView
     private lateinit var mapHelper: MapHelper
     private lateinit var permissionManager: PermissionManager
-    private val permissionResultLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        val granted = permissions.entries.all { it.value }
-        if (granted) {
-            showUserAtMap()
-        } else {
-            showGpsAlertDialog()
-        }
-    }
     private lateinit var trackingLogic: TrackingLogic
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         CoroutineScope(Dispatchers.IO).launch { QuestLogic(requireContext()).checkRiddle() }
         trackingLogic = TrackingLogic(requireContext())
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,14 +57,19 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
         binding = FragmentMainPageBinding.inflate(inflater, container, false)
         mapView = binding.mapView
+        observeQuest()
+        return binding.root
+    }
+
+    private fun observeQuest() {
         val questObserver = Observer<QuestWithUserLevel> { questList ->
             mapHelper = MapHelper(mapView, questList.quest, requireContext(), questList.userLevel)
             mapHelper.setUpMap()
         }
         mapView.gestures.addOnMoveListener(onMoveListener)
         viewModel.combinedList.observe(viewLifecycleOwner, questObserver)
-        return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (isUserLoggedIn()) {
@@ -117,14 +114,49 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             )
         }
     }
+
     private fun setupLocationResetButton() {
         binding.mainPageResetPlayerLocation.setOnClickListener {
-            mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
+            mapView.location.addOnIndicatorPositionChangedListener(
+                onIndicatorPositionChangedListener
+            )
 
             val cameraOptions = CameraOptions.Builder()
                 .zoom(zoomLevel)
                 .build()
             mapView.getMapboxMap().setCamera(cameraOptions)
+        }
+    }
+
+    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
+        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
+        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
+    }
+
+    private val onMoveListener = object : OnMoveListener {
+        override fun onMoveBegin(detector: MoveGestureDetector) {
+            mapView.location.removeOnIndicatorPositionChangedListener(
+                onIndicatorPositionChangedListener
+            )
+        }
+
+        override fun onMove(detector: MoveGestureDetector): Boolean {
+            return false
+        }
+
+        @Suppress("EmptyFunctionBlock")
+        override fun onMoveEnd(detector: MoveGestureDetector) {
+        }
+    }
+
+    private val permissionResultLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val granted = permissions.entries.all { it.value }
+        if (granted) {
+            showUserAtMap()
+        } else {
+            showGpsAlertDialog()
         }
     }
 
@@ -138,23 +170,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             pulsingEnabled = true
         }
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-    }
-
-    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
-        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
-        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
-    }
-    private val onMoveListener = object : OnMoveListener {
-        override fun onMoveBegin(detector: MoveGestureDetector) {
-            mapView.location.removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        }
-
-        override fun onMove(detector: MoveGestureDetector): Boolean {
-            return false
-        }
-
-        @Suppress("EmptyFunctionBlock")
-        override fun onMoveEnd(detector: MoveGestureDetector) {}
     }
 
     private fun showGpsAlertDialog() {
@@ -171,6 +186,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             create().show()
         }
     }
+
     companion object {
         private const val zoomLevel = 17.0
     }

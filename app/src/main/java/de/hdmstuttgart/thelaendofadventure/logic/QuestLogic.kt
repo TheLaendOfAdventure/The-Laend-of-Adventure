@@ -25,7 +25,6 @@ class QuestLogic(private val context: Context) {
 
     private val questRepository: QuestRepository = AppDataContainer(context).questRepository
     private val actionRepository: ActionRepository = AppDataContainer(context).actionRepository
-    private val badgeLogic: BadgeLogic = BadgeLogic(context)
 
     val userID = context.getSharedPreferences(
         R.string.sharedPreferences.toString(),
@@ -65,7 +64,7 @@ class QuestLogic(private val context: Context) {
                 notifyQuest(questID)
 
                 UserLogic(context).addExperience(userID, EXPERIENCE_PER_QUEST)
-                badgeLogic.updateBadgeProgress(questID)
+                BadgeLogic(context).updateBadgeProgress(questID)
             } else {
                 notifyGoal(questID, goalNumber)
             }

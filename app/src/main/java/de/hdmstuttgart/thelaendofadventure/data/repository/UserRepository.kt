@@ -64,18 +64,18 @@ interface UserRepository {
     suspend fun updateUserExp(userID: Int, exp: Int)
 
     /**
-     * Get the wrong Riddle-answers of a specific user in the database.
+     * Get the number of wrong Riddle-answers of a specific user in the database.
      *
      * @param userID the ID of the user.
-     * @return the wrong Riddle-answers as [Int].
+     * @return the wrong Riddle-answers as Int.
      */
-    suspend fun getWrongRiddleAnswersByUserID(userID: Int): Int
+    suspend fun getWrongAnswerCountByUserID(userID: Int): Int
 
     /**
      * increase the WrongRiddleAnswers field in the database by 1.
      *
      * @param userID the ID of the user to update.
-     * @param wrongRiddleAnswers the new count for wrong Riddle-answers for the user.
+     * @param wrongAnswerCount the new count for wrong Riddle-answers for the user.
      */
-    suspend fun updateWrongRiddleAnswersByUserID(userID: Int, wrongRiddleAnswers: Int)
+    suspend fun updateWrongAnswerCountByUserID(userID: Int, wrongAnswerCount: Int)
 }

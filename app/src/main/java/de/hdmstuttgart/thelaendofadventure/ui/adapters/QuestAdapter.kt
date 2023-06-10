@@ -47,14 +47,14 @@ class QuestAdapter(
         // sets the text to the textview from our itemHolder class
         holder.textView.text = quest.name
         // sets the max to the progressBar from our itemHolder class
-        holder.progressBar.max = quest.targetGoalNumber
+        holder.progressBar.max = quest.targetGoalNumber - 1
         // sets the progress to the progressBar from our itemHolder class
-        holder.progressBar.setProgress(quest.currentGoalNumber, true)
+        holder.progressBar.setProgress(quest.currentGoalNumber - 1, true)
         // sets the progress to the progress textfield
         holder.progressNumeric.text = context.getString(
             R.string.quest_progress_numeric_text,
-            quest.currentGoalNumber,
-            quest.targetGoalNumber
+            quest.currentGoalNumber - 1,
+            quest.targetGoalNumber - 1
         )
         // sets the description to the description textfield
         holder.descriptionField.text = (quest.description)

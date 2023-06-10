@@ -49,9 +49,8 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
         }
     }
 
-    override suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity {
-        return badgeDao.getBadgeByBadgeID(badgeID)
-    }
+    override suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity =
+        badgeDao.getBadgeByBadgeID(badgeID)
 
     override suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity { // ktlint-disable max-line-length
         return badgeDao.getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID)

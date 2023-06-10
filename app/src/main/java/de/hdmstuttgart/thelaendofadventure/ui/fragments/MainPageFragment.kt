@@ -13,10 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
-import com.mapbox.geojson.Point
+import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
+import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.gestures
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
@@ -54,7 +56,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         CoroutineScope(Dispatchers.IO).launch { QuestLogic(requireContext()).checkRiddle() }
         trackingLogic = TrackingLogic(requireContext())
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,6 +68,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             mapHelper = MapHelper(mapView, questList.quest, requireContext(), questList.userLevel)
             mapHelper.setUpMap()
         }
+        mapView.gestures.addOnMoveListener(onMoveListener)
         viewModel.combinedList.observe(viewLifecycleOwner, questObserver)
         return binding.root
     }
@@ -77,7 +79,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             observeUser()
             setUpProfileButton()
             setupLocationResetButton()
-            zoomToUserLocation()
         }
     }
 
@@ -115,9 +116,15 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     }
     private fun setupLocationResetButton() {
         binding.mainPageResetPlayerLocation.setOnClickListener {
-            zoomToUserLocation()
+            mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
+
+            val cameraOptions = CameraOptions.Builder()
+                .zoom(zoomLevel)
+                .build()
+            mapView.getMapboxMap().setCamera(cameraOptions)
         }
     }
+
     private fun showUserAtMap() = lifecycleScope.launch {
         permissionManager = PermissionManager(requireContext())
         lifecycleScope.launch {
@@ -127,18 +134,24 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             enabled = true
             pulsingEnabled = true
         }
+        mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
     }
 
-    private fun zoomToUserLocation() {
-        val point = Point.fromLngLat(trackingLogic.longitude, trackingLogic.latitude)
-        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(point).build())
-        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(point)
+    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
+        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
+        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
+    }
+    private val onMoveListener = object : OnMoveListener {
+        override fun onMoveBegin(detector: MoveGestureDetector) {
+            mapView.location.removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
+        }
 
-        val cameraOptions = CameraOptions.Builder()
-            .zoom(Zoomlevel)
-            .build()
+        override fun onMove(detector: MoveGestureDetector): Boolean {
+            return false
+        }
 
-        mapView.getMapboxMap().setCamera(cameraOptions)
+        @Suppress("EmptyFunctionBlock")
+        override fun onMoveEnd(detector: MoveGestureDetector) {}
     }
 
     private fun showGpsAlertDialog() {
@@ -156,6 +169,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         }
     }
     companion object {
-        private const val Zoomlevel = 17.0
+        private const val zoomLevel = 17.0
     }
 }

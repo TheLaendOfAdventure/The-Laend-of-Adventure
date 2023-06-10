@@ -90,8 +90,8 @@ interface BadgeDao {
             "JOIN user ON user_badge.userID = user.userID " +
             "JOIN statTracking ON action.actionID = statTracking.actionID " +
             "WHERE user.userID = :userID " +
-            "AND statTracking.goal = user.wrongRiddleAnswers " +
-            "AND statTracking.goalUnit = 'wrongRiddleAnswers'"
+            "AND statTracking.goal = user.wrongAnswerCount " +
+            "AND statTracking.goalUnit = 'wrongAnswerCount'"
     )
     suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity
 }

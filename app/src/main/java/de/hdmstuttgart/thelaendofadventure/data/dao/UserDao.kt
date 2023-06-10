@@ -43,14 +43,14 @@ interface UserDao {
     suspend fun updateExpForUserID(userID: Int, exp: Int)
 
     @Query(
-        "SELECT wrongRiddleAnswers FROM user " +
+        "SELECT wrongAnswerCount FROM user " +
             "WHERE userID = :userID"
     )
-    suspend fun getWrongRiddleAnswersByUserID(userID: Int): Int
+    suspend fun getWrongAnswerCountByUserID(userID: Int): Int
 
     @Query(
-        "UPDATE user SET wrongRiddleAnswers = :wrongRiddleAnswers " +
+        "UPDATE user SET wrongAnswerCount = :wrongAnswerCount " +
             "WHERE userID = :userID"
     )
-    suspend fun updateWrongRiddleAnswersByUserID(userID: Int, wrongRiddleAnswers: Int)
+    suspend fun updateWrongAnswerCountByUserID(userID: Int, wrongAnswerCount: Int)
 }

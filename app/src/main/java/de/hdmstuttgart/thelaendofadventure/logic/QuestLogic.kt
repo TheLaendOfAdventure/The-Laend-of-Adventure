@@ -68,7 +68,7 @@ class QuestLogic(private val context: Context) {
             } else {
                 notifyGoal(questID, goalNumber)
             }
-            showConversation(questID, updatedGoalNumber)
+            showConversation(questID, goalNumber)
         }
     }
 
@@ -107,7 +107,7 @@ class QuestLogic(private val context: Context) {
     }
 
     private suspend fun showConversation(questID: Int, goalNumber: Int) {
-        val dialogPath: String? = if (goalNumber == 1) {
+        val dialogPath: String? = if (goalNumber == 0) {
             questRepository.getDialogPathByQuestID(questID)
         } else {
             actionRepository.getDialogPath(userID, goalNumber, questID)

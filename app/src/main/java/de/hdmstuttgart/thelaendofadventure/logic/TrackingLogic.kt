@@ -17,7 +17,7 @@ class TrackingLogic(private var context: Context) {
 
     companion object {
         private const val INTERVAL = 5000L
-        private const val ALLOWED_DEVIATION = 0.0015
+        private const val ALLOWED_DEVIATION = 0.0001
         private const val TAG = "Tracking"
     }
 

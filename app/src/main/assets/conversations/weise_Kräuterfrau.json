@@ -1,0 +1,17 @@
+{
+  "NPC": "Die weise Kräuterfrau",
+  "dialogue": [
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "message": "Willkommen, tapfere Abenteurer! Seid gegrüßt in meiner bescheidenen Hütte. Ich bin die weise Kräuterfrau, Hüterin des alten Wissens über die Blässhühner im Königreich."
+    },
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "message": "Hört her, denn ich werde euch von den besonderen Eigenschaften und Kräften der Blässhühner im mittelalterlichen Glauben erzählen."
+    },
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "message": "Doch bevor ich euch mein Wissen enthülle, müsst ihr euer eigenes Wissen über diese geheimnisvollen Vögel unter Beweis stellen. Seid ihr bereit für ein Rätsel-Quiz über die Blässhühner?"
+    }
+  ]
+}

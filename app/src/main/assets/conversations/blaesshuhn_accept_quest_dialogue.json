@@ -1,0 +1,41 @@
+{
+  "NPC": "Naturkundler Sven",
+  "dialogue": [
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Seid gegrüßt, tapferer Abenteurer! Ich bin Sven, der Naturkundler des Königreichs. Ihr seid hier, um mehr über die faszinierenden Blässhühner zu erfahren, nicht wahr?"
+    },
+    {
+      "speaker": "Player",
+      "message": "Ja, genau! Ich habe von den Rätseln der Blässhühner gehört und bin bereit, mich der Herausforderung zu stellen."
+    },
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Dann seid Ihr an der richtigen Stelle, mein wissbegieriger Freund. Die Blässhühner sind eine wahre Pracht der Natur und es gibt so viel über sie zu lernen."
+    },
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Auch ich habe mich ausführlich mit den Blässhühnern beschäftigt und kann Euch einen Rat geben, der Euch tief in die Geheimnisse dieser majestätischen Vögel einweiht."
+    },
+    {
+      "speaker": "Player",
+      "message": "Das klingt spannend! Wie kann ich Eurem Rat folgen?"
+    },
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Um meinem Rat zu folgen, müsst Ihr zunächst den verlorenen Brutplatz der Blässhühner finden. Dort werdet Ihr auf die ersten Rätsel stoßen, die Euch auf Eure Reise begleiten werden."
+    },
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Die ungefähre Lage des Brutplatzes habe ich in die Karte eingetragen."
+    },
+    {
+      "speaker": "Player",
+      "message": "Verstanden. Ich werde den verlorenen Brutplatz suchen und die Rätsel lösen."
+    },
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Fantastisch! Ich wünsche Euch viel Erfolg auf Eurer Suche, tapferer Abenteurer. Mögen die Blässhühner Euch auf Eurem Weg begleiten!"
+    }
+  ]
+}

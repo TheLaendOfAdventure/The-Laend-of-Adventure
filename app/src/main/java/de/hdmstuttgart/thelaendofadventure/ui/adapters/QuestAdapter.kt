@@ -21,10 +21,10 @@ import de.hdmstuttgart.thelaendofadventure.ui.helper.StringHelper
 class QuestAdapter(
     private val questList: List<QuestDetails>,
     private val lifecycleOwner: LifecycleOwner
-) : RecyclerView.Adapter<QuestAdapter.ViewHolder>() { // ktlint-disable max-line-length
+) : RecyclerView.Adapter<QuestAdapter.ViewHolder>() {
 
-    lateinit var context: Context
-    lateinit var questRepository: QuestRepository
+    private lateinit var context: Context
+    private lateinit var questRepository: QuestRepository
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
@@ -59,7 +59,7 @@ class QuestAdapter(
         // sets the description to the description textfield
         holder.descriptionField.text = (quest.description)
 
-        var actionDescription = questRepository.getAllActionDescriptionsByQuestID(quest.questID).asLiveData()
+        val actionDescription = questRepository.getAllActionDescriptionsByQuestID(quest.questID).asLiveData()
         val actionObserver = Observer<List<String>> { descriptions ->
             // Handle the questList
             var textList = ""

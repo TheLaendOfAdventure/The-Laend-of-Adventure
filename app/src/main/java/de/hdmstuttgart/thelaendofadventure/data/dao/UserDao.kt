@@ -12,9 +12,6 @@ interface UserDao {
     @Insert
     fun addUser(user: UserEntity): Long
 
-    @Query("SELECT * FROM user")
-    fun getAllUsers(): Flow<List<UserEntity>>
-
     @Query("SELECT * FROM user WHERE userID = :id")
     fun getUserById(id: Int): Flow<UserEntity>
 
@@ -46,8 +43,14 @@ interface UserDao {
     suspend fun updateExpForUserID(userID: Int, exp: Int)
 
     @Query(
-        "UPDATE user SET walkedKm = :walkedKm " +
+        "SELECT wrongRiddleAnswers FROM user " +
             "WHERE userID = :userID"
     )
-    suspend fun updateWalkedKmForUserID(userID: Int, walkedKm: Int)
+    suspend fun getWrongRiddleAnswersByUserID(userID: Int): Int
+
+    @Query(
+        "UPDATE user SET wrongRiddleAnswers = :wrongRiddleAnswers " +
+            "WHERE userID = :userID"
+    )
+    suspend fun updateWrongRiddleAnswersByUserID(userID: Int, wrongRiddleAnswers: Int)
 }

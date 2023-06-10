@@ -2,7 +2,6 @@ package de.hdmstuttgart.thelaendofadventure.ui.popupwindow
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -18,9 +17,7 @@ import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.IOException
+import de.hdmstuttgart.thelaendofadventure.ui.helper.JsonHelper
 
 /**
  * A popup dialog that displays a conversation between the user and a partner.
@@ -67,7 +64,8 @@ class ConversationPopupDialog(
      */
     @SuppressLint("InflateParams")
     private fun initializeViews() {
-        dialogueList = readDialogueFromJsonFile()
+        val json = JsonHelper(context, dialogPath)
+        dialogueList = json.readDialogueFromJsonFile()
         val inflater = LayoutInflater.from(context)
         popupView = inflater.inflate(R.layout.conversation_popup, null)
 
@@ -122,39 +120,6 @@ class ConversationPopupDialog(
     }
 
     /**
-     * Reads the dialogue from a JSON file and returns a list of dialogue pairs.
-     *
-     * @return A list of dialogue pairs (speaker, message).
-     */
-    private fun readDialogueFromJsonFile(): List<Pair<String, String>> {
-        val dialogueList = mutableListOf<Pair<String, String>>()
-        try {
-            val filePath = "conversations/$dialogPath"
-            val inputStream = context.assets.open(filePath)
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-
-            val jsonString = String(buffer, Charsets.UTF_8)
-            val jsonObject = JSONObject(jsonString)
-            val dialogueArray = jsonObject.getJSONArray("dialogue")
-
-            for (i in 0 until dialogueArray.length()) {
-                val dialogueObj = dialogueArray.getJSONObject(i)
-                val speaker = dialogueObj.getString("speaker")
-                val message = dialogueObj.getString("message")
-                dialogueList.add(speaker to message)
-            }
-        } catch (e: IOException) {
-            Log.d(TAG, "$e")
-        } catch (e: JSONException) {
-            Log.d(TAG, "$e")
-        }
-        return dialogueList
-    }
-
-    /**
      * Displays the next dialogue in the conversation.
      */
     private fun displayNextDialogue() {
@@ -192,9 +157,5 @@ class ConversationPopupDialog(
     private var dismissListener: (() -> Unit)? = null
     fun setOnDismissListener(listener: () -> Unit) {
         dismissListener = listener
-    }
-
-    companion object {
-        private const val TAG = "ConversationPopupDialog"
     }
 }

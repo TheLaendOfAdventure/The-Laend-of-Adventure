@@ -20,6 +20,7 @@ class UserLogic(private val context: Context) {
     }
 
     private val userRepository: UserRepository = AppDataContainer(context).userRepository
+    private val badgeLogic: BadgeLogic = BadgeLogic(context)
 
     fun addExperience(userID: Int, experience: Int) {
         Log.d(TAG, "User userID: $userID added $experience experience")
@@ -40,6 +41,14 @@ class UserLogic(private val context: Context) {
             } catch (e: NoSuchElementException) {
                 Log.e(TAG, "ERROR getting user with userID: $userID $e")
             }
+        }
+    }
+
+    fun increaseWrongAnswerRiddle(userID: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val newWrongRiddleAnswers: Int = userRepository.getWrongRiddleAnswersByUserID(userID) + 1 // ktlint-disable max-line-length
+            userRepository.updateWrongRiddleAnswersByUserID(userID, newWrongRiddleAnswers)
+            badgeLogic.checkWrongRiddleAnswersBadge()
         }
     }
 

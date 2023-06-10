@@ -6,6 +6,7 @@ import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -80,4 +81,17 @@ interface BadgeDao {
             "VALUES (:userID, :badgeID)"
     )
     suspend fun assignAllBadgesToUser(userID: Int, badgeID: Int)
+
+    @Query(
+        "SELECT badgeGoal.* " +
+            "FROM badgeGoal " +
+            "JOIN action ON badgeGoal.actionID = action.actionID " +
+            "JOIN user_badge ON badgeGoal.badgeID = user_badge.badgeID " +
+            "JOIN user ON user_badge.userID = user.userID " +
+            "JOIN statTracking ON action.actionID = statTracking.actionID " +
+            "WHERE user.userID = :userID " +
+            "AND statTracking.goal = user.wrongRiddleAnswers " +
+            "AND statTracking.goalUnit = 'wrongRiddleAnswers'"
+    )
+    suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity
 }

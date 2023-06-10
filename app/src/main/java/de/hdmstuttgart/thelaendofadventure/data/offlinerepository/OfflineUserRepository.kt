@@ -11,10 +11,6 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
         return userDao.addUser(user)
     }
 
-    override fun getAllUsers(): Flow<List<UserEntity>> {
-        return userDao.getAllUsers()
-    }
-
     override fun getUserByID(userID: Int): Flow<UserEntity> {
         return userDao.getUserById(userID)
     }
@@ -39,7 +35,11 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
         userDao.updateExpForUserID(userID, exp)
     }
 
-    override suspend fun updateUserWalkedKm(userID: Int, walkedKm: Int) {
-        userDao.updateWalkedKmForUserID(userID, walkedKm)
+    override suspend fun getWrongRiddleAnswersByUserID(userID: Int): Int {
+        return userDao.getWrongRiddleAnswersByUserID(userID)
+    }
+
+    override suspend fun updateWrongRiddleAnswersByUserID(userID: Int, wrongRiddleAnswers: Int) {
+        return userDao.updateWrongRiddleAnswersByUserID(userID, wrongRiddleAnswers)
     }
 }

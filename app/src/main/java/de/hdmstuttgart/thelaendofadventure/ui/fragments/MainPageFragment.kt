@@ -13,10 +13,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
+import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.gestures.gestures
-import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
@@ -38,7 +38,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private lateinit var mapView: MapView
     private lateinit var mapHelper: MapHelper
     private lateinit var permissionManager: PermissionManager
-
     private val permissionResultLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
@@ -49,10 +48,11 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             showGpsAlertDialog()
         }
     }
-
+    private lateinit var trackingLogic: TrackingLogic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         CoroutineScope(Dispatchers.IO).launch { QuestLogic(requireContext()).checkRiddle() }
+        trackingLogic = TrackingLogic(requireContext())
     }
 
     override fun onCreateView(
@@ -76,6 +76,8 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             requestLocationPermission()
             observeUser()
             setUpProfileButton()
+            setupLocationResetButton()
+            zoomToUserLocation()
         }
     }
 
@@ -111,23 +113,32 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             )
         }
     }
-
+    private fun setupLocationResetButton() {
+        binding.mainPageResetPlayerLocation.setOnClickListener {
+            zoomToUserLocation()
+        }
+    }
     private fun showUserAtMap() = lifecycleScope.launch {
         permissionManager = PermissionManager(requireContext())
         lifecycleScope.launch {
-            TrackingLogic(requireContext()).start()
+            trackingLogic.start()
         }
         mapView.location.updateSettings {
             enabled = true
             pulsingEnabled = true
         }
-        // pass users location to camera
-        mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
     }
 
-    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
-        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
-        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
+    private fun zoomToUserLocation() {
+        val point = Point.fromLngLat(trackingLogic.longitude, trackingLogic.latitude)
+        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(point).build())
+        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(point)
+
+        val cameraOptions = CameraOptions.Builder()
+            .zoom(Zoomlevel)
+            .build()
+
+        mapView.getMapboxMap().setCamera(cameraOptions)
     }
 
     private fun showGpsAlertDialog() {
@@ -143,5 +154,8 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             }
             create().show()
         }
+    }
+    companion object {
+        private const val Zoomlevel = 17.0
     }
 }

@@ -127,7 +127,7 @@ interface QuestDao {
             "FROM action " +
             "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
             "WHERE questGoal.questID = :questID " +
-            "ORDER BY action.actionID "
+            "ORDER BY questGoal.goalNumber "
     )
     fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>>
 

@@ -21,8 +21,8 @@ class TrackingLogic(private var context: Context) {
         private const val TAG = "Tracking"
     }
 
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
 
     private val questRepository: QuestRepository = AppDataContainer(context).questRepository
     val userID = context.getSharedPreferences(

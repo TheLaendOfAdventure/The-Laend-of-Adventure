@@ -7,7 +7,7 @@
     },
     {
       "speaker": "Player",
-      "message": "Ja, genau! Ich habe von den Rätseln der Blässhühner gehört und bin bereit, mich der Herausforderung zu stellen."
+      "message": "Ja, genau! Ich habe von den Blässhühner gehört und bin bereit, mich der Herausforderung nach ihrer Suche zu stellen."
     },
     {
       "speaker": "Naturkundler Sven",
@@ -23,15 +23,15 @@
     },
     {
       "speaker": "Naturkundler Sven",
-      "message": "Um meinem Rat zu folgen, müsst Ihr zunächst den verlorenen Brutplatz der Blässhühner finden. Dort werdet Ihr auf die ersten Rätsel stoßen, die Euch auf Eure Reise begleiten werden."
+      "message": "Um meinem Rat zu folgen, müsst Ihr zunächst den verlorenen Brutplatz der Blässhühner finden. Bei der weisen Kräuterfrau werdet Ihr auf die ersten Hinweise stoßen, die Euch auf Eure Reise begleiten werden."
     },
     {
       "speaker": "Naturkundler Sven",
-      "message": "Die ungefähre Lage des Brutplatzes habe ich in die Karte eingetragen."
+      "message": "Die Lage ihrer Hütte habe ich Euch in die Karte eingetragen."
     },
     {
       "speaker": "Player",
-      "message": "Verstanden. Ich werde den verlorenen Brutplatz suchen und die Rätsel lösen."
+      "message": "Verstanden. Ich werde die Kräuterfrau suchen."
     },
     {
       "speaker": "Naturkundler Sven",

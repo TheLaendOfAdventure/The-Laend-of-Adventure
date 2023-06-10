@@ -1,0 +1,33 @@
+{
+  "NPC": "Die weise Kräuterfrau",
+  "dialogue": [
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "message": "Du hast dein Wissen bewiesen!"
+    },
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "message": "Siehst du die Büsche dort hinten? Dort habe ich ihren Brutplatz das letzte Mal gesehen."
+    },
+    {
+      "speaker": "Player",
+      "message": "Ah, verstehe. Ich werde mich dort umsehen. Gibt es noch etwas, worauf ich achten sollte?"
+    },
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "message": "Achte auf ihre charakteristischen Nester, die sie aus Schilfgras und Zweigen bauen. Sei behutsam und respektvoll, wenn du ihren Lebensraum betrittst."
+    },
+    {
+      "speaker": "Player",
+      "message": "Danke für den Hinweis. Ich werde vorsichtig sein und ihre Lebensstätte schützen."
+    },
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "message": "Das freut mein Herz zu hören. Ich wünsche dir viel Glück bei deiner weiteren Reise, junger Abenteurer!"
+    },
+    {
+      "speaker": "Player",
+      "message": "Vielen Dank, weise Kräuterfrau. Ich werde den Blässhühnern und ihrem Lebensraum mit Achtung und Sorgfalt begegnen."
+    }
+  ]
+}

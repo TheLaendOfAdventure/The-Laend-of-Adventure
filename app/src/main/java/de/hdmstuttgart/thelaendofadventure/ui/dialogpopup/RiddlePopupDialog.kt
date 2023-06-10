@@ -17,7 +17,6 @@ class RiddlePopupDialog(
 
     private lateinit var binding: DialogRiddlePopupBinding
     private val dialog = Dialog(context)
-    private val userLogic = UserLogic(context)
     val userID = context.getSharedPreferences(
         R.string.sharedPreferences.toString(),
         Context.MODE_PRIVATE
@@ -48,8 +47,7 @@ class RiddlePopupDialog(
                         )
                         dismissDialog()
                     } else {
-                        println("FLASCHHHHHHHHHHH")
-                        userLogic.increaseWrongAnswerRiddle(userID)
+                        UserLogic(context).increaseWrongAnswerCount(userID)
                     }
                 }
             }

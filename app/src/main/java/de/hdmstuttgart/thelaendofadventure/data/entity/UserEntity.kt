@@ -12,5 +12,5 @@ data class UserEntity(
     val walkedKm: Int = 0,
     val level: Int = 1,
     val exp: Int = 0,
-    @ColumnInfo(defaultValue = "0") val wrongRiddleAnswers: Int = 0
+    @ColumnInfo(defaultValue = "0") val wrongAnswerCount: Int = 0
 )

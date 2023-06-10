@@ -35,11 +35,10 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
         userDao.updateExpForUserID(userID, exp)
     }
 
-    override suspend fun getWrongRiddleAnswersByUserID(userID: Int): Int {
-        return userDao.getWrongRiddleAnswersByUserID(userID)
-    }
+    override suspend fun getWrongAnswerCountByUserID(userID: Int): Int =
+        userDao.getWrongAnswerCountByUserID(userID)
 
-    override suspend fun updateWrongRiddleAnswersByUserID(userID: Int, wrongRiddleAnswers: Int) {
-        return userDao.updateWrongRiddleAnswersByUserID(userID, wrongRiddleAnswers)
+    override suspend fun updateWrongAnswerCountByUserID(userID: Int, wrongAnswerCount: Int) {
+        userDao.updateWrongAnswerCountByUserID(userID, wrongAnswerCount)
     }
 }

@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentQuestPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
@@ -44,7 +45,11 @@ class QuestPageFragment : Fragment() {
 
         val userObserver = Observer<UserEntity> { user ->
             binding.questProfileButtonLevelDisplay.text = user.level.toString()
-            binding.questPageProfileButton.setImageURI(user.imagePath?.toUri())
+            Glide.with(requireContext())
+                .load(user.imagePath)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(binding.questPageProfileButton)
         }
         viewModel.user.observe(viewLifecycleOwner, userObserver)
 

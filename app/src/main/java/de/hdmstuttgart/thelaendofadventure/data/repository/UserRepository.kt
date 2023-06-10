@@ -16,13 +16,6 @@ interface UserRepository {
     fun addUser(user: UserEntity): Long
 
     /**
-     * Get all users from the database.
-     *
-     * @return emitting a list of [UserEntity] in the database.
-     */
-    fun getAllUsers(): Flow<List<UserEntity>>
-
-    /**
      * Get a specific user from the database.
      *
      * @param userID the ID of the user to retrieve.
@@ -33,7 +26,7 @@ interface UserRepository {
     /**
      * Get the level of a specific user in the database.
      *
-     * @param userID the ID of the user to update.
+     * @param userID the ID of the user.
      * @return the level as Flow<Int>.
      */
     fun getLevelByUserID(userID: Int): Flow<Int>
@@ -71,10 +64,18 @@ interface UserRepository {
     suspend fun updateUserExp(userID: Int, exp: Int)
 
     /**
-     * Update the walked kilometers of a specific user in the database.
+     * Get the number of wrong Riddle-answers of a specific user in the database.
+     *
+     * @param userID the ID of the user.
+     * @return the wrong Riddle-answers as Int.
+     */
+    suspend fun getWrongAnswerCountByUserID(userID: Int): Int
+
+    /**
+     * increase the WrongRiddleAnswers field in the database by 1.
      *
      * @param userID the ID of the user to update.
-     * @param walkedKm the new walked kilometers for the user.
+     * @param wrongAnswerCount the new count for wrong Riddle-answers for the user.
      */
-    suspend fun updateUserWalkedKm(userID: Int, walkedKm: Int)
+    suspend fun updateWrongAnswerCountByUserID(userID: Int, wrongAnswerCount: Int)
 }

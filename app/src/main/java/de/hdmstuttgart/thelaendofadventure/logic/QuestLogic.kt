@@ -6,7 +6,6 @@ import android.util.Log
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.ActionRepository
-import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.ui.dialogpopup.RiddlePopupDialog
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SnackbarHelper
@@ -25,7 +24,6 @@ class QuestLogic(private val context: Context) {
     }
 
     private val questRepository: QuestRepository = AppDataContainer(context).questRepository
-    private val badgeRepository: BadgeRepository = AppDataContainer(context).badgeRepository
     private val actionRepository: ActionRepository = AppDataContainer(context).actionRepository
 
     val userID = context.getSharedPreferences(
@@ -66,11 +64,11 @@ class QuestLogic(private val context: Context) {
                 notifyQuest(questID)
 
                 UserLogic(context).addExperience(userID, EXPERIENCE_PER_QUEST)
-                updateBadgeProgress(questID)
+                BadgeLogic(context).updateBadgeProgress(questID)
             } else {
                 notifyGoal(questID, goalNumber)
             }
-            showConversation(questID, updatedGoalNumber)
+            showConversation(questID, goalNumber)
         }
     }
 
@@ -103,12 +101,13 @@ class QuestLogic(private val context: Context) {
 
     private suspend fun showSnackbar(message: String, imageResID: Int) {
         withContext(Dispatchers.Main) {
-            SnackbarHelper(context).showTimerSnackbar(message, imageResID)
+            val snackbarHelper = SnackbarHelper.getSnackbarInstance()
+            snackbarHelper.enqueueSnackbar(context, message, imageResID)
         }
     }
 
     private suspend fun showConversation(questID: Int, goalNumber: Int) {
-        val dialogPath: String? = if (goalNumber == 1) {
+        val dialogPath: String? = if (goalNumber == 0) {
             questRepository.getDialogPathByQuestID(questID)
         } else {
             actionRepository.getDialogPath(userID, goalNumber, questID)
@@ -117,13 +116,13 @@ class QuestLogic(private val context: Context) {
         Log.d(TAG, "dialogPath: $dialogPath")
 
         if (dialogPath != null) {
-            val questImage = questRepository.getQuestImageByQuestID(questID)
+            val questImage = questRepository.getQuestImageByQuestID(questID) ?: ""
             withContext(Dispatchers.Main) {
                 val conversationPopupDialog = ConversationPopupDialog(
                     context,
                     dialogPath,
                     userID,
-                    questImage ?: "no path needed" // is needed for null pointer exception
+                    questImage
                 )
                 conversationPopupDialog.show()
                 conversationPopupDialog.setOnDismissListener {
@@ -151,27 +150,5 @@ class QuestLogic(private val context: Context) {
                 }
             }
         }
-    }
-
-    private suspend fun updateBadgeProgress(questID: Int) {
-        val badgeList = badgeRepository.getBadgesByUserIDAndQuestID(userID, questID).first()
-
-        for (badge in badgeList) {
-            val badgeID = badge.badgeID
-            val currentGoalNumber = badge.currentGoalNumber
-
-            Log.d(TAG, "Updating badge progress for User userID: $userID, badgeID: $badgeID")
-
-            badgeRepository.updateBadgeProgressByUserID(userID, badgeID, currentGoalNumber + 1)
-            notifyBadge(badgeID)
-
-            Log.d(TAG, "Badge progress updated for User userID: $userID, badgeID: $badgeID")
-        }
-    }
-
-    private suspend fun notifyBadge(badgeID: Int) {
-        val badge = badgeRepository.getBadgesByBadgeID(badgeID)
-        val imageResID = getImageResourceID(badge.imagePath)
-        showSnackbar(context.getString(R.string.goal_completed_message, badge.name), imageResID)
     }
 }

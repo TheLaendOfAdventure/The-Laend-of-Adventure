@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.gestures.gestures
@@ -100,6 +101,8 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             binding.mainPageProfileLevelDisplay.text = user.level.toString()
             Glide.with(requireContext())
                 .load(user.imagePath)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.mainPageProfileButton)
         }
     }

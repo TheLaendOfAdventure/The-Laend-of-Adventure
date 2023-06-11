@@ -19,6 +19,7 @@ import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogAcceptQuestPopupBinding
+import de.hdmstuttgart.thelaendofadventure.data.entity.LocationEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import kotlinx.coroutines.CoroutineScope
@@ -64,7 +65,7 @@ class MapHelper(
                 }
                 true
             }
-            setMapView(mapview)
+            setLocationMarker()
         }
     }
 
@@ -200,12 +201,36 @@ class MapHelper(
         return "None NPC Found"
     }
 
-    companion object {
-        lateinit var staticMapview: MapView
-
-        fun setMapView(mapview: MapView) {
-            staticMapview = mapview
+    fun setLocationMarker() {
+        for (location in locationMarkers) {
+            location.let { validLocation ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        val redMarker =
+                            AppCompatResources.getDrawable(context, R.drawable.red_marker)
+                                ?.toBitmap()!!
+                        val pointAnnotationManager =
+                            mapview.annotations.createPointAnnotationManager()
+                        val pointAnnotationOptions: PointAnnotationOptions =
+                            PointAnnotationOptions()
+                                .withPoint(
+                                    Point.fromLngLat(
+                                        validLocation.longitude,
+                                        validLocation.latitude
+                                    )
+                                )
+                                .withIconImage(redMarker)
+                        pointAnnotationManager.create(pointAnnotationOptions)
+                    } catch (e: java.lang.NullPointerException) {
+                        Log.d(TAG, "Location not Found $e")
+                    }
+                }
+            }
         }
+    }
+
+    companion object {
+        var locationMarkers = arrayListOf<LocationEntity>()
         private const val TAG = "MapHelper"
         private const val START_GOAL = 0
     }

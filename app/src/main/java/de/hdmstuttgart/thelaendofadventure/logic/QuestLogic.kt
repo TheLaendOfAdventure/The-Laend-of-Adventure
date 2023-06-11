@@ -3,12 +3,6 @@ package de.hdmstuttgart.thelaendofadventure.logic
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.toBitmap
-import com.mapbox.geojson.Point
-import com.mapbox.maps.plugin.annotation.annotations
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
-import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.entity.LocationEntity
@@ -49,8 +43,8 @@ class QuestLogic(private val context: Context) {
         goalNumber: Int
     ) {
         CoroutineScope(Dispatchers.IO).launch {
-            val oldlocation = questRepository.getLocationByQuestByGoal(questID, goalNumber)
-            deleteMarkerByLocation(oldlocation)
+            val oldLocation = questRepository.getLocationByQuestByGoal(questID, goalNumber)
+            removeLocationMarker(oldLocation)
             Log.d(
                 TAG,
                 "User userID: $userID completed QuestGoal questID: $questID, questGoal: $goalNumber"
@@ -77,7 +71,7 @@ class QuestLogic(private val context: Context) {
             }
             showConversation(questID, goalNumber)
             val location = questRepository.getLocationByQuestByGoal(questID, updatedGoalNumber)
-            showLocationMarker(location)
+            addLocationMarker(location)
         }
     }
 
@@ -160,48 +154,16 @@ class QuestLogic(private val context: Context) {
             }
         }
     }
-    private fun deleteMarkerByLocation(location: LocationEntity?) {
-        location?.let { locationToDelete ->
-            CoroutineScope(Dispatchers.Main).launch {
-                try {
-                    val pointAnnotationManager =
-                        MapHelper.staticMapview.annotations.createPointAnnotationManager()
 
-                    val annotations = pointAnnotationManager.annotations.toList()
-
-                    val annotationToDelete = annotations.find { annotation ->
-                        val point = annotation.geometry as? Point
-                        point?.latitude() == locationToDelete.latitude &&
-                            point.longitude() == locationToDelete.longitude
-                    }
-                    if (annotationToDelete != null) {
-                        pointAnnotationManager.delete(annotationToDelete)
-                    }
-                } catch (e: java.lang.NullPointerException) {
-                    Log.d(TAG, "Error deleting marker by location: $e")
-                }
-            }
+    private fun addLocationMarker(location: LocationEntity?) {
+        if (location != null) {
+            MapHelper.locationMarkers.add(location)
         }
     }
 
-    private fun showLocationMarker(location: LocationEntity?) {
-        location?.let { validLocation ->
-            CoroutineScope(Dispatchers.Main).launch {
-                try {
-                    val redMarker =
-                        AppCompatResources.getDrawable(context, R.drawable.red_marker)
-                            ?.toBitmap()!!
-                    val pointAnnotationManager =
-                        MapHelper.staticMapview.annotations.createPointAnnotationManager()
-                    val pointAnnotationOptions: PointAnnotationOptions =
-                        PointAnnotationOptions()
-                            .withPoint(Point.fromLngLat(validLocation.longitude, validLocation.latitude))
-                            .withIconImage(redMarker)
-                    pointAnnotationManager.create(pointAnnotationOptions)
-                } catch (e: java.lang.NullPointerException) {
-                    Log.d(TAG, "Location not Found $e")
-                }
-            }
+    private fun removeLocationMarker(location: LocationEntity?) {
+        if (location != null) {
+            MapHelper.locationMarkers.remove(location)
         }
     }
 }

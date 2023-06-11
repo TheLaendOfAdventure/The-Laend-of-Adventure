@@ -7,38 +7,27 @@ import org.json.JSONObject
 import java.io.IOException
 /**
  * A helper class for reading JSON files.
+ *
+ * @param context The application context.
+ * @param fileName The name of the JSON file to read.
  */
 class JsonHelper(private val context: Context, private val fileName: String) {
     /**
-     * Reads the NPC from a JSON file and returns it.
+     * Reads the NPC name from a JSON file and returns it.
      *
      * @return the NPC name as a String.
      */
     fun readNpcNameFromJsonFile(): String {
-        val jsonString: String? = try {
-            // Open the JSON file from the assets folder
-            val filePath = "conversations/$fileName"
-            val inputStream = context.applicationContext.assets.open(filePath)
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-
-            // Convert the byte array to a String using UTF-8 encoding
-            String(buffer, Charsets.UTF_8)
+        try {
+            val jsonString = readJsonFile()
+            val jsonObject = JSONObject(jsonString)
+            return jsonObject.getString("NPC")
         } catch (e: IOException) {
-            Log.d(TAG, "Conversation File does not exist ${e.message}")
-            null
+            Log.d(TAG, "Error reading conversation file: ${e.message}")
+        } catch (e: JSONException) {
+            Log.d(TAG, "Error parsing JSON: ${e.message}")
         }
-        jsonString?.let {
-            try {
-                val jsonObject = JSONObject(it)
-                return jsonObject.getString("NPC")
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-        }
-        return "None NPC Found"
+        return "No NPC Found"
     }
 
     /**
@@ -49,14 +38,7 @@ class JsonHelper(private val context: Context, private val fileName: String) {
     fun readDialogueFromJsonFile(): List<Pair<String, String>> {
         val dialogueList = mutableListOf<Pair<String, String>>()
         try {
-            val filePath = "conversations/$fileName"
-            val inputStream = context.assets.open(filePath)
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-
-            val jsonString = String(buffer, Charsets.UTF_8)
+            val jsonString = readJsonFile()
             val jsonObject = JSONObject(jsonString)
             val dialogueArray = jsonObject.getJSONArray("dialogue")
 
@@ -67,11 +49,30 @@ class JsonHelper(private val context: Context, private val fileName: String) {
                 dialogueList.add(speaker to message)
             }
         } catch (e: IOException) {
-            Log.d(TAG, "$e")
+            Log.d(TAG, "Error reading conversation file: ${e.message}")
         } catch (e: JSONException) {
-            Log.d(TAG, "$e")
+            Log.d(TAG, "Error parsing JSON: ${e.message}")
         }
         return dialogueList
+    }
+
+    /**
+     * Reads the contents of the JSON file and returns it as a String.
+     *
+     * @return The content of the JSON file.
+     */
+    private fun readJsonFile(): String {
+        val filePath = "conversations/$fileName"
+        return try {
+            val inputStream = context.assets.open(filePath)
+            val buffer = ByteArray(inputStream.available())
+            inputStream.use { stream ->
+                stream.read(buffer)
+            }
+            String(buffer, Charsets.UTF_8)
+        } catch (e: IOException) {
+            "File not Found ${e.message}"
+        }
     }
 
     companion object {

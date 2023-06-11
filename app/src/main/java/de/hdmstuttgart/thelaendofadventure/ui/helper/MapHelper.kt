@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.helper
 
-import android.content.Context // ktlint-disable import-ordering
+import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import android.view.View
@@ -31,7 +31,7 @@ import java.io.IOException
 class MapHelper(
     private val mapview: MapView,
     questList: List<QuestEntity>,
-    private val context: Context,
+    val context: Context,
     private val userLevel: Int,
 
 ) {
@@ -43,7 +43,6 @@ class MapHelper(
         R.string.sharedPreferences.toString(),
         Context.MODE_PRIVATE,
     ).getInt(R.string.userID.toString(), -1)
-
     private val filteredQuestList = questList.filter { quest ->
         quest.level <= userLevel
     }
@@ -65,6 +64,7 @@ class MapHelper(
                 }
                 true
             }
+            setMapView(mapview)
         }
     }
 
@@ -201,6 +201,11 @@ class MapHelper(
     }
 
     companion object {
+        lateinit var staticMapview: MapView
+
+        fun setMapView(mapview: MapView) {
+            staticMapview = mapview
+        }
         private const val TAG = "MapHelper"
         private const val START_GOAL = 0
     }

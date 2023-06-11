@@ -3,11 +3,19 @@ package de.hdmstuttgart.thelaendofadventure.logic
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.toBitmap
+import com.mapbox.geojson.Point
+import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
+import de.hdmstuttgart.thelaendofadventure.data.entity.LocationEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.ActionRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.ui.dialogpopup.RiddlePopupDialog
+import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SnackbarHelper
 import de.hdmstuttgart.thelaendofadventure.ui.popupwindow.ConversationPopupDialog
 import kotlinx.coroutines.CoroutineScope
@@ -22,10 +30,8 @@ class QuestLogic(private val context: Context) {
         private const val TAG = "QuestLogic"
         private const val EXPERIENCE_PER_QUEST = 50
     }
-
     private val questRepository: QuestRepository = AppDataContainer(context).questRepository
     private val actionRepository: ActionRepository = AppDataContainer(context).actionRepository
-
     val userID = context.getSharedPreferences(
         R.string.sharedPreferences.toString(),
         Context.MODE_PRIVATE
@@ -43,11 +49,12 @@ class QuestLogic(private val context: Context) {
         goalNumber: Int
     ) {
         CoroutineScope(Dispatchers.IO).launch {
+            val oldlocation = questRepository.getLocationByQuestByGoal(questID, goalNumber)
+            deleteMarkerByLocation(oldlocation)
             Log.d(
                 TAG,
                 "User userID: $userID completed QuestGoal questID: $questID, questGoal: $goalNumber"
             )
-
             if (goalNumber == 0) {
                 questRepository.assignQuestToUser(userID, questID)
             }
@@ -69,6 +76,8 @@ class QuestLogic(private val context: Context) {
                 notifyGoal(questID, goalNumber)
             }
             showConversation(questID, goalNumber)
+            val location = questRepository.getLocationByQuestByGoal(questID, updatedGoalNumber)
+            showLocationMarker(location)
         }
     }
 
@@ -147,6 +156,50 @@ class QuestLogic(private val context: Context) {
                 Log.d(TAG, "Riddle should be shown!")
                 riddlePopupDialog.setOnDismissListener {
                     Log.d(TAG, "Riddle has been closed!")
+                }
+            }
+        }
+    }
+    private fun deleteMarkerByLocation(location: LocationEntity?) {
+        location?.let { locationToDelete ->
+            CoroutineScope(Dispatchers.Main).launch {
+                try {
+                    val pointAnnotationManager =
+                        MapHelper.staticMapview.annotations.createPointAnnotationManager()
+
+                    val annotations = pointAnnotationManager.annotations.toList()
+
+                    val annotationToDelete = annotations.find { annotation ->
+                        val point = annotation.geometry as? Point
+                        point?.latitude() == locationToDelete.latitude &&
+                            point.longitude() == locationToDelete.longitude
+                    }
+                    if (annotationToDelete != null) {
+                        pointAnnotationManager.delete(annotationToDelete)
+                    }
+                } catch (e: java.lang.NullPointerException) {
+                    Log.d(TAG, "Error deleting marker by location: $e")
+                }
+            }
+        }
+    }
+
+    private fun showLocationMarker(location: LocationEntity?) {
+        location?.let { validLocation ->
+            CoroutineScope(Dispatchers.Main).launch {
+                try {
+                    val redMarker =
+                        AppCompatResources.getDrawable(context, R.drawable.red_marker)
+                            ?.toBitmap()!!
+                    val pointAnnotationManager =
+                        MapHelper.staticMapview.annotations.createPointAnnotationManager()
+                    val pointAnnotationOptions: PointAnnotationOptions =
+                        PointAnnotationOptions()
+                            .withPoint(Point.fromLngLat(validLocation.longitude, validLocation.latitude))
+                            .withIconImage(redMarker)
+                    pointAnnotationManager.create(pointAnnotationOptions)
+                } catch (e: java.lang.NullPointerException) {
+                    Log.d(TAG, "Location not Found $e")
                 }
             }
         }

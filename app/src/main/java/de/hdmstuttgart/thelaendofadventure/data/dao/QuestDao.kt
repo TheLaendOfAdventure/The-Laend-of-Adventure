@@ -145,4 +145,12 @@ interface QuestDao {
             "AND goalNumber = :goalNumber"
     )
     suspend fun getNameByQuestByGoal(questID: Int, goalNumber: Int): String
+
+    @Query(
+        "SELECT location.* FROM location " +
+            "JOIN action ON action.actionID = location.actionID " +
+            "JOIN questGoal ON questGoal.actionID = action.actionID " +
+            "WHERE questGoal.goalNumber = :goalNumber AND questGoal.questID = :questID"
+    )
+    suspend fun getLocationByQuestByGoal(questID: Int, goalNumber: Int): LocationEntity
 }

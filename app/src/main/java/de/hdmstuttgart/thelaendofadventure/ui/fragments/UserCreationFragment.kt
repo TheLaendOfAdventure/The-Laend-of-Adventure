@@ -15,8 +15,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentUserCreationBinding
-import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
-import de.hdmstuttgart.thelaendofadventure.permissions.Permissions
+import de.hdmstuttgart.thelaendofadventure.ui.helper.PermissionManager
+import de.hdmstuttgart.thelaendofadventure.ui.helper.Permissions
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.UserCreationViewModel
 
 class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {

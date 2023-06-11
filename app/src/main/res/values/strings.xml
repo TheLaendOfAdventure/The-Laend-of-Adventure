@@ -5,7 +5,7 @@
     <string name="mapbox_access_token">pk.eyJ1Ijoic2ViYXN0aWFuaGRtIiwiYSI6ImNsZzNrZHpheTBjMTIzZG4xeW9pYWloeTAifQ.KX0L4CprJOJHJkDOVX20ig</string>
     <string name="mapbox_styleURL">mapbox://styles/sebastianhdm/clh29r0j900kf01r00eage1zc</string>
     <string name="gps_negativeButton">App schließen</string>
-    <string name="storage_negativeButton">Kein Bild auswählen.</string>
+    <string name="storage_negativeButton">Kein Bild auswählen</string>
     <string name="gps_positiveButton">Okay</string>
     <string name="storage_positiveButton">Okay</string>
     <string name="gps_required_title">GPS-Nutzung muss genehmigt werden</string>

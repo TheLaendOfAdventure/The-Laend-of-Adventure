@@ -7,7 +7,8 @@ data class PermissionRequest(
     val message: Int,
     val positiveButton: Int,
     val negativeButton: Int,
-    val checkPermissionAfterRequest: Boolean = false
+    val checkPermissionAfterRequest: Boolean = false,
+    val executeApp: Boolean = false
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -22,6 +23,7 @@ data class PermissionRequest(
         if (positiveButton != other.positiveButton) return false
         if (negativeButton != other.negativeButton) return false
         if (checkPermissionAfterRequest != other.checkPermissionAfterRequest) return false
+        if (executeApp != other.executeApp) return false
 
         return true
     }
@@ -34,6 +36,7 @@ data class PermissionRequest(
         result = 31 * result + positiveButton
         result = 31 * result + negativeButton
         result = 31 * result + checkPermissionAfterRequest.hashCode()
+        result = 31 * result + executeApp.hashCode()
         return result
     }
 }

@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.PermissionRequest
+import kotlin.system.exitProcess
 
 /**
  * The PermissionManager class provides methods to check and request permissions.
@@ -17,35 +18,7 @@ import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.PermissionRequest
 class PermissionManager(private val context: Context) {
 
     private val isTiramisuOrHigher = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-
-    companion object {
-        private const val STORAGE_PERMISSION_CODE = 1
-        private const val READ_MEDIA_IMAGES_PERMISSION_CODE = 2
-        private const val FINE_LOCATION_PERMISSION_CODE = 3
-        private val MEDIA_PERMISSION = arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
-
-        private val LOCATION_REQUEST = PermissionRequest(
-            permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-            requestCode = FINE_LOCATION_PERMISSION_CODE,
-            title = R.string.gps_required_title,
-            message = R.string.gps_required_context,
-            positiveButton = R.string.gps_positiveButton,
-            negativeButton = R.string.gps_negativeButton,
-            checkPermissionAfterRequest = true
-        )
-
-        private val STORAGE_REQUEST = PermissionRequest(
-            permissions = arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ),
-            requestCode = STORAGE_PERMISSION_CODE,
-            title = R.string.storage_required_title,
-            message = R.string.storage_required_context,
-            positiveButton = R.string.storage_positiveButton,
-            negativeButton = R.string.storage_negativeButton
-        )
-    }
+    private var permissionCheckExecuted = false
 
     /**
      * Checks if the given permission is granted. If the permission is not granted,
@@ -122,6 +95,9 @@ class PermissionManager(private val context: Context) {
                 dialog.dismiss()
             }
             .setNegativeButton(permissionRequest.negativeButton) { dialog, _ ->
+                if (permissionRequest.executeApp) {
+                    exitProcess(0)
+                }
                 dialog.dismiss()
             }
 
@@ -132,10 +108,41 @@ class PermissionManager(private val context: Context) {
                 permissionRequest.permissions,
                 permissionRequest.requestCode
             )
-            if (permissionRequest.checkPermissionAfterRequest) {
+            if (permissionRequest.checkPermissionAfterRequest && !permissionCheckExecuted) {
                 checkPermission(Permissions.LOCATION)
+                permissionCheckExecuted = true
             }
         }
+    }
+
+    companion object {
+        private const val STORAGE_PERMISSION_CODE = 1
+        private const val READ_MEDIA_IMAGES_PERMISSION_CODE = 2
+        private const val FINE_LOCATION_PERMISSION_CODE = 3
+        private val MEDIA_PERMISSION = arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+
+        private val LOCATION_REQUEST = PermissionRequest(
+            permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            requestCode = FINE_LOCATION_PERMISSION_CODE,
+            title = R.string.gps_required_title,
+            message = R.string.gps_required_context,
+            positiveButton = R.string.gps_positiveButton,
+            negativeButton = R.string.gps_negativeButton,
+            checkPermissionAfterRequest = true,
+            executeApp = true
+        )
+
+        private val STORAGE_REQUEST = PermissionRequest(
+            permissions = arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ),
+            requestCode = STORAGE_PERMISSION_CODE,
+            title = R.string.storage_required_title,
+            message = R.string.storage_required_context,
+            positiveButton = R.string.storage_positiveButton,
+            negativeButton = R.string.storage_negativeButton
+        )
     }
 }
 

@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import de.hdmstuttgart.the_laend_of_adventure.R
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.PermissionRequest
 
 /**
  * The PermissionManager class provides methods to check and request permissions.
@@ -18,9 +19,32 @@ class PermissionManager(private val context: Context) {
     private val isTiramisuOrHigher = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
     companion object {
-        const val STORAGE_PERMISSION_CODE = 1
-        const val READ_MEDIA_IMAGES_PERMISSION_CODE = 2
-        const val FINE_LOCATION_PERMISSION_CODE = 4
+        private const val STORAGE_PERMISSION_CODE = 1
+        private const val READ_MEDIA_IMAGES_PERMISSION_CODE = 2
+        private const val FINE_LOCATION_PERMISSION_CODE = 3
+        private val MEDIA_PERMISSION = arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+
+        private val LOCATION_REQUEST = PermissionRequest(
+            permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            requestCode = FINE_LOCATION_PERMISSION_CODE,
+            title = R.string.gps_required_title,
+            message = R.string.gps_required_context,
+            positiveButton = R.string.gps_positiveButton,
+            negativeButton = R.string.gps_negativeButton,
+            checkPermissionAfterRequest = true
+        )
+
+        private val STORAGE_REQUEST = PermissionRequest(
+            permissions = arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ),
+            requestCode = STORAGE_PERMISSION_CODE,
+            title = R.string.storage_required_title,
+            message = R.string.storage_required_context,
+            positiveButton = R.string.storage_positiveButton,
+            negativeButton = R.string.storage_negativeButton
+        )
     }
 
     /**
@@ -35,13 +59,11 @@ class PermissionManager(private val context: Context) {
             if (checkStoragePermission()) {
                 true
             } else {
-                val permissionCode: Int =
-                    if (isTiramisuOrHigher) {
-                        READ_MEDIA_IMAGES_PERMISSION_CODE
-                    } else {
-                        STORAGE_PERMISSION_CODE
-                    }
-                requestPermissions(getStoragePermissions(), permissionCode)
+                if (isTiramisuOrHigher) {
+                    STORAGE_REQUEST.permissions = MEDIA_PERMISSION
+                    STORAGE_REQUEST.requestCode = READ_MEDIA_IMAGES_PERMISSION_CODE
+                }
+                requestPermission(STORAGE_REQUEST)
                 false
             }
         }
@@ -50,7 +72,7 @@ class PermissionManager(private val context: Context) {
             if (checkFineLocationPermission()) {
                 true
             } else {
-                requestPermissions(getFineLocationPermissions(), FINE_LOCATION_PERMISSION_CODE)
+                requestPermission(LOCATION_REQUEST)
                 false
             }
         }
@@ -58,12 +80,9 @@ class PermissionManager(private val context: Context) {
 
     private fun checkStoragePermission(): Boolean {
         val permissions = if (isTiramisuOrHigher) {
-            arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+            MEDIA_PERMISSION
         } else {
-            arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
+            STORAGE_REQUEST.permissions
         }
 
         return permissions.all { permission ->
@@ -75,7 +94,7 @@ class PermissionManager(private val context: Context) {
     }
 
     private fun checkFineLocationPermission(): Boolean {
-        val permissions = getFineLocationPermissions()
+        val permissions = LOCATION_REQUEST.permissions
 
         return permissions.all { permission ->
             ContextCompat.checkSelfPermission(
@@ -85,43 +104,39 @@ class PermissionManager(private val context: Context) {
         }
     }
 
-    private fun requestPermissions(permissions: Array<String>, requestCode: Int) {
+    private fun requestPermission(permissionRequest: PermissionRequest) {
         val activity = context as Activity
 
-        val shouldShowRationale = permissions.any {
+        val shouldShowRationale = permissionRequest.permissions.any {
             ActivityCompat.shouldShowRequestPermissionRationale(activity, it)
         }
 
         val dialogBuilder = AlertDialog.Builder(context)
-            .setTitle(R.string.gps_required_title)
-            .setMessage(R.string.gps_required_context)
-            .setPositiveButton(R.string.gps_positiveButton) { dialog, _ ->
-                activity.requestPermissions(permissions, requestCode)
+            .setTitle(permissionRequest.title)
+            .setMessage(permissionRequest.message)
+            .setPositiveButton(permissionRequest.positiveButton) { dialog, _ ->
+                activity.requestPermissions(
+                    permissionRequest.permissions,
+                    permissionRequest.requestCode
+                )
                 dialog.dismiss()
             }
-            .setNegativeButton(R.string.gps_negativeButton) { dialog, _ ->
+            .setNegativeButton(permissionRequest.negativeButton) { dialog, _ ->
                 dialog.dismiss()
             }
 
         if (shouldShowRationale) {
             dialogBuilder.create().show()
         } else {
-            activity.requestPermissions(permissions, requestCode)
+            activity.requestPermissions(
+                permissionRequest.permissions,
+                permissionRequest.requestCode
+            )
+            if (permissionRequest.checkPermissionAfterRequest) {
+                checkPermission(Permissions.LOCATION)
+            }
         }
     }
-
-    private fun getStoragePermissions(): Array<String> = if (isTiramisuOrHigher) {
-        arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
-    } else {
-        arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-    }
-
-    private fun getFineLocationPermissions(): Array<String> = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION
-    )
 }
 
 /**

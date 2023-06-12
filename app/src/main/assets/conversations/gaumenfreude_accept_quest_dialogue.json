@@ -1,0 +1,41 @@
+{
+  "NPC": "Küchenmeister Juri",
+  "dialogue": [
+    {
+      "speaker": "Küchenmeister Juri",
+      "message": "Guten Tag, wackerer Passant! \nSucht Ihr nach einem Gaumenschmaus, der Euch entzückt?"
+    },
+    {
+      "speaker": "Player",
+      "message": "Ich hörte, Ihr backet das beste Brot der Stadt."
+    },
+    {
+      "speaker": "Küchenmeister Juri",
+      "message": "Zunächst einmal verwenden wir erlesenstes Mehl, vorzugsweise aus Weizen oder Roggen. Dieses Mehl wird in eine große Schüssel gegeben.\nWir fügen geringfügig Wasser hinzu, um den Teig zu kneten.\nDoch vorsorget Euch, nicht zu viel, da der Teig sonst klebend wird."
+    },
+    {
+      "speaker": "Player",
+      "message": "Doch wie knetet man den Teig rechtens?"
+    },
+    {
+      "speaker": "Küchenmeister Juri",
+      "message": "Rechtens, die Kunst des Knetens ist entscheidend.\nWir kneten den Teig mit unseren Händen. Wir drücken und ziehen ihn, damit er ansehnlich elastisch wird."
+    },
+    {
+      "speaker": "Player",
+      "message": "Verstanden. Was folgt nach dem Kneten?"
+    },
+    {
+      "speaker": "Küchenmeister Juri",
+      "message": "Der Teig bedarf der Ruhe, auf dass er aufgehe.\nWir lassen ihn an einem warmen Ort zugedeckt ruhen, für etliche Stunden.\nDas Brot wird in einem ehrwürdigen Holzofen gebacken.\nWir entfachen den Ofen mit Holz und warten geduldig, bis er die rechte Hitze erlangt.\nDaraufhin legen wir den geformten Teig auf einen heißen Stein und schieben ihn in den Ofen."
+    },
+    {
+      "speaker": "Player",
+      "message": "Das klingt nach einer kunstvollen Prozedur. Wie lange dauert es, bis das Brot fertig ist?"
+    },
+    {
+      "speaker": "Küchenmeister Juri",
+      "message": "Ah, mein werter Passant, Geduld ist eine Tugend, wenn es um die Kunst des Brotesbackens geht. Die Backzeit variiert je nach Größe und Art des Brotes.\nIn der Regel dauert es jedoch etwa eine Stunde, bis das Brot vollständig gebacken ist."
+    }
+  ]
+}

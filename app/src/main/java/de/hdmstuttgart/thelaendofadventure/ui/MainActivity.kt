@@ -11,7 +11,8 @@ import de.hdmstuttgart.the_laend_of_adventure.databinding.ActivityFullscreenBind
 
 /**
  * This class represents a fullscreen activity in the Android application.
- * It extends the AppCompatActivity class, which is a base class for activities that use the support library action bar features.
+ * It extends the AppCompatActivity class,
+ * which is a base class for activities that use the support library action bar features.
  */
 class MainActivity : AppCompatActivity() {
 
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        System.setProperty("hw.gpu.mode", "swiftshader_indirect")
         binding = ActivityFullscreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

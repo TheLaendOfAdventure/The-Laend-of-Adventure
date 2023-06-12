@@ -64,6 +64,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
         binding = FragmentMainPageBinding.inflate(inflater, container, false)
         mapView = binding.mapView
+        viewModel.getLocation()
         val questObserver = Observer<QuestWithUserLevel> { questList ->
             mapHelper = MapHelper(mapView, questList.quest, requireContext(), questList.userLevel)
             mapHelper.setUpMap()

@@ -6,11 +6,16 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Location
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestWithUserLevel
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
+import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 
 class MainPageViewModel(private val application: Application) : AndroidViewModel(application) {
 
@@ -24,9 +29,9 @@ class MainPageViewModel(private val application: Application) : AndroidViewModel
         R.string.sharedPreferences.toString(),
         Context.MODE_PRIVATE
     ).getInt(R.string.userID.toString(), -1)
+    var location: List<Location> = emptyList()
     val user = userRepository.getUserByID(getUserID()).asLiveData()
     val quests = questRepository.getUnacceptedQuestsByUserID(getUserID())
-    val riddleList = questRepository.getRiddleForAcceptedQuestsByUserID(getUserID()).asLiveData()
     val userLevel = userRepository.getLevelByUserID(getUserID())
     val combinedList = combineQuestWithLevel().asLiveData()
     private fun combineQuestWithLevel(): Flow<QuestWithUserLevel> {
@@ -46,5 +51,13 @@ class MainPageViewModel(private val application: Application) : AndroidViewModel
             ).getInt(R.string.userID.toString(), -1)
         }
         return userID
+    }
+    fun getLocation() {
+        CoroutineScope(Dispatchers.IO).launch {
+            location = questRepository.getOnlyLocationForAcceptedQuestsByUserID(getUserID())
+            location.forEach { location ->
+                MapHelper.locationMarkers.add(location)
+            }
+        }
     }
 }

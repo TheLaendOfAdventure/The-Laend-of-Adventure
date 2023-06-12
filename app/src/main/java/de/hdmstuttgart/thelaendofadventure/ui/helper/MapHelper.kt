@@ -19,7 +19,7 @@ import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogAcceptQuestPopupBinding
-import de.hdmstuttgart.thelaendofadventure.data.entity.LocationEntity
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Location
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import kotlinx.coroutines.CoroutineScope
@@ -230,7 +230,7 @@ class MapHelper(
     }
 
     companion object {
-        var locationMarkers = arrayListOf<LocationEntity>()
+        var locationMarkers = arrayListOf<Location>()
         private const val TAG = "MapHelper"
         private const val START_GOAL = 0
     }

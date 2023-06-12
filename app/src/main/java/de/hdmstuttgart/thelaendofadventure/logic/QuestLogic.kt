@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.Log
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
-import de.hdmstuttgart.thelaendofadventure.data.entity.LocationEntity
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Location
 import de.hdmstuttgart.thelaendofadventure.data.repository.ActionRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.ui.dialogpopup.RiddlePopupDialog
@@ -155,13 +155,13 @@ class QuestLogic(private val context: Context) {
         }
     }
 
-    private fun addLocationMarker(location: LocationEntity?) {
+    private fun addLocationMarker(location: Location) {
         if (location != null) {
             MapHelper.locationMarkers.add(location)
         }
     }
 
-    private fun removeLocationMarker(location: LocationEntity?) {
+    private fun removeLocationMarker(location: Location) {
         if (location != null) {
             MapHelper.locationMarkers.remove(location)
         }

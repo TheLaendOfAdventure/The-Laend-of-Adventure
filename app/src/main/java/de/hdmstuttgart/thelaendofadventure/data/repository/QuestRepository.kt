@@ -1,9 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.data.repository
 
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.*
 import de.hdmstuttgart.thelaendofadventure.data.entity.*
 import kotlinx.coroutines.flow.Flow
 
@@ -150,11 +147,19 @@ interface QuestRepository {
     suspend fun getNameByQuestByGoal(questID: Int, goalNumber: Int): String
 
     /**
-     * Retrieves the Location Entity for specific goal.
+     * Retrieves the Location for specific goal.
      *
      * @param questID The ID of the quest.
      * @param goalNumber The goal number of the quest.
      * @return Location Entity.
      */
-    suspend fun getLocationByQuestByGoal(questID: Int, goalNumber: Int): LocationEntity
+    suspend fun getLocationByQuestByGoal(questID: Int, goalNumber: Int): Location
+
+    /**
+     * Retrieves the Location for specific userID.
+     *
+     * @param userID the ID of the user
+     * @return Location.
+     */
+    suspend fun getOnlyLocationForAcceptedQuestsByUserID(userID: Int): List<Location>
 }

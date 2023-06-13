@@ -57,10 +57,11 @@ class MapHelper(
             // show / hide view annotation based on a marker click
             pointAnnotationManager.addClickListener { clickedAnnotation ->
                 pointAnnotationList.forEach { pointAnnotation ->
-                    viewList.forEach { viewAnnotation ->
-                        if (pointAnnotation == clickedAnnotation) {
-                            viewAnnotation.toggleViewVisibility()
-                        }
+                    for (i in pointAnnotationList.indices) {
+                    val pointAnnotation = pointAnnotationList[i]
+                    val viewAnnotation = viewList[i]
+                    if (pointAnnotation == clickedAnnotation) {
+                        viewAnnotation.toggleViewVisibility()
                     }
                 }
                 true

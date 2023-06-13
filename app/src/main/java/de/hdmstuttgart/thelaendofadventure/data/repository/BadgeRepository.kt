@@ -4,6 +4,7 @@ import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -86,4 +87,12 @@ interface BadgeRepository {
      * @return The badge entity with the specified badge ID, or null if no badge is found.
      */
     suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity
+
+    /**
+     * Get a [BadgeGoalEntity] for a specific user when the number of wrong riddle answers are reached.
+     *
+     * @param userID the ID of the user to update.
+     * @return a [BadgeGoalEntity] when the wrong Riddle-answers is reached for a Badge for the user.
+     */
+    suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity?
 }

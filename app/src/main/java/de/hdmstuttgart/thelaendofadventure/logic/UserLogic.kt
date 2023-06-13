@@ -43,6 +43,14 @@ class UserLogic(private val context: Context) {
         }
     }
 
+    fun increaseWrongAnswerCount(userID: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val newWrongAnswerCount: Int = userRepository.getWrongAnswerCountByUserID(userID) + 1 // ktlint-disable max-line-length
+            userRepository.updateWrongAnswerCountByUserID(userID, newWrongAnswerCount)
+            BadgeLogic(context).checkWrongRiddleAnswersBadge()
+        }
+    }
+
     private suspend fun notifyLevel(level: Int) {
         val imageResID = R.drawable.chat_icon // @todo implement new Icon
         showSnackbar(context.getString(R.string.level_up_message, level), imageResID)

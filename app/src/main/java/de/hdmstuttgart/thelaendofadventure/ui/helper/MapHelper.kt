@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
-import com.bumptech.glide.Glide
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxViewAnnotationException
@@ -28,7 +27,7 @@ import kotlinx.coroutines.launch
 
 class MapHelper(
     private val mapview: MapView,
-    private val questList: List<QuestEntity>,
+    questList: List<QuestEntity>,
     private val context: Context,
     private val userLevel: Int,
 
@@ -126,10 +125,9 @@ class MapHelper(
         pointAnnotation: PointAnnotation,
     ) {
         val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
-        val imagePath = "file:///android_asset/questimages/" + quest.imagePath
-        Glide.with(context)
-            .load(imagePath)
-            .into(binding.dialogAcceptQuestImage)
+        val imageName = quest.imagePath ?: ""
+        val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
+        binding.dialogAcceptQuestImage.setImageResource(resourceId)
         binding.dialogAcceptQuestName.text = quest.name
         val json = JsonHelper(context, quest.dialogPath)
         val npcName = json.readNpcNameFromJsonFile()

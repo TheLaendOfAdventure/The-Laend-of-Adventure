@@ -13,11 +13,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentUserPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
-import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
-import de.hdmstuttgart.thelaendofadventure.permissions.Permissions
+import de.hdmstuttgart.thelaendofadventure.ui.helper.PermissionManager
+import de.hdmstuttgart.thelaendofadventure.ui.helper.Permissions
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.UserPageViewModel
 
 class UserPageFragment : Fragment(R.layout.fragment_user_page) {
@@ -33,8 +34,16 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 uri?.let {
                     viewModel.saveImage(uri)
-                    binding.userPageProfilePictureView.setImageURI(viewModel.imageUri)
-                    binding.userPageProfileButton.setImageURI(viewModel.imageUri)
+                    Glide.with(requireContext())
+                        .load(viewModel.imagePath)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(binding.userPageProfilePictureView)
+                    Glide.with(requireContext())
+                        .load(viewModel.imagePath)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(binding.userPageProfileButton)
                     Log.d(TAG, "User avatar image saved: $uri")
                 }
             }
@@ -61,9 +70,13 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
             binding.userPageProfileButtonLevelDisplay.text = user.level.toString()
             Glide.with(requireContext())
                 .load(user.imagePath)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.userPageProfileButton)
             Glide.with(requireContext())
                 .load(user.imagePath)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.userPageProfilePictureView)
         }
         viewModel.user.observe(viewLifecycleOwner, userObserver)

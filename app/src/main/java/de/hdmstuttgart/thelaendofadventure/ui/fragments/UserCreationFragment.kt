@@ -11,10 +11,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentUserCreationBinding
-import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
-import de.hdmstuttgart.thelaendofadventure.permissions.Permissions
+import de.hdmstuttgart.thelaendofadventure.ui.helper.PermissionManager
+import de.hdmstuttgart.thelaendofadventure.ui.helper.Permissions
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.UserCreationViewModel
 
 class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
@@ -30,7 +32,11 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 uri?.let {
                     viewModel.saveImage(uri)
-                    binding.userCreationPageAvatarButton.setImageURI(viewModel.imageUri)
+                    Glide.with(requireContext())
+                        .load(viewModel.imagePath)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(binding.userCreationPageAvatarButton)
                     Log.d(TAG, "User avatar image saved: $uri")
                 }
             }

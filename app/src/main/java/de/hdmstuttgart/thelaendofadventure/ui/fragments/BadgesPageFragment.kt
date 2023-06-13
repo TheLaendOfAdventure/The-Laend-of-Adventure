@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentBadgesPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
@@ -57,7 +58,11 @@ class BadgesPageFragment : Fragment() {
 
         val userObserver = Observer<UserEntity> { user ->
             binding.badgesProfileButtonLevelDisplay.text = user.level.toString()
-            binding.badgesPageProfileButton.setImageURI(user.imagePath?.toUri())
+            Glide.with(requireContext())
+                .load(user.imagePath)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(binding.badgesPageProfileButton)
         }
         viewModel.user.observe(viewLifecycleOwner, userObserver)
 

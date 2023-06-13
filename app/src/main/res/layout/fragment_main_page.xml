@@ -75,10 +75,15 @@
             tools:layout_constraintHeight_max="30dp"
             tools:layout_marginLeft="90dp"
             tools:layout_marginTop="80dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
+    <Button
+        android:id="@+id/mainPage_resetPlayerLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/resetplayerlocation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

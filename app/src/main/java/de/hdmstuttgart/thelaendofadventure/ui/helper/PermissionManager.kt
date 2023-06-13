@@ -20,7 +20,7 @@ class PermissionManager(private val context: Context) {
     companion object {
         const val STORAGE_PERMISSION_CODE = 1
         const val READ_MEDIA_IMAGES_PERMISSION_CODE = 2
-        const val FINE_LOCATION_PERMISSION_CODE = 4
+        const val FINE_LOCATION_PERMISSION_CODE = 3
     }
 
     /**
@@ -93,9 +93,9 @@ class PermissionManager(private val context: Context) {
         }
 
         val dialogBuilder = AlertDialog.Builder(context)
-            .setTitle(R.string.gps_required_title)
-            .setMessage(R.string.gps_required_context)
-            .setPositiveButton(R.string.gps_positiveButton) { dialog, _ ->
+            .setTitle(R.string.storage_required_title)
+            .setMessage(R.string.storage_required_context)
+            .setPositiveButton(R.string.storage_positiveButton) { dialog, _ ->
                 activity.requestPermissions(permissions, requestCode)
                 dialog.dismiss()
             }

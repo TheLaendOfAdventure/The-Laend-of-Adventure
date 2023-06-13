@@ -4,15 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.RecyclerView
 import de.hdmstuttgart.the_laend_of_adventure.R
+import de.hdmstuttgart.the_laend_of_adventure.databinding.QuestpageListitemBinding
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
@@ -25,17 +22,24 @@ class QuestAdapter(
 
     private lateinit var context: Context
     private lateinit var questRepository: QuestRepository
+    private lateinit var view: View
+    private lateinit var binding: QuestpageListitemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // inflates the card_view_design view
-        // that is used to hold list item
         context = parent.context
         questRepository = AppDataContainer(context).questRepository
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.questpage_listitem, parent, false)
-        val viewHolder = ViewHolder(view)
+        binding = QuestpageListitemBinding.inflate(LayoutInflater.from(context), parent, false)
+        val viewHolder = ViewHolder(binding.root)
+        view = binding.root
+        viewHolder.binding = binding
 
-        viewHolder.cardView.setOnClickListener(ListItemClickListener(viewHolder.infoInner))
+        viewHolder.binding.questCardView.setOnClickListener(
+            ListItemClickListener(
+                viewHolder.binding.questCardView,
+                viewHolder.binding.innerInfo,
+                viewHolder.binding.questArrow
+            )
+        )
 
         return viewHolder
     }
@@ -44,22 +48,17 @@ class QuestAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val quest = questList[position]
 
-        // sets the text to the textview from our itemHolder class
-        holder.textView.text = quest.name
-        // sets the max to the progressBar from our itemHolder class
-        holder.progressBar.max = quest.targetGoalNumber - 1
-        // sets the progress to the progressBar from our itemHolder class
-        holder.progressBar.setProgress(quest.currentGoalNumber - 1, true)
-        // sets the progress to the progress textfield
-        holder.progressNumeric.text = context.getString(
+        holder.binding.questName.text = quest.name
+        holder.binding.questProgress.max = quest.targetGoalNumber - 1
+        holder.binding.questProgress.setProgress(quest.currentGoalNumber - 1, true)
+        holder.binding.questProgressNumeric.text = context.getString(
             R.string.quest_progress_numeric_text,
             quest.currentGoalNumber - 1,
             quest.targetGoalNumber - 1
         )
-        // sets the description to the description textfield
-        holder.descriptionField.text = (quest.description)
+        holder.binding.questDescription.text = (quest.description)
 
-        val actionDescription = questRepository.getAllActionDescriptionsByQuestID(quest.questID).asLiveData()
+        val actionDescription = questRepository.getAllActionDescriptionsByQuestID(quest.questID).asLiveData() // ktlint-disable max-line-length
         val actionObserver = Observer<List<String>> { descriptions ->
             // Handle the questList
             var textList = ""
@@ -75,7 +74,7 @@ class QuestAdapter(
                 }
                 textList += line
             }
-            holder.questGoals.text = textList
+            holder.binding.questGoals.text = textList
         }
         actionDescription.observe(lifecycleOwner, actionObserver)
     }
@@ -85,14 +84,7 @@ class QuestAdapter(
         return questList.size
     }
 
-    // Holds the views for adding it to image and text
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.findViewById(R.id.quest_name)
-        val progressBar: ProgressBar = itemView.findViewById(R.id.quest_progress)
-        val progressNumeric: TextView = itemView.findViewById(R.id.quest_progress_numeric)
-        val descriptionField: TextView = itemView.findViewById(R.id.quest_description)
-        val infoInner: LinearLayout = itemView.findViewById(R.id.inner_info)
-        val questGoals: TextView = itemView.findViewById(R.id.quest_goals)
-        val cardView: CardView = itemView.findViewById(R.id.quest_card_view)
+        lateinit var binding: QuestpageListitemBinding
     }
 }

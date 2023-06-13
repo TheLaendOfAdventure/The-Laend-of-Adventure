@@ -12,21 +12,9 @@ import kotlinx.coroutines.flow.Flow
 
 class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
 
-    /**
-     * Gets all completed badges for a given user.
-     *
-     * @param userID the ID of the user to get the badges for
-     * @return a [Flow] emitting a list of [BadgeDetails] objects representing the completed badges
-     */
     override fun getCompletedBadgesDetailsByUserID(userID: Int):
         Flow<List<BadgeDetails>> = badgeDao.getCompletedBadgesDetailsByUserID(userID)
 
-    /**
-     * Gets all uncompleted badges for a given user.
-     *
-     * @param userID the ID of the user to get the badges for
-     * @return a [Flow] emitting a list of [BadgeDetails] objects representing the uncompleted badges
-     */
     override fun getUnCompletedBadgesDetailsByUserID(userID: Int):
         Flow<List<BadgeDetails>> = badgeDao.getUnCompletedBadgesDetailsByUserID(userID)
 

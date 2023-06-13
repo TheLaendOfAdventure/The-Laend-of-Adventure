@@ -12,49 +12,9 @@ import java.io.IOException
  * @param fileName The name of the JSON file to read.
  */
 class JsonHelper(private val context: Context, private val fileName: String) {
-    /**
-     * Reads the NPC name from a JSON file and returns it.
-     *
-     * @return the NPC name as a String.
-     */
-    fun readNpcNameFromJsonFile(): String {
-        try {
-            val jsonString = readJsonFile()
-            val jsonObject = JSONObject(jsonString)
-            return jsonObject.getString("NPC")
-        } catch (e: IOException) {
-            Log.d(TAG, "Error reading conversation file: ${e.message}")
-        } catch (e: JSONException) {
-            Log.d(TAG, "Error parsing JSON: ${e.message}")
-        }
-        return "No NPC Found"
-    }
 
-    /**
-     * Reads the dialogue from a JSON file and returns a list of dialogue pairs.
-     *
-     * @return A list of dialogue pairs (speaker, message).
-     */
-    fun readDialogueFromJsonFile(): List<Pair<String, String>> {
-        val dialogueList = mutableListOf<Pair<String, String>>()
-        try {
-            val jsonString = readJsonFile()
-            val jsonObject = JSONObject(jsonString)
-            val dialogueArray = jsonObject.getJSONArray("dialogue")
-
-            for (i in 0 until dialogueArray.length()) {
-                val dialogueObj = dialogueArray.getJSONObject(i)
-                val speaker = dialogueObj.getString("speaker")
-                val message = dialogueObj.getString("message")
-                dialogueList.add(speaker to message)
-            }
-        } catch (e: IOException) {
-            Log.d(TAG, "Error reading conversation file: ${e.message}")
-        } catch (e: JSONException) {
-            Log.d(TAG, "Error parsing JSON: ${e.message}")
-        }
-        return dialogueList
-    }
+    private val jsonString = readJsonFile()
+    private val jsonObject = JSONObject(jsonString)
 
     /**
      * Reads the contents of the JSON file and returns it as a String.
@@ -73,6 +33,46 @@ class JsonHelper(private val context: Context, private val fileName: String) {
         } catch (e: IOException) {
             "File not Found ${e.message}"
         }
+    }
+
+    /**
+     * Reads the NPC name from a JSON file and returns it.
+     *
+     * @return the NPC name as a String.
+     */
+    fun readNpcNameFromJsonFile(): String {
+        try {
+            return jsonObject.getString("NPC")
+        } catch (e: IOException) {
+            Log.d(TAG, "Error reading conversation file: ${e.message}")
+        } catch (e: JSONException) {
+            Log.d(TAG, "Error parsing JSON: ${e.message}")
+        }
+        return "No NPC Found"
+    }
+
+    /**
+     * Reads the dialogue from a JSON file and returns a list of dialogue pairs.
+     *
+     * @return A list of dialogue pairs (speaker, message).
+     */
+    fun readDialogueFromJsonFile(): List<Pair<String, String>> {
+        val dialogueList = mutableListOf<Pair<String, String>>()
+        try {
+            val dialogueArray = jsonObject.getJSONArray("dialogue")
+
+            for (i in 0 until dialogueArray.length()) {
+                val dialogueObj = dialogueArray.getJSONObject(i)
+                val speaker = dialogueObj.getString("speaker")
+                val message = dialogueObj.getString("message")
+                dialogueList.add(speaker to message)
+            }
+        } catch (e: IOException) {
+            Log.d(TAG, "Error reading conversation file: ${e.message}")
+        } catch (e: JSONException) {
+            Log.d(TAG, "Error parsing JSON: ${e.message}")
+        }
+        return dialogueList
     }
 
     companion object {

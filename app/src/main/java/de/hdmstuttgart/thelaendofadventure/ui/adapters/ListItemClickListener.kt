@@ -21,7 +21,7 @@ class ListItemClickListener(
                 ChangeBounds()
             )
             TransitionManager.beginDelayedTransition(innerInfo, Fade())
-            arrow.animate().rotation(0f)
+            arrow.animate().rotation(down_rotation)
             innerInfo.visibility = View.GONE
         } else {
             TransitionManager.beginDelayedTransition(
@@ -30,11 +30,12 @@ class ListItemClickListener(
             )
             TransitionManager.beginDelayedTransition(innerInfo, Fade())
             innerInfo.visibility = View.VISIBLE
-            arrow.animate().rotation(rotation)
+            arrow.animate().rotation(up_rotation)
         }
     }
 
     companion object {
-        private const val rotation = -180f
+        private const val up_rotation = -180f
+        private const val down_rotation = 0f
     }
 }

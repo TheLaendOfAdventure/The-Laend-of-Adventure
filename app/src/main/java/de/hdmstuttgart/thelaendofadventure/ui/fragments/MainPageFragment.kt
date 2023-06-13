@@ -32,6 +32,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
+@Suppress("TooManyFunctions")
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
     private lateinit var binding: FragmentMainPageBinding

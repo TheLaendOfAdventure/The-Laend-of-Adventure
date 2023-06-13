@@ -34,7 +34,11 @@ class QuestAdapter(
         viewHolder.binding = binding
 
         viewHolder.binding.questCardView.setOnClickListener(
-            ListItemClickListener(viewHolder.binding.innerInfo, viewHolder.binding.questArrow)
+            ListItemClickListener(
+                viewHolder.binding.questCardView,
+                viewHolder.binding.innerInfo,
+                viewHolder.binding.questArrow
+            )
         )
 
         return viewHolder

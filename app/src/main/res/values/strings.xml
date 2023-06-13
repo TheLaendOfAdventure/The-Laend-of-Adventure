@@ -80,4 +80,5 @@
     <string name="image_icon">image_icon</string>
     <string name="snackbar_message">Snackbar Message</string>
     <string name="image_frame">image_frame</string>
+    <string name="resetplayerlocation">resetPlayerLocation</string>
 </resources>

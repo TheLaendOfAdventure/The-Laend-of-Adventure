@@ -21,6 +21,7 @@ import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogAcceptQuestPopupBinding
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
+import de.hdmstuttgart.thelaendofadventure.logic.TrackingLogic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ class MapHelper(
     private val mapview: MapView,
     questList: List<QuestEntity>,
     private val context: Context,
-    private val userLevel: Int,
+    private val userLevel: Int
 
 ) {
     private lateinit var pointAnnotationManager: PointAnnotationManager
@@ -69,7 +70,7 @@ class MapHelper(
     }
 
     private fun prepareAnnotationMarker(
-        mapView: MapView,
+        mapView: MapView
     ): List<PointAnnotation> {
         val annotationPlugin = mapView.annotations
         pointAnnotationManager = annotationPlugin.createPointAnnotationManager()
@@ -93,7 +94,7 @@ class MapHelper(
 
     private fun prepareViewAnnotation(
         pointAnnotationList: List<PointAnnotation>,
-        questList: List<QuestEntity>,
+        questList: List<QuestEntity>
     ): List<View> {
         try {
             val viewAnnotationList = pointAnnotationList.mapIndexed { index, pointAnnotation ->
@@ -125,7 +126,7 @@ class MapHelper(
     private fun questViewBinding(
         quest: QuestEntity,
         viewAnnotation: View,
-        pointAnnotation: PointAnnotation,
+        pointAnnotation: PointAnnotation
     ) {
         val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
         val imageName = quest.imagePath ?: ""
@@ -152,7 +153,7 @@ class MapHelper(
     private fun configureViewAnnotationButtons(
         viewAnnotation: View,
         questID: Int,
-        pointAnnotation: PointAnnotation,
+        pointAnnotation: PointAnnotation
     ) {
         val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
         binding.dialogAcceptQuestDeclineButton.setOnClickListener {
@@ -161,10 +162,16 @@ class MapHelper(
 
         binding.dialogAcceptQuestAcceptButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                QuestLogic(context).finishedQuestGoal(questID, START_GOAL)
+                TrackingLogic(context).getCurrentLocation(questID) { isMatchingLocation ->
+                    println("Is current location matching the target location? $isMatchingLocation")
+                    if (isMatchingLocation) {
+                        val questLogic = QuestLogic(context)
+                        questLogic.finishedQuestGoal(questID, START_GOAL)
+                        viewAnnotationManager.removeViewAnnotation(viewAnnotation)
+                        pointAnnotationManager.delete(pointAnnotation)
+                    }
+                }
             }
-            viewAnnotationManager.removeViewAnnotation(viewAnnotation)
-            pointAnnotationManager.delete(pointAnnotation)
         }
     }
 

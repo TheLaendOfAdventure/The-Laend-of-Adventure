@@ -40,7 +40,7 @@ class BadgesAdapter(
         context = parent.context
         badgeRepository = AppDataContainer(context).badgeRepository
         val viewHolder = ViewHolder(view)
-        viewHolder.wrapper.setOnClickListener(ListItemClickListener(viewHolder.innerInfo))
+        // viewHolder.wrapper.setOnClickListener(ListItemClickListener(viewHolder.innerInfo))
         return ViewHolder(view)
     }
 

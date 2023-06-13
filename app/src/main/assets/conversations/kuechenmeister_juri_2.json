@@ -1,0 +1,17 @@
+{
+  "NPC": "Küchenmeister Juri",
+  "dialogue": [
+    {
+      "speaker": "Küchenmeister Juri",
+      "message": "In diesem Speiseraum werden gemeinschaftlich Mahlzeiten eingenommen, in fröhlicher Runde mit Euren Gefährten. Denn gewiss, das Speisen vereinet die Gesellschaft."
+    },
+    {
+      "speaker": "Player",
+      "message": "Ach, welch ein zauberhafter Ort.\nDoch wie viele meiner Gefährten können hier zu Tisch sitzen?"
+    },
+    {
+      "speaker": "Küchenmeister Juri",
+      "message": "Es sind wahrhaftig bis zu 1606 Plätze, die es hier zu füllen gilt.\nZudem wird stets dafür gesorgt, dass für einen jeden Gaumen etwas Feines bereitet wird."
+    }
+  ]
+}

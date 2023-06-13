@@ -40,7 +40,9 @@ class BadgesAdapter(
         context = parent.context
         badgeRepository = AppDataContainer(context).badgeRepository
         val viewHolder = ViewHolder(view)
-        // viewHolder.wrapper.setOnClickListener(ListItemClickListener(viewHolder.innerInfo))
+        viewHolder.wrapper.setOnClickListener(
+            ListItemClickListener(viewHolder.wrapper, viewHolder.innerInfo, viewHolder.arrow)
+        )
         return ViewHolder(view)
     }
 
@@ -154,5 +156,6 @@ class BadgesAdapter(
         val wrapper: CardView = itemView.findViewById(R.id.wrapper)
         val progressBar: ProgressBar = itemView.findViewById(R.id.badge_progress)
         val progressNumeric: TextView = itemView.findViewById(R.id.badge_progress_numeric)
+        val arrow: ImageView = itemView.findViewById(R.id.badge_arrow)
     }
 }

@@ -162,8 +162,7 @@ class MapHelper(
 
         binding.dialogAcceptQuestAcceptButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                TrackingLogic(context).getCurrentLocation(questID) { isMatchingLocation ->
-                    println("Is current location matching the target location? $isMatchingLocation")
+                TrackingLogic(context).isUserAtQuestLocation(questID) { isMatchingLocation ->
                     if (isMatchingLocation) {
                         val questLogic = QuestLogic(context)
                         questLogic.finishedQuestGoal(questID, START_GOAL)

@@ -89,7 +89,7 @@ class TrackingLogic(private var context: Context) {
         }
     }
 
-    suspend fun getCurrentLocation(questID: Int, callback: (Boolean) -> Unit) {
+    suspend fun isUserAtQuestLocation(questID: Int, callback: (Boolean) -> Unit) {
         val quest = questRepository.getQuestByQuestID(questID)
 
         fusedLocationClient.lastLocation
@@ -112,14 +112,17 @@ class TrackingLogic(private var context: Context) {
                             currentLatitude in quest.latitude - ALLOWED_DEVIATION..quest.latitude + ALLOWED_DEVIATION && // ktlint-disable max-line-length
                                 currentLongitude in quest.longitude - ALLOWED_DEVIATION..quest.longitude + ALLOWED_DEVIATION // ktlint-disable max-line-length
                             )
-
+                    Log.d(
+                        TAG,
+                        "Is current location matching the target location? $isMatchingLocation"
+                    )
                     callback.invoke(isMatchingLocation)
                 } else {
                     callback.invoke(false)
                 }
             }
             .addOnFailureListener { e ->
-                println("Failed to get location: ${e.message}")
+                Log.d(TAG, "Failed to get location: ${e.message}")
                 callback.invoke(false)
             }
     }

@@ -11,4 +11,12 @@ object SharedPreferencesHelper {
         )
         return sharedPreferences.getInt(context.getString(R.string.userID), -1)
     }
+
+    fun addUser(context: Context, userID: Int) {
+        val sharedPreferences = context.getSharedPreferences(
+            context.getString(R.string.sharedPreferences),
+            Context.MODE_PRIVATE
+        )
+        sharedPreferences.edit().putInt(context.getString(R.string.userID), userID).apply()
+    }
 }

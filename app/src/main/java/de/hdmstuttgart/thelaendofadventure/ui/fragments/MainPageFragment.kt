@@ -126,7 +126,9 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
                 .zoom(zoomLevel)
                 .build()
             mapView.getMapboxMap().setCamera(cameraOptions)
+            binding.mainPageResetPlayerLocation.visibility = View.GONE
         }
+        binding.mainPageResetPlayerLocation.visibility = View.GONE
     }
 
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
@@ -136,6 +138,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
     private val onMoveListener = object : OnMoveListener {
         override fun onMoveBegin(detector: MoveGestureDetector) {
+            binding.mainPageResetPlayerLocation.visibility = View.VISIBLE
             mapView.location.removeOnIndicatorPositionChangedListener(
                 onIndicatorPositionChangedListener
             )

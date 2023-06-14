@@ -100,7 +100,7 @@
         tools:ignore="RtlHardcoded">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/userPage_profile_picture_view"
+            android:id="@+id/user_page_profile_picture_view"
             android:layout_width="308dp"
             android:layout_height="308dp"
             android:contentDescription="@string/profileButton"
@@ -128,8 +128,8 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/level_bar"
-        android:layout_marginTop="20dp"
+        android:id="@+id/user_page_level_bar"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -168,7 +168,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
+        android:id="@+id/user_page_profile_button_container"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginEnd="20dp"
@@ -203,7 +203,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/userPage_profileButtonLevelDisplay"
+            android:id="@+id/user_page_profile_button_level_display"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:background="@drawable/level_frame"
@@ -224,5 +224,16 @@
             tools:layout_marginLeft="90dp"
             tools:layout_marginTop="80dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/user_page_feather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/feather"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/user_page_name_field"
+        app:layout_constraintEnd_toEndOf="@+id/user_page_name_field"
+        app:layout_constraintTop_toTopOf="@+id/user_page_name_field"
+        android:contentDescription="@string/feather" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

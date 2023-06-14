@@ -18,7 +18,7 @@
 
 
         <LinearLayout
-            android:id="@+id/badges_page_linearlayout"
+            android:id="@+id/user_page_linearlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

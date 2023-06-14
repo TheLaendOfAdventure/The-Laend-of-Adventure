@@ -13,7 +13,7 @@ interface UserRepository {
      *
      * @param user the [UserEntity] to add to the database.
      */
-    fun addUser(user: UserEntity): Long
+    suspend fun addUser(user: UserEntity): Long
 
     /**
      * Get a specific user from the database.

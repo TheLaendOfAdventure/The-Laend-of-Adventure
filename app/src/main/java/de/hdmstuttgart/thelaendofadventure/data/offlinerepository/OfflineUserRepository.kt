@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
 
-    override fun addUser(user: UserEntity): Long {
+    override suspend fun addUser(user: UserEntity): Long {
         return userDao.addUser(user)
     }
 

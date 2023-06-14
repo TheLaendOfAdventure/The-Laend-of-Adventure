@@ -10,18 +10,18 @@
         android:id="@+id/wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
-        app:cardBackgroundColor="#D9DDDC"
-        app:cardCornerRadius="20dp"
+        android:layout_marginEnd="35dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_field_nine">
 
             <ImageView
                 android:id="@+id/badge_image"
@@ -102,7 +102,7 @@
                 android:layout_marginEnd="15dp"
                 android:contentDescription="@string/expand_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/badge_progress_numeric"
                 app:srcCompat="@drawable/down_arrow"
                 tools:ignore="ImageContrastCheck" />
 

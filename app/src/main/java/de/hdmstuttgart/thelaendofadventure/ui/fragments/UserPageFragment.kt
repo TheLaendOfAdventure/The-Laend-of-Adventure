@@ -68,6 +68,14 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
             binding.userPageNameField.setText(user.name)
             binding.userPageLevelDisplay.text = user.level.toString()
             binding.userPageProfileButtonLevelDisplay.text = user.level.toString()
+            if (user.exp == halfXPNumber) {
+                binding.userPageExperienceNumeric.text = halfXP
+                binding.userPageLevelDisplay.setBackgroundResource(R.drawable.lvl_bar_half_full)
+            } else {
+                binding.userPageExperienceNumeric.text = noXP
+                binding.userPageLevelDisplay.setBackgroundResource(R.drawable.lvl_bar_empty)
+            }
+
             Glide.with(requireContext())
                 .load(user.imagePath)
                 .skipMemoryCache(true)
@@ -128,5 +136,8 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
 
     companion object {
         private const val TAG = "UserPageFragment"
+        private const val halfXP = "XP 50/100"
+        private const val noXP = "XP 0/100"
+        private const val halfXPNumber = 50
     }
 }

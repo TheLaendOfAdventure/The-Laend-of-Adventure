@@ -26,10 +26,7 @@ class QuestLogic(private val context: Context) {
     private val questRepository: QuestRepository = AppDataContainer(context).questRepository
     private val actionRepository: ActionRepository = AppDataContainer(context).actionRepository
 
-    val userID = context.getSharedPreferences(
-        R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE
-    ).getInt(R.string.userID.toString(), -1)
+    val userID = SharedPreferencesHelper.getUserID(context)
 
     /**
      * Updates the quest goal progress for a specific user and checks if the quest is completed.
@@ -63,7 +60,7 @@ class QuestLogic(private val context: Context) {
                 Log.d(TAG, "User userID: $userID completed Quest questID: $questID")
                 notifyQuest(questID)
 
-                UserLogic(context).addExperience(userID, EXPERIENCE_PER_QUEST)
+                UserLogic(context).addExperience(EXPERIENCE_PER_QUEST)
                 BadgeLogic(context).updateBadgeProgress(questID)
             } else {
                 notifyGoal(questID, goalNumber)

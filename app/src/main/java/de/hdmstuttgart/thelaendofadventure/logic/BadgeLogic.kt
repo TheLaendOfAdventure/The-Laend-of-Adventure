@@ -6,6 +6,7 @@ import android.util.Log
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SnackbarHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -19,10 +20,7 @@ class BadgeLogic(private val context: Context) {
 
     private val badgeRepository: BadgeRepository = AppDataContainer(context).badgeRepository
 
-    val userID = context.getSharedPreferences(
-        R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE
-    ).getInt(R.string.userID.toString(), -1)
+    val userID = SharedPreferencesHelper.getUserID(context)
 
     suspend fun updateBadgeProgress(questID: Int) {
         val badgeList = badgeRepository.getBadgesByUserIDAndQuestID(userID, questID).first()

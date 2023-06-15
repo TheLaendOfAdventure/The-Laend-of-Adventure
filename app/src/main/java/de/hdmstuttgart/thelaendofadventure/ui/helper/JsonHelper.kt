@@ -64,7 +64,7 @@ class JsonHelper(private val context: Context, private val fileName: String) {
         } catch (e: JSONException) {
             Log.d(TAG, "Error parsing JSON: ${e.message}")
         }
-        return "No NPC Found"
+        return "No Img Found"
     }
 
     /**

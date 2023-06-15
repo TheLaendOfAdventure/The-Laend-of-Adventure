@@ -17,6 +17,7 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import de.hdmstuttgart.the_laend_of_adventure.R
@@ -68,7 +69,12 @@ class MapHelper(
                 true
             }
         }
+        setUpCompassImage()
         setUpLocationPuck()
+    }
+
+    private fun setUpCompassImage() {
+        mapview.compass.image = AppCompatResources.getDrawable(context, R.drawable.compass)
     }
 
     private fun setUpLocationPuck() {

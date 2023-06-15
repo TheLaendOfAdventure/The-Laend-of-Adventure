@@ -25,9 +25,6 @@ import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.IOException
 
 class MapHelper(
     private val mapview: MapView,
@@ -131,7 +128,8 @@ class MapHelper(
         val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
         binding.dialogAcceptQuestImage.setImageResource(resourceId)
         binding.dialogAcceptQuestName.text = quest.name
-        val npcName = readNpcNameFromJsonFile(quest.dialogPath)
+        val json = JsonHelper(context, quest.dialogPath)
+        val npcName = json.readNpcNameFromJsonFile()
         binding.dialogAcceptQuestQuestDescription.text = context.getString(
             R.string.npc_name,
             npcName
@@ -169,34 +167,6 @@ class MapHelper(
 
     private fun View.toggleViewVisibility() {
         visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
-    }
-
-    private fun readNpcNameFromJsonFile(filePath: String): String {
-        val applicationContext = context.applicationContext
-        val jsonString: String? = try {
-            // Open the JSON file from the assets folder
-            val completeFilePath = "conversations/$filePath"
-            val inputStream = applicationContext.assets.open(completeFilePath)
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-
-            // Convert the byte array to a String using UTF-8 encoding
-            String(buffer, Charsets.UTF_8)
-        } catch (e: IOException) {
-            Log.d(TAG, "Conversation File does not exist ${e.message}")
-            null
-        }
-        jsonString?.let {
-            try {
-                val jsonObject = JSONObject(it)
-                return jsonObject.getString("NPC")
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-        }
-        return "None NPC Found"
     }
 
     companion object {

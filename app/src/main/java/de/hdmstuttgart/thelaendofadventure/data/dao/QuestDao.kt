@@ -1,6 +1,7 @@
 package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
@@ -12,6 +13,9 @@ import kotlinx.coroutines.flow.Flow
 @Suppress("TooManyFunctions")
 @Dao
 interface QuestDao {
+
+    @Insert
+    suspend fun addQuest(quest: QuestEntity): Long
 
     @Query(
         "SELECT dialogPath FROM quest " +

@@ -26,18 +26,15 @@ import de.hdmstuttgart.thelaendofadventure.ui.helper.JsonHelper
  * @param context The context of the application.
  * @param dialogPath The path to the JSON file containing the conversation dialogue.
  * @param userID The ID of the user participating in the conversation.
- * @param partnerImagePath The path to the image of the conversation partner.
  */
 class ConversationPopupDialog(
     private val context: Context,
     private val dialogPath: String,
     userID: Int,
-    private val partnerImagePath: String,
 ) {
     private val userRepository: UserRepository = AppDataContainer(context).userRepository
     val user = userRepository.getUserByID(userID).asLiveData()
 
-    private lateinit var dialogueList: List<Pair<String, String>>
     private var currentIndex = 0
     private lateinit var popupView: View
     private lateinit var popupWindow: PopupWindow
@@ -49,6 +46,10 @@ class ConversationPopupDialog(
     private lateinit var partnerTextView: TextView
     private lateinit var partnerName: TextView
     private lateinit var partnerProfile: ImageView
+
+    private val json = JsonHelper(context, dialogPath)
+    private var dialogueList = json.readDialogueFromJsonFile()
+    private val imageName = json.readNpcImgFromJsonFile()
 
     /**
      * Shows the conversation popup dialog.
@@ -64,8 +65,6 @@ class ConversationPopupDialog(
      */
     @SuppressLint("InflateParams")
     private fun initializeViews() {
-        val json = JsonHelper(context, dialogPath)
-        dialogueList = json.readDialogueFromJsonFile()
         val inflater = LayoutInflater.from(context)
         popupView = inflater.inflate(R.layout.conversation_popup, null)
 
@@ -96,7 +95,6 @@ class ConversationPopupDialog(
      * Sets up the popup window and its click listener.
      */
     private fun setupPopupWindow() {
-        val imageName = partnerImagePath
         val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
         partnerProfile.setImageResource(resourceId)
 

@@ -116,13 +116,11 @@ class QuestLogic(private val context: Context) {
         Log.d(TAG, "dialogPath: $dialogPath")
 
         if (dialogPath != null) {
-            val questImage = questRepository.getQuestImageByQuestID(questID) ?: ""
             withContext(Dispatchers.Main) {
                 val conversationPopupDialog = ConversationPopupDialog(
                     context,
                     dialogPath,
                     userID,
-                    questImage
                 )
                 conversationPopupDialog.show()
                 conversationPopupDialog.setOnDismissListener {

@@ -52,6 +52,22 @@ class JsonHelper(private val context: Context, private val fileName: String) {
     }
 
     /**
+     * Reads the NPC img path name from a JSON file and returns it.
+     *
+     * @return the path to the NPC img as String.
+     */
+    fun readNpcImgFromJsonFile(): String {
+        try {
+            return jsonObject.getString("Img")
+        } catch (e: IOException) {
+            Log.d(TAG, "Error reading conversation file: ${e.message}")
+        } catch (e: JSONException) {
+            Log.d(TAG, "Error parsing JSON: ${e.message}")
+        }
+        return "No NPC Found"
+    }
+
+    /**
      * Reads the dialogue from a JSON file and returns a list of dialogue pairs.
      *
      * @return A list of dialogue pairs (speaker, message).

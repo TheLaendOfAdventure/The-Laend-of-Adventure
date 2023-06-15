@@ -23,15 +23,13 @@ class BadgeLogic(private val context: Context) {
     val userID = SharedPreferencesHelper.getUserID(context)
 
     suspend fun updateBadgeProgress(questID: Int) {
-        val badgeList = badgeRepository.getBadgesByUserIDAndQuestID(userID, questID).first()
-
-        for (badge in badgeList) {
-            val badgeID = badge.badgeID
-            val currentGoalNumber = badge.currentGoalNumber
+        val userBadgeList = badgeRepository.getUserBadgeGoalsByQuestID(userID, questID).first()
+        for (userBadgeEntity in userBadgeList) {
+            val badgeID = userBadgeEntity.badgeID
 
             Log.d(TAG, "Updating badge progress for User userID: $userID, badgeID: $badgeID")
 
-            badgeRepository.updateBadgeProgressByUserID(userID, badgeID, currentGoalNumber + 1)
+            badgeRepository.completeBadgeGoalByUserID(userID, badgeID, userBadgeEntity.badgeGoalID)
             notifyBadge(badgeID)
 
             Log.d(TAG, "Badge progress updated for User userID: $userID, badgeID: $badgeID")

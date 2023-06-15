@@ -35,10 +35,7 @@ class ActionDaoTest {
     @Before
     fun createDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(
-            context,
-            AppDatabase::class.java
-        ).build()
+        db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         actionDao = db.actionDao()
         questDao = db.questDao()
         userDao = db.userDao()
@@ -69,9 +66,7 @@ class ActionDaoTest {
     fun testAddLocation() = runBlocking {
         val actionID = addAction()
         val location = LocationEntity(actionID, 0.0, 0.0)
-
         val locationID = actionDao.addLocation(location)
-
         assertNotEquals(-1, locationID)
     }
 
@@ -80,9 +75,7 @@ class ActionDaoTest {
         val actionID = addAction()
         val questID = addQuest()
         val achievementEntity = AchievementEntity(actionID, questID)
-
         val achievementID = actionDao.addAchievement(achievementEntity)
-
         assertNotEquals(-1, achievementID)
     }
 
@@ -106,7 +99,6 @@ class ActionDaoTest {
         val actionID = addAction()
         val goal = QuestGoalEntity(questID = questID, actionID = actionID, goalNumber = 1)
         val goalID = actionDao.addGoal(goal)
-
         assertNotEquals(-1, goalID)
     }
 
@@ -115,7 +107,6 @@ class ActionDaoTest {
         val actionID = addAction()
         val location = LocationEntity(actionID, 0.0, 0.0)
         actionDao.addLocation(location)
-
         val locationEntity = actionDao.getLocationByActionID(actionID)!!.first()
         assertEquals(location, locationEntity)
     }
@@ -124,7 +115,6 @@ class ActionDaoTest {
     fun getLocationByActionID_invalidActionID_returnsEmptyFlow() = runBlocking {
         val actionID = -1
         val locationEntity = actionDao.getLocationByActionID(actionID)?.first()
-
         assert(locationEntity == null)
     }
 
@@ -134,9 +124,7 @@ class ActionDaoTest {
         val questID = addQuest()
         val achievementEntity = AchievementEntity(actionID, questID)
         actionDao.addAchievement(achievementEntity)
-
         val questEntity = actionDao.getAchievementByActionID(actionID)?.first()
-
         assertEquals(questID, questEntity?.questID)
     }
 
@@ -154,12 +142,9 @@ class ActionDaoTest {
         val actionID = addAction()
         val goal = QuestGoalEntity(questID = questID, actionID = actionID, goalNumber = 1)
         val goalNumber = goal.goalNumber
-
         questDao.assignQuestToUser(userID, questID)
         actionDao.addGoal(goal)
-
         val dialogPath = actionDao.getDialogPath(userID, goalNumber, questID)
-
         assertEquals(DIALOG_PATH, dialogPath)
     }
 
@@ -184,9 +169,7 @@ class ActionDaoTest {
         val goal = QuestGoalEntity(questID = addQuest(), actionID = actionID, goalNumber = 1)
         val goalNumber = goal.goalNumber
         val questID = -1
-
         val dialogPath = actionDao.getDialogPath(userID, goalNumber, questID)
-
         assert(dialogPath == null)
     }
 
@@ -195,9 +178,7 @@ class ActionDaoTest {
         val userID = addUser()
         val questID = addQuest()
         val goalNumber = -1
-
         val dialogPath = actionDao.getDialogPath(userID, goalNumber, questID)
-
         assert(dialogPath == null)
     }
 }

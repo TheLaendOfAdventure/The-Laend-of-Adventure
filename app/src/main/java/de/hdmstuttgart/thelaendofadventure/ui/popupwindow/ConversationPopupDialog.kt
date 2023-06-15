@@ -6,14 +6,11 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.PopupWindow
-import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import com.bumptech.glide.Glide
-import de.hdmstuttgart.the_laend_of_adventure.R
+import de.hdmstuttgart.the_laend_of_adventure.databinding.ConversationPopupBinding
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
@@ -36,20 +33,12 @@ class ConversationPopupDialog(
     val user = userRepository.getUserByID(userID).asLiveData()
 
     private var currentIndex = 0
-    private lateinit var popupView: View
     private lateinit var popupWindow: PopupWindow
-    private lateinit var userTextBox: LinearLayout
-    private lateinit var userTextView: TextView
-    private lateinit var userProfile: ImageView
-    private lateinit var userName: TextView
-    private lateinit var partnerTextBox: LinearLayout
-    private lateinit var partnerTextView: TextView
-    private lateinit var partnerName: TextView
-    private lateinit var partnerProfile: ImageView
 
     private val json = JsonHelper(context, dialogPath)
     private var dialogueList = json.readDialogueFromJsonFile()
     private val imageName = json.readNpcImgFromJsonFile()
+    private lateinit var binding: ConversationPopupBinding
 
     /**
      * Shows the conversation popup dialog.
@@ -65,30 +54,17 @@ class ConversationPopupDialog(
      */
     @SuppressLint("InflateParams")
     private fun initializeViews() {
-        val inflater = LayoutInflater.from(context)
-        popupView = inflater.inflate(R.layout.conversation_popup, null)
-
+        binding = ConversationPopupBinding.inflate(LayoutInflater.from(context))
         popupWindow = PopupWindow(
-            popupView,
+            binding.root,
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,
             true,
         )
-
-        userTextBox = popupView.findViewById(R.id.userTextbox)
-        userTextView = popupView.findViewById(R.id.userTextView)
-        userProfile = popupView.findViewById(R.id.userProfileImage)
-        userName = popupView.findViewById(R.id.userName)
-
         val userObserver = Observer<UserEntity> { user ->
             updateUserData(user)
         }
         user.observeForever(userObserver)
-
-        partnerTextBox = popupView.findViewById(R.id.partnerTextbox)
-        partnerTextView = popupView.findViewById(R.id.partnerTextView)
-        partnerName = popupView.findViewById(R.id.partnerName)
-        partnerProfile = popupView.findViewById(R.id.partnerProfileImage)
     }
 
     /**
@@ -96,12 +72,12 @@ class ConversationPopupDialog(
      */
     private fun setupPopupWindow() {
         val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
-        partnerProfile.setImageResource(resourceId)
+        binding.partnerProfileImage.setImageResource(resourceId)
 
-        val card: View = popupView.findViewById(R.id.dialog_card)
+        val card: View = binding.dialogCard
         setupCardViewClickListener(card)
 
-        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+        popupWindow.showAtLocation(binding.root, Gravity.CENTER, 0, 0)
     }
 
     /**
@@ -110,10 +86,10 @@ class ConversationPopupDialog(
      * @param user The user entity.
      */
     private fun updateUserData(user: UserEntity) {
-        userName.text = user.name
-        Glide.with(userProfile.context)
+        binding.userName.text = user.name
+        Glide.with(context)
             .load(user.imagePath)
-            .into(userProfile)
+            .into(binding.userProfileImage)
     }
 
     /**
@@ -123,14 +99,14 @@ class ConversationPopupDialog(
         if (currentIndex < dialogueList.size) {
             val (speaker, message) = dialogueList[currentIndex]
             if (speaker == "Player") {
-                userTextBox.visibility = View.VISIBLE
-                partnerTextBox.visibility = View.GONE
-                userTextView.text = message
+                binding.userTextbox.visibility = View.VISIBLE
+                binding.partnerTextbox.visibility = View.GONE
+                binding.userTextView.text = message
             } else {
-                userTextBox.visibility = View.GONE
-                partnerTextBox.visibility = View.VISIBLE
-                partnerTextView.text = message
-                partnerName.text = speaker
+                binding.userTextbox.visibility = View.GONE
+                binding.partnerTextbox.visibility = View.VISIBLE
+                binding.partnerTextView.text = message
+                binding.partnerName.text = speaker
             }
         }
         currentIndex++

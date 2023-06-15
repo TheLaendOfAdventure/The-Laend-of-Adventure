@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -22,13 +23,10 @@ class UserPageViewModel(application: Application) : AndroidViewModel(application
     private val userRepository: UserRepository = AppDataContainer(application).userRepository
 
     lateinit var name: String
-    var imageUri: Uri = "".toUri()
+    private var imageUri: Uri = "".toUri()
     var imagePath: String = ""
 
-    val userID = application.getSharedPreferences(
-        R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE
-    ).getInt(R.string.userID.toString(), -1)
+    val userID = SharedPreferencesHelper.getUserID(application as Context)
 
     val user = userRepository.getUserByID(userID).asLiveData()
 
@@ -78,7 +76,7 @@ class UserPageViewModel(application: Application) : AndroidViewModel(application
     }
     */
 
-    fun updateUserImage(imagePath: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun updateUserImage(imagePath: String) = viewModelScope.launch(Dispatchers.IO) {
         userRepository.updateUserImagePath(userID, imagePath)
     }
 

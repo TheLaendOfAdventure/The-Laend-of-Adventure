@@ -1,5 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.helper
 
+import android.annotation.SuppressLint // ktlint-disable import-ordering
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
@@ -29,17 +30,14 @@ class MapHelper(
     private val mapview: MapView,
     questList: List<QuestEntity>,
     private val context: Context,
-    private val userLevel: Int,
+    private val userLevel: Int
 
 ) {
     private lateinit var pointAnnotationManager: PointAnnotationManager
     private var iconBitmap: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.chat_icon)?.toBitmap()!!
     private val viewAnnotationManager = mapview.viewAnnotationManager
-    val userID = context.getSharedPreferences(
-        R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE,
-    ).getInt(R.string.userID.toString(), -1)
+    val userID = SharedPreferencesHelper.getUserID(context)
 
     private val filteredQuestList = questList.filter { quest ->
         quest.level <= userLevel
@@ -47,7 +45,7 @@ class MapHelper(
 
     fun setUpMap() {
         mapview.getMapboxMap().loadStyleUri(
-            context.getString(R.string.mapbox_styleURL),
+            context.getString(R.string.mapbox_styleURL)
         ) {
             val pointAnnotationList = prepareAnnotationMarker(mapview)
             val viewList = prepareViewAnnotation(pointAnnotationList, filteredQuestList)
@@ -66,7 +64,7 @@ class MapHelper(
     }
 
     private fun prepareAnnotationMarker(
-        mapView: MapView,
+        mapView: MapView
     ): List<PointAnnotation> {
         val annotationPlugin = mapView.annotations
         pointAnnotationManager = annotationPlugin.createPointAnnotationManager()
@@ -90,7 +88,7 @@ class MapHelper(
 
     private fun prepareViewAnnotation(
         pointAnnotationList: List<PointAnnotation>,
-        questList: List<QuestEntity>,
+        questList: List<QuestEntity>
     ): List<View> {
         try {
             val viewAnnotationList = pointAnnotationList.mapIndexed { index, pointAnnotation ->
@@ -103,7 +101,7 @@ class MapHelper(
 
                 val viewAnnotation = viewAnnotationManager.addViewAnnotation(
                     R.layout.dialog_accept_quest_popup,
-                    options,
+                    options
                 )
 
                 viewAnnotation.visibility = View.GONE
@@ -119,10 +117,11 @@ class MapHelper(
         return emptyList()
     }
 
+    @SuppressLint("DiscouragedApi")
     private fun questViewBinding(
         quest: QuestEntity,
         viewAnnotation: View,
-        pointAnnotation: PointAnnotation,
+        pointAnnotation: PointAnnotation
     ) {
         val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
         val imageName = quest.imagePath ?: ""
@@ -133,13 +132,13 @@ class MapHelper(
         val npcName = json.readNpcNameFromJsonFile()
         binding.dialogAcceptQuestQuestDescription.text = context.getString(
             R.string.npc_name,
-            npcName,
+            npcName
         )
         binding.dialogAcceptQuestQuestDetails.text = context.getString(
             R.string.quest_details,
             quest.latitude,
             quest.longitude,
-            quest.description,
+            quest.description
         )
 
         binding.dialogAcceptQuestAcceptButton.text = context.getString(R.string.quest_accept)
@@ -150,7 +149,7 @@ class MapHelper(
     private fun configureViewAnnotationButtons(
         viewAnnotation: View,
         questID: Int,
-        pointAnnotation: PointAnnotation,
+        pointAnnotation: PointAnnotation
     ) {
         val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
         binding.dialogAcceptQuestDeclineButton.setOnClickListener {

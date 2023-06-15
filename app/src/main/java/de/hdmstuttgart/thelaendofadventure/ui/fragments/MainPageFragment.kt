@@ -82,7 +82,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     }
 
     private fun isUserLoggedIn(): Boolean {
-        val userID = viewModel.getUserID()
+        val userID = viewModel.userID
         if (userID == -1) {
             Navigation.findNavController(requireView()).navigate(
                 R.id.userCreationFragment

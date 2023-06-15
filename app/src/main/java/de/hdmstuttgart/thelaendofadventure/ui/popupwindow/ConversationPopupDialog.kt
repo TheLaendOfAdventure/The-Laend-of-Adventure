@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.popupwindow
 
-import android.annotation.SuppressLint
+import android.annotation.SuppressLint // ktlint-disable import-ordering
 import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -72,7 +72,7 @@ class ConversationPopupDialog(
             popupView,
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,
-            true,
+            true
         )
 
         userTextBox = popupView.findViewById(R.id.userTextbox)
@@ -94,6 +94,7 @@ class ConversationPopupDialog(
     /**
      * Sets up the popup window and its click listener.
      */
+    @SuppressLint("DiscouragedApi")
     private fun setupPopupWindow() {
         val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
         partnerProfile.setImageResource(resourceId)

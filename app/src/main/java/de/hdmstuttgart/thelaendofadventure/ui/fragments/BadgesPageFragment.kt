@@ -32,29 +32,29 @@ class BadgesPageFragment : Fragment() {
 
         binding = FragmentBadgesPageBinding.inflate(inflater, container, false)
 
-        val acceptedRecycleView = binding.badgesPageRecyclerviewAccepted
-        acceptedRecycleView.layoutManager = LinearLayoutManager(requireContext())
-        acceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = true, this)
+        val completedRecycleView = binding.badgesPageRecyclerviewAccepted
+        completedRecycleView.layoutManager = LinearLayoutManager(requireContext())
+        completedRecycleView.adapter = BadgesAdapter(emptyList(), completed = true, this)
 
-        val acceptedBadgeObserver = Observer<List<BadgeDetails>> { badgeList ->
+        val completedBadgeObserver = Observer<List<BadgeDetails>> { badgeList ->
             // Handle the accepted badgeList
-            val adapter = BadgesAdapter(badgeList, accepted = true, this)
-            acceptedRecycleView.adapter = adapter
+            val adapter = BadgesAdapter(badgeList, completed = true, this)
+            completedRecycleView.adapter = adapter
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.acceptedBadges.observe(viewLifecycleOwner, acceptedBadgeObserver)
+        viewModel.completedBadges.observe(viewLifecycleOwner, completedBadgeObserver)
 
-        val unacceptedRecycleView = binding.badgesPageRecyclerviewUnaccepted
-        unacceptedRecycleView.layoutManager = LinearLayoutManager(requireContext())
-        unacceptedRecycleView.adapter = BadgesAdapter(emptyList(), accepted = false, this)
+        val unCompletedRecycleView = binding.badgesPageRecyclerviewUnaccepted
+        unCompletedRecycleView.layoutManager = LinearLayoutManager(requireContext())
+        unCompletedRecycleView.adapter = BadgesAdapter(emptyList(), completed = false, this)
 
-        val unacceptedBadgeObserver = Observer<List<BadgeDetails>> { badgeList ->
+        val unCompletedBadgeObserver = Observer<List<BadgeDetails>> { badgeList ->
             // Handle the unaccepted badgeList
-            val adapter = BadgesAdapter(badgeList, accepted = false, this)
-            unacceptedRecycleView.adapter = adapter
+            val adapter = BadgesAdapter(badgeList, completed = false, this)
+            unCompletedRecycleView.adapter = adapter
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.unacceptedBadges.observe(viewLifecycleOwner, unacceptedBadgeObserver)
+        viewModel.unCompletedBadges.observe(viewLifecycleOwner, unCompletedBadgeObserver)
 
         val userObserver = Observer<UserEntity> { user ->
             binding.badgesProfileButtonLevelDisplay.text = user.level.toString()

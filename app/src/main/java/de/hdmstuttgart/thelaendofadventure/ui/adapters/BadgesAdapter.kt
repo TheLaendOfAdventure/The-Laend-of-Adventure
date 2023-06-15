@@ -26,7 +26,7 @@ import de.hdmstuttgart.thelaendofadventure.ui.helper.StringHelper
 
 class BadgesAdapter(
     private val badgeList: List<BadgeDetails>,
-    val accepted: Boolean,
+    val completed: Boolean,
     private val lifecycleOwner: LifecycleOwner
 ) :
     RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
@@ -60,7 +60,7 @@ class BadgesAdapter(
         val imageName = badge.imagePath
         val resourceID = context.resources.getIdentifier(imageName, "drawable", context.packageName)
         holder.imageView.setImageResource(resourceID)
-        if (!accepted) {
+        if (!completed) {
             holder.imageView.setColorFilter(
                 Color.parseColor("#70000000"),
                 PorterDuff.Mode.DARKEN

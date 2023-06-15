@@ -15,7 +15,7 @@ class BadgesPageViewModel(application: Application) : AndroidViewModel(applicati
 
     val userID = SharedPreferencesHelper.getUserID(application as Context)
 
-    val acceptedBadges = badgeRepository.getAcceptedBadgesDetailsByUserID(userID).asLiveData()
-    val unacceptedBadges = badgeRepository.getUnacceptedBadgesByUserID(userID).asLiveData()
+    val completedBadges = badgeRepository.getCompletedBadgesDetailsByUserID(userID).asLiveData()
+    val unCompletedBadges = badgeRepository.getUnCompletedBadgesDetailsByUserID(userID).asLiveData()
     val user = userRepository.getUserByID(userID).asLiveData()
 }

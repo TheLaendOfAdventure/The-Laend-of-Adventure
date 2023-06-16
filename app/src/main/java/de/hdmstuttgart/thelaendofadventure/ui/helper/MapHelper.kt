@@ -52,12 +52,16 @@ class MapHelper(
             val viewList = prepareViewAnnotation(pointAnnotationList, filteredQuestList)
             // show / hide view annotation based on a marker click
             pointAnnotationManager.addClickListener { clickedAnnotation ->
-                pointAnnotationList.forEach { pointAnnotation ->
-                    viewList.forEach { viewAnnotation ->
+                try {
+                    for (i in pointAnnotationList.indices) {
+                        val pointAnnotation = pointAnnotationList[i]
+                        val viewAnnotation = viewList[i]
                         if (pointAnnotation == clickedAnnotation) {
                             viewAnnotation.toggleViewVisibility()
                         }
                     }
+                } catch (@Suppress("TooGenericExceptionCaught")e: IndexOutOfBoundsException) {
+                    Log.d(TAG, "Alredy deleted $e")
                 }
                 true
             }

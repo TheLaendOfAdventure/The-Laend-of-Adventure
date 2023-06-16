@@ -8,6 +8,5 @@ data class BadgeEntity(
     @PrimaryKey(autoGenerate = true) val badgeID: Int = 0,
     val name: String,
     val description: String,
-    val imagePath: String,
-    val targetGoalNumber: Int
+    val imagePath: String
 )

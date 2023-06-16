@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
-import android.Manifest
+import android.Manifest // ktlint-disable import-ordering
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,8 +14,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
+import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.gestures
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
@@ -24,14 +26,15 @@ import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBindin
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestWithUserLevel
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.logic.TrackingLogic
-import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
+import de.hdmstuttgart.thelaendofadventure.ui.helper.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
+@Suppress("TooManyFunctions")
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
     private lateinit var binding: FragmentMainPageBinding
@@ -39,21 +42,12 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private lateinit var mapView: MapView
     private lateinit var mapHelper: MapHelper
     private lateinit var permissionManager: PermissionManager
-
-    private val permissionResultLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        val granted = permissions.entries.all { it.value }
-        if (granted) {
-            showUserAtMap()
-        } else {
-            showGpsAlertDialog()
-        }
-    }
+    private lateinit var trackingLogic: TrackingLogic
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         CoroutineScope(Dispatchers.IO).launch { QuestLogic(requireContext()).checkRiddle() }
+        trackingLogic = TrackingLogic(requireContext())
     }
 
     override fun onCreateView(
@@ -64,24 +58,31 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
         binding = FragmentMainPageBinding.inflate(inflater, container, false)
         mapView = binding.mapView
+        observeQuest()
+        return binding.root
+    }
+
+    private fun observeQuest() {
         val questObserver = Observer<QuestWithUserLevel> { questList ->
             mapHelper = MapHelper(mapView, questList.quest, requireContext(), questList.userLevel)
             mapHelper.setUpMap()
         }
+        mapView.gestures.addOnMoveListener(onMoveListener)
         viewModel.combinedList.observe(viewLifecycleOwner, questObserver)
-        return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (isUserLoggedIn()) {
             requestLocationPermission()
             observeUser()
             setUpProfileButton()
+            setupLocationResetButton()
         }
     }
 
     private fun isUserLoggedIn(): Boolean {
-        val userID = viewModel.getUserID()
+        val userID = viewModel.userID
         if (userID == -1) {
             Navigation.findNavController(requireView()).navigate(
                 R.id.userCreationFragment
@@ -115,22 +116,61 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         }
     }
 
-    private fun showUserAtMap() = lifecycleScope.launch {
-        permissionManager = PermissionManager(requireContext())
-        lifecycleScope.launch {
-            TrackingLogic(requireContext()).start()
+    private fun setupLocationResetButton() {
+        binding.mainPageResetPlayerLocation.setOnClickListener {
+            mapView.location.addOnIndicatorPositionChangedListener(
+                onIndicatorPositionChangedListener
+            )
+
+            val cameraOptions = CameraOptions.Builder()
+                .zoom(zoomLevel)
+                .build()
+            mapView.getMapboxMap().setCamera(cameraOptions)
         }
-        mapView.location.updateSettings {
-            enabled = true
-            pulsingEnabled = true
-        }
-        // pass users location to camera
-        mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
     }
 
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
         mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
         mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
+    }
+
+    private val onMoveListener = object : OnMoveListener {
+        override fun onMoveBegin(detector: MoveGestureDetector) {
+            mapView.location.removeOnIndicatorPositionChangedListener(
+                onIndicatorPositionChangedListener
+            )
+        }
+
+        override fun onMove(detector: MoveGestureDetector): Boolean {
+            return false
+        }
+
+        @Suppress("EmptyFunctionBlock")
+        override fun onMoveEnd(detector: MoveGestureDetector) {
+        }
+    }
+
+    private val permissionResultLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val granted = permissions.entries.all { it.value }
+        if (granted) {
+            showUserAtMap()
+        } else {
+            showGpsAlertDialog()
+        }
+    }
+
+    private fun showUserAtMap() = lifecycleScope.launch {
+        permissionManager = PermissionManager(requireContext())
+        lifecycleScope.launch {
+            trackingLogic.start()
+        }
+        mapView.location.updateSettings {
+            enabled = true
+            pulsingEnabled = true
+        }
+        mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
     }
 
     private fun showGpsAlertDialog() {
@@ -146,5 +186,9 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             }
             create().show()
         }
+    }
+
+    companion object {
+        private const val zoomLevel = 17.0
     }
 }

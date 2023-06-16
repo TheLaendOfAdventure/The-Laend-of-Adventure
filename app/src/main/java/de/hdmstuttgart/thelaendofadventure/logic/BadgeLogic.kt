@@ -6,6 +6,7 @@ import android.util.Log
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SnackbarHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -19,21 +20,16 @@ class BadgeLogic(private val context: Context) {
 
     private val badgeRepository: BadgeRepository = AppDataContainer(context).badgeRepository
 
-    val userID = context.getSharedPreferences(
-        R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE
-    ).getInt(R.string.userID.toString(), -1)
+    val userID = SharedPreferencesHelper.getUserID(context)
 
     suspend fun updateBadgeProgress(questID: Int) {
-        val badgeList = badgeRepository.getBadgesByUserIDAndQuestID(userID, questID).first()
-
-        for (badge in badgeList) {
-            val badgeID = badge.badgeID
-            val currentGoalNumber = badge.currentGoalNumber
+        val userBadgeList = badgeRepository.getUserBadgeGoalsByQuestID(userID, questID).first()
+        for (userBadgeEntity in userBadgeList) {
+            val badgeID = userBadgeEntity.badgeID
 
             Log.d(TAG, "Updating badge progress for User userID: $userID, badgeID: $badgeID")
 
-            badgeRepository.updateBadgeProgressByUserID(userID, badgeID, currentGoalNumber + 1)
+            badgeRepository.completeBadgeGoalByUserID(userID, badgeID, userBadgeEntity.badgeGoalID)
             notifyBadge(badgeID)
 
             Log.d(TAG, "Badge progress updated for User userID: $userID, badgeID: $badgeID")

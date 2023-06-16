@@ -1,8 +1,7 @@
 package de.hdmstuttgart.thelaendofadventure.ui.popupwindow
 
-import android.annotation.SuppressLint
+import android.annotation.SuppressLint // ktlint-disable import-ordering
 import android.content.Context
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -18,9 +17,7 @@ import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.IOException
+import de.hdmstuttgart.thelaendofadventure.ui.helper.JsonHelper
 
 /**
  * A popup dialog that displays a conversation between the user and a partner.
@@ -29,18 +26,15 @@ import java.io.IOException
  * @param context The context of the application.
  * @param dialogPath The path to the JSON file containing the conversation dialogue.
  * @param userID The ID of the user participating in the conversation.
- * @param partnerImagePath The path to the image of the conversation partner.
  */
 class ConversationPopupDialog(
     private val context: Context,
     private val dialogPath: String,
     userID: Int,
-    private val partnerImagePath: String,
 ) {
     private val userRepository: UserRepository = AppDataContainer(context).userRepository
     val user = userRepository.getUserByID(userID).asLiveData()
 
-    private lateinit var dialogueList: List<Pair<String, String>>
     private var currentIndex = 0
     private lateinit var popupView: View
     private lateinit var popupWindow: PopupWindow
@@ -52,6 +46,10 @@ class ConversationPopupDialog(
     private lateinit var partnerTextView: TextView
     private lateinit var partnerName: TextView
     private lateinit var partnerProfile: ImageView
+
+    private val json = JsonHelper(context, dialogPath)
+    private var dialogueList = json.readDialogueFromJsonFile()
+    private val imageName = json.readNpcImgFromJsonFile()
 
     /**
      * Shows the conversation popup dialog.
@@ -67,7 +65,6 @@ class ConversationPopupDialog(
      */
     @SuppressLint("InflateParams")
     private fun initializeViews() {
-        dialogueList = readDialogueFromJsonFile()
         val inflater = LayoutInflater.from(context)
         popupView = inflater.inflate(R.layout.conversation_popup, null)
 
@@ -75,7 +72,7 @@ class ConversationPopupDialog(
             popupView,
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,
-            true,
+            true
         )
 
         userTextBox = popupView.findViewById(R.id.userTextbox)
@@ -97,8 +94,8 @@ class ConversationPopupDialog(
     /**
      * Sets up the popup window and its click listener.
      */
+    @SuppressLint("DiscouragedApi")
     private fun setupPopupWindow() {
-        val imageName = partnerImagePath
         val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
         partnerProfile.setImageResource(resourceId)
 
@@ -118,39 +115,6 @@ class ConversationPopupDialog(
         Glide.with(userProfile.context)
             .load(user.imagePath)
             .into(userProfile)
-    }
-
-    /**
-     * Reads the dialogue from a JSON file and returns a list of dialogue pairs.
-     *
-     * @return A list of dialogue pairs (speaker, message).
-     */
-    private fun readDialogueFromJsonFile(): List<Pair<String, String>> {
-        val dialogueList = mutableListOf<Pair<String, String>>()
-        try {
-            val filePath = "conversations/$dialogPath"
-            val inputStream = context.assets.open(filePath)
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-
-            val jsonString = String(buffer, Charsets.UTF_8)
-            val jsonObject = JSONObject(jsonString)
-            val dialogueArray = jsonObject.getJSONArray("dialogue")
-
-            for (i in 0 until dialogueArray.length()) {
-                val dialogueObj = dialogueArray.getJSONObject(i)
-                val speaker = dialogueObj.getString("speaker")
-                val message = dialogueObj.getString("message")
-                dialogueList.add(speaker to message)
-            }
-        } catch (e: IOException) {
-            Log.d(TAG, "$e")
-        } catch (e: JSONException) {
-            Log.d(TAG, "$e")
-        }
-        return dialogueList
     }
 
     /**
@@ -191,9 +155,5 @@ class ConversationPopupDialog(
     private var dismissListener: (() -> Unit)? = null
     fun setOnDismissListener(listener: () -> Unit) {
         dismissListener = listener
-    }
-
-    companion object {
-        private const val TAG = "ConversationPopupDialog"
     }
 }

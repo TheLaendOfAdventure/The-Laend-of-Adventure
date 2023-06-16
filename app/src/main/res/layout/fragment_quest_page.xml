@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/quest_page_background"
     android:orientation="vertical"
-    android:background="@drawable/background_book"
     tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.QuestPageFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginTop="65dp"
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/quest_page_linearlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,12 +35,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/profile_tab_text"
                 android:gravity="center"
                 android:paddingBottom="20dp"
+                android:text="@string/profile_tab_text"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
-                android:background="@drawable/tab_bookmark"
                 app:layout_constraintWidth_max="320dp" />
 
             <TextView
@@ -42,12 +47,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingBottom="20dp"
                 android:gravity="center"
+                android:paddingBottom="20dp"
                 android:text="@string/badges_tab_text"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
-                android:background="@drawable/tab_bookmark"
                 app:layout_constraintWidth_max="320dp" />
 
             <TextView
@@ -55,12 +59,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingBottom="20dp"
                 android:gravity="center"
+                android:paddingBottom="20dp"
                 android:text="@string/quests_tab_text"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
-                android:background="@drawable/tab_bookmark"
                 app:layout_constraintWidth_max="320dp" />
         </LinearLayout>
 
@@ -69,10 +72,18 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="35dp"
+        android:fadingEdgeLength="80dp"
+        android:requiresFadingEdge="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="5dp"
             android:id="@+id/quest_page_recyclerview"
+            android:clipToPadding="false"
+            android:paddingBottom="110dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/badges_page_profile_button"
@@ -85,9 +96,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginEnd="10dp"
-        android:layout_gravity="right"
-        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="RtlHardcoded">
@@ -126,8 +136,10 @@
             android:gravity="center"
             android:maxWidth="30dp"
             android:maxHeight="30dp"
+            android:paddingLeft="1dp"
             android:text="@string/player_level"
             android:textColor="#FFFFFF"
+            android:textSize="13sp"
             app:flow_verticalAlign="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -137,4 +149,4 @@
             tools:layout_marginLeft="90dp"
             tools:layout_marginTop="80dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

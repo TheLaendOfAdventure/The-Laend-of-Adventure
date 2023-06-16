@@ -1,6 +1,7 @@
 package de.hdmstuttgart.thelaendofadventure.ui.helper
 
-import android.content.Context // ktlint-disable import-ordering
+import android.annotation.SuppressLint // ktlint-disable import-ordering
+import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import android.view.View
@@ -25,9 +26,6 @@ import de.hdmstuttgart.thelaendofadventure.logic.TrackingLogic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.IOException
 
 class MapHelper(
     private val mapview: MapView,
@@ -40,10 +38,7 @@ class MapHelper(
     private var iconBitmap: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.chat_icon)?.toBitmap()!!
     private val viewAnnotationManager = mapview.viewAnnotationManager
-    val userID = context.getSharedPreferences(
-        R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE,
-    ).getInt(R.string.userID.toString(), -1)
+    val userID = SharedPreferencesHelper.getUserID(context)
 
     private val filteredQuestList = questList.filter { quest ->
         quest.level <= userLevel
@@ -51,7 +46,7 @@ class MapHelper(
 
     fun setUpMap() {
         mapview.getMapboxMap().loadStyleUri(
-            context.getString(R.string.mapbox_styleURL),
+            context.getString(R.string.mapbox_styleURL)
         ) {
             val pointAnnotationList = prepareAnnotationMarker(mapview)
             val viewList = prepareViewAnnotation(pointAnnotationList, filteredQuestList)
@@ -107,7 +102,7 @@ class MapHelper(
 
                 val viewAnnotation = viewAnnotationManager.addViewAnnotation(
                     R.layout.dialog_accept_quest_popup,
-                    options,
+                    options
                 )
 
                 viewAnnotation.visibility = View.GONE
@@ -123,6 +118,7 @@ class MapHelper(
         return emptyList()
     }
 
+    @SuppressLint("DiscouragedApi")
     private fun questViewBinding(
         quest: QuestEntity,
         viewAnnotation: View,
@@ -133,16 +129,17 @@ class MapHelper(
         val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
         binding.dialogAcceptQuestImage.setImageResource(resourceId)
         binding.dialogAcceptQuestName.text = quest.name
-        val npcName = readNpcNameFromJsonFile(quest.dialogPath)
+        val json = JsonHelper(context, quest.dialogPath)
+        val npcName = json.readNpcNameFromJsonFile()
         binding.dialogAcceptQuestQuestDescription.text = context.getString(
             R.string.npc_name,
-            npcName,
+            npcName
         )
         binding.dialogAcceptQuestQuestDetails.text = context.getString(
             R.string.quest_details,
             quest.latitude,
             quest.longitude,
-            quest.description,
+            quest.description
         )
 
         binding.dialogAcceptQuestAcceptButton.text = context.getString(R.string.quest_accept)
@@ -176,34 +173,6 @@ class MapHelper(
 
     private fun View.toggleViewVisibility() {
         visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
-    }
-
-    private fun readNpcNameFromJsonFile(filePath: String): String {
-        val applicationContext = context.applicationContext
-        val jsonString: String? = try {
-            // Open the JSON file from the assets folder
-            val completeFilePath = "conversations/$filePath"
-            val inputStream = applicationContext.assets.open(completeFilePath)
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-
-            // Convert the byte array to a String using UTF-8 encoding
-            String(buffer, Charsets.UTF_8)
-        } catch (e: IOException) {
-            Log.d(TAG, "Conversation File does not exist ${e.message}")
-            null
-        }
-        jsonString?.let {
-            try {
-                val jsonObject = JSONObject(it)
-                return jsonObject.getString("NPC")
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-        }
-        return "None NPC Found"
     }
 
     companion object {

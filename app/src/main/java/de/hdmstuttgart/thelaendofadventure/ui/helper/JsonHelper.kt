@@ -58,7 +58,7 @@ class JsonHelper(private val context: Context, private val fileName: String) {
      */
     fun readNpcImgFromJsonFile(): String {
         try {
-            return jsonObject.getString("Img")
+            return jsonObject.getString("img")
         } catch (e: IOException) {
             Log.d(TAG, "Error reading conversation file: ${e.message}")
         } catch (e: JSONException) {

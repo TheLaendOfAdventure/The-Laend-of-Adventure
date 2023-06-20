@@ -59,7 +59,7 @@ class ConversationPopupDialog(
             binding.root,
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
+            false,
         )
         val userObserver = Observer<UserEntity> { user ->
             updateUserData(user)

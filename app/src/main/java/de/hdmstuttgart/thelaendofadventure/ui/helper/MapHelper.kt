@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.helper
 
-import android.annotation.SuppressLint // ktlint-disable import-ordering
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
@@ -38,6 +38,8 @@ class MapHelper(
     private lateinit var pointAnnotationManager: PointAnnotationManager
     private var iconBitmap: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.chat_icon)?.toBitmap()!!
+    var blankImg =
+        AppCompatResources.getDrawable(context, R.drawable.img_blank)?.toBitmap()!!
     private val viewAnnotationManager = mapview.viewAnnotationManager
     val userID = SharedPreferencesHelper.getUserID(context)
 
@@ -171,42 +173,49 @@ class MapHelper(
                         questLogic.finishedQuestGoal(questID, START_GOAL)
                         viewAnnotationManager.removeViewAnnotation(viewAnnotation)
                         pointAnnotationManager.delete(pointAnnotation)
+                        Log.d(TAG, "$pointAnnotation got deleted")
+                        pointAnnotation.iconImageBitmap =
+                            blankImg
+                        pointAnnotationManager.update(pointAnnotation)
+                        Log.d(TAG, Thread.currentThread().name)
+                        QuestLogic(context).finishedQuestGoal(questID, START_GOAL)
+                        Log.d(TAG, Thread.currentThread().name)
                     }
                 }
             }
         }
     }
-        fun setLocationMarker() {
-            for (location in locationMarkers) {
-                location.let { validLocation ->
-                    CoroutineScope(Dispatchers.Main).launch {
-                        try {
-                            val redMarker =
-                                AppCompatResources.getDrawable(context, R.drawable.red_marker)
-                                    ?.toBitmap()!!
-                            val pointAnnotationManager =
-                                mapview.annotations.createPointAnnotationManager()
-                            val pointAnnotationOptions: PointAnnotationOptions =
-                                PointAnnotationOptions()
-                                    .withPoint(
-                                        Point.fromLngLat(
-                                            validLocation.longitude,
-                                            validLocation.latitude
-                                        )
+    fun setLocationMarker() {
+        for (location in locationMarkers) {
+            location.let { validLocation ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        val redMarker =
+                            AppCompatResources.getDrawable(context, R.drawable.red_marker)
+                                ?.toBitmap()!!
+                        val pointAnnotationManager =
+                            mapview.annotations.createPointAnnotationManager()
+                        val pointAnnotationOptions: PointAnnotationOptions =
+                            PointAnnotationOptions()
+                                .withPoint(
+                                    Point.fromLngLat(
+                                        validLocation.longitude,
+                                        validLocation.latitude
                                     )
-                                    .withIconImage(redMarker)
-                            pointAnnotationManager.create(pointAnnotationOptions)
-                        } catch (e: java.lang.NullPointerException) {
-                            Log.d(TAG, "Location not Found $e")
-                        }
+                                )
+                                .withIconImage(redMarker)
+                        pointAnnotationManager.create(pointAnnotationOptions)
+                    } catch (e: java.lang.NullPointerException) {
+                        Log.d(TAG, "Location not Found $e")
                     }
                 }
             }
         }
+    }
 
-        private fun View.toggleViewVisibility() {
-            visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        }
+    private fun View.toggleViewVisibility() {
+        visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
+    }
     companion object {
         var locationMarkers = arrayListOf<Location>()
         private const val TAG = "MapHelper"

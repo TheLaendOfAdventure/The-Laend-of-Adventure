@@ -10,9 +10,9 @@ import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestWithUserLeve
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
 import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -39,7 +39,7 @@ class MainPageViewModel(application: Application) : AndroidViewModel(application
     }
     fun getLocation() {
         CoroutineScope(Dispatchers.IO).launch {
-            location = questRepository.getOnlyLocationForAcceptedQuestsByUserID(getUserID())
+            location = questRepository.getOnlyLocationForAcceptedQuestsByUserID(userID)
             location.forEach { location ->
                 MapHelper.locationMarkers.add(location)
             }

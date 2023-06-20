@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import com.mapbox.geojson.Point
@@ -169,6 +170,10 @@ class MapHelper(
                         questLogic.finishedQuestGoal(questID, START_GOAL)
                         viewAnnotationManager.removeViewAnnotation(viewAnnotation)
                         pointAnnotationManager.delete(pointAnnotation)
+                    } else {
+                        val text = context.getString(R.string.too_far_away)
+                        val tooFarToast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
+                        tooFarToast.show()
                     }
                 }
             }

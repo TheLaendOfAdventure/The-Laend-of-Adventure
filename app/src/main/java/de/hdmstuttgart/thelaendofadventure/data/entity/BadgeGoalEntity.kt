@@ -23,6 +23,5 @@ import androidx.room.PrimaryKey
 data class BadgeGoalEntity(
     @PrimaryKey(autoGenerate = true) val badgeGoalID: Int = 0,
     @ColumnInfo(index = true) val badgeID: Int,
-    @ColumnInfo(index = true) val actionID: Int,
-    val goalNumber: Int
+    @ColumnInfo(index = true) val actionID: Int
 )

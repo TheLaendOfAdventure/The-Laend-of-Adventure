@@ -5,6 +5,7 @@ import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.UserBadgeEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -13,20 +14,20 @@ import kotlinx.coroutines.flow.Flow
 interface BadgeRepository {
 
     /**
-     * Gets all the accepted badges for a given user.
+     * Gets all completed badges for a given user.
      *
      * @param userID the ID of the user to get the badges for
-     * @return a [Flow] emitting a list of [BadgeDetails] objects representing the accepted badges
+     * @return a [Flow] emitting a list of [BadgeDetails] objects representing the completed badges
      */
-    fun getAcceptedBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
+    fun getCompletedBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
 
     /**
-     * Gets all the unaccepted badges for a given user.
+     * Gets all uncompleted badges for a given user.
      *
      * @param userID the ID of the user to get the badges for
-     * @return a [Flow] emitting a list of [BadgeDetails] objects representing the unaccepted badges
+     * @return a [Flow] emitting a list of [BadgeDetails] objects representing the uncompleted badges
      */
-    fun getUnacceptedBadgesByUserID(userID: Int): Flow<List<BadgeDetails>>
+    fun getUnCompletedBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
 
     /**
      * Gets the progress of a specific badge for a specific user.
@@ -62,16 +63,16 @@ interface BadgeRepository {
      * @param questID  The ID of the quest for which to retrieve the badges.
      * @return A [Flow] emitting a list of [BadgeDetails] objects that match the specified criteria.
      */
-    fun getBadgesByUserIDAndQuestID(userID: Int, questID: Int): Flow<List<BadgeDetails>>
+    fun getUserBadgeGoalsByQuestID(userID: Int, questID: Int): Flow<List<UserBadgeEntity>>
 
     /**
      * Updates the progress of a specific badge for a specific user.
      *
      * @param userID the ID of the user to update the badge progress for
      * @param badgeID the ID of the badge to update the progress for
-     * @param goalNumber the new goal number to set for the badge progress
+     * @param badgeGoalID the new goal number to set for the badge progress
      */
-    suspend fun updateBadgeProgressByUserID(userID: Int, badgeID: Int, goalNumber: Int)
+    suspend fun completeBadgeGoalByUserID(userID: Int, badgeID: Int, badgeGoalID: Int)
 
     /**
      * Assign all Badges to a specific user.

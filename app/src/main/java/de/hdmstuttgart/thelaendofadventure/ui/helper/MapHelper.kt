@@ -22,6 +22,7 @@ import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogAcceptQuestPopupBinding
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
+import de.hdmstuttgart.thelaendofadventure.logic.TrackingLogic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,12 +52,16 @@ class MapHelper(
             val viewList = prepareViewAnnotation(pointAnnotationList, filteredQuestList)
             // show / hide view annotation based on a marker click
             pointAnnotationManager.addClickListener { clickedAnnotation ->
-                pointAnnotationList.forEach { pointAnnotation ->
-                    viewList.forEach { viewAnnotation ->
+                try {
+                    for (i in pointAnnotationList.indices) {
+                        val pointAnnotation = pointAnnotationList[i]
+                        val viewAnnotation = viewList[i]
                         if (pointAnnotation == clickedAnnotation) {
                             viewAnnotation.toggleViewVisibility()
                         }
                     }
+                } catch (@Suppress("TooGenericExceptionCaught")e: IndexOutOfBoundsException) {
+                    Log.d(TAG, "Alredy deleted $e")
                 }
                 true
             }
@@ -158,10 +163,15 @@ class MapHelper(
 
         binding.dialogAcceptQuestAcceptButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                QuestLogic(context).finishedQuestGoal(questID, START_GOAL)
+                TrackingLogic(context).isUserAtQuestLocation(questID) { isMatchingLocation ->
+                    if (isMatchingLocation) {
+                        val questLogic = QuestLogic(context)
+                        questLogic.finishedQuestGoal(questID, START_GOAL)
+                        viewAnnotationManager.removeViewAnnotation(viewAnnotation)
+                        pointAnnotationManager.delete(pointAnnotation)
+                    }
+                }
             }
-            viewAnnotationManager.removeViewAnnotation(viewAnnotation)
-            pointAnnotationManager.delete(pointAnnotation)
         }
     }
 

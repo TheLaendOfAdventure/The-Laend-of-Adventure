@@ -3,12 +3,12 @@ package de.hdmstuttgart.thelaendofadventure.ui.dialogpopup
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
-import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogRiddlePopupBinding
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.logic.UserLogic
 import de.hdmstuttgart.thelaendofadventure.ui.adapters.RiddleAnswerAdapter
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
 
 class RiddlePopupDialog(
     private val context: Context,
@@ -17,10 +17,7 @@ class RiddlePopupDialog(
 
     private lateinit var binding: DialogRiddlePopupBinding
     private val dialog = Dialog(context)
-    val userID = context.getSharedPreferences(
-        R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE
-    ).getInt(R.string.userID.toString(), -1)
+    val userID = SharedPreferencesHelper.getUserID(context)
 
     fun show() {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

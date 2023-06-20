@@ -4,21 +4,18 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
-import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
 
 class BadgesPageViewModel(application: Application) : AndroidViewModel(application) {
     private val badgeRepository: BadgeRepository = AppDataContainer(application).badgeRepository
     private val userRepository: UserRepository = AppDataContainer(application).userRepository
 
-    val userID = application.getSharedPreferences(
-        R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE
-    ).getInt(R.string.userID.toString(), -1)
+    val userID = SharedPreferencesHelper.getUserID(application as Context)
 
-    val acceptedBadges = badgeRepository.getAcceptedBadgesDetailsByUserID(userID).asLiveData()
-    val unacceptedBadges = badgeRepository.getUnacceptedBadgesByUserID(userID).asLiveData()
+    val completedBadges = badgeRepository.getCompletedBadgesDetailsByUserID(userID).asLiveData()
+    val unCompletedBadges = badgeRepository.getUnCompletedBadgesDetailsByUserID(userID).asLiveData()
     val user = userRepository.getUserByID(userID).asLiveData()
 }

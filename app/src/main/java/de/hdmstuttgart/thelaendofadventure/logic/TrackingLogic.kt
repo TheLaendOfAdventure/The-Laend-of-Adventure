@@ -1,16 +1,17 @@
 package de.hdmstuttgart.thelaendofadventure.logic
 
-import android.annotation.SuppressLint
+import android.annotation.SuppressLint // ktlint-disable import-ordering
 import android.content.Context
+import android.location.Location
 import android.os.Looper
 import android.util.Log
-import com.google.android.gms.location.*
-import de.hdmstuttgart.the_laend_of_adventure.R
+import com.google.android.gms.location.* // ktlint-disable no-wildcard-imports
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
+import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
+import kotlinx.coroutines.flow.collectLatest
 
 @SuppressLint("MissingPermission")
 class TrackingLogic(private var context: Context) {
@@ -25,10 +26,7 @@ class TrackingLogic(private var context: Context) {
     private var longitude: Double = 0.0
 
     private val questRepository: QuestRepository = AppDataContainer(context).questRepository
-    val userID = context.getSharedPreferences(
-        R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE
-    ).getInt(R.string.userID.toString(), -1)
+    val userID = SharedPreferencesHelper.getUserID(context)
 
     private var fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
@@ -86,5 +84,43 @@ class TrackingLogic(private var context: Context) {
                 return
             }
         }
+    }
+
+    suspend fun isUserAtQuestLocation(questID: Int, callback: (Boolean) -> Unit) {
+        val quest = questRepository.getQuestByQuestID(questID)
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    val currentLatitude = location.latitude
+                    val currentLongitude = location.longitude
+
+                    Log.d(
+                        TAG,
+                        "Latitude: $currentLatitude and longitude: $currentLongitude"
+                    )
+                    Log.d(
+                        TAG,
+                        "Quest Latitude: ${quest.latitude} and longitude: ${quest.longitude}"
+                    )
+
+                    val isMatchingLocation =
+                        (
+                            currentLatitude in quest.latitude - ALLOWED_DEVIATION..quest.latitude + ALLOWED_DEVIATION && // ktlint-disable max-line-length
+                                currentLongitude in quest.longitude - ALLOWED_DEVIATION..quest.longitude + ALLOWED_DEVIATION // ktlint-disable max-line-length
+                            )
+                    Log.d(
+                        TAG,
+                        "Is current location matching the target location? $isMatchingLocation"
+                    )
+                    callback.invoke(isMatchingLocation)
+                } else {
+                    callback.invoke(false)
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.d(TAG, "Failed to get location: ${e.message}")
+                callback.invoke(false)
+            }
     }
 }

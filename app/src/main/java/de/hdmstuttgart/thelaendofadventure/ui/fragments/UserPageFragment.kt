@@ -17,8 +17,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentUserPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
-import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
-import de.hdmstuttgart.thelaendofadventure.permissions.Permissions
+import de.hdmstuttgart.thelaendofadventure.ui.helper.PermissionManager
+import de.hdmstuttgart.thelaendofadventure.ui.helper.Permissions
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.UserPageViewModel
 
 class UserPageFragment : Fragment(R.layout.fragment_user_page) {
@@ -68,6 +68,14 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
             binding.userPageNameField.setText(user.name)
             binding.userPageLevelDisplay.text = user.level.toString()
             binding.userPageProfileButtonLevelDisplay.text = user.level.toString()
+            if (user.exp == halfXPNumber) {
+                binding.userPageExperienceNumeric.text = halfXP
+                binding.userPageLevelDisplay.setBackgroundResource(R.drawable.lvl_bar_half_full)
+            } else {
+                binding.userPageExperienceNumeric.text = noXP
+                binding.userPageLevelDisplay.setBackgroundResource(R.drawable.lvl_bar_empty)
+            }
+
             Glide.with(requireContext())
                 .load(user.imagePath)
                 .skipMemoryCache(true)
@@ -128,5 +136,8 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
 
     companion object {
         private const val TAG = "UserPageFragment"
+        private const val halfXP = "XP 50/100"
+        private const val noXP = "XP 0/100"
+        private const val halfXPNumber = 50
     }
 }

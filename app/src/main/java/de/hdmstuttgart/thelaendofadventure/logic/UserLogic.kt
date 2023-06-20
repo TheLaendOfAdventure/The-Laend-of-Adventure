@@ -5,6 +5,7 @@ import android.util.Log
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SnackbarHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,8 +22,10 @@ class UserLogic(private val context: Context) {
 
     private val userRepository: UserRepository = AppDataContainer(context).userRepository
 
-    fun addExperience(userID: Int, experience: Int) {
+    fun addExperience(experience: Int) {
+        val userID = SharedPreferencesHelper.getUserID(context)
         Log.d(TAG, "User userID: $userID added $experience experience")
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val user = userRepository.getUserByID(userID).first()

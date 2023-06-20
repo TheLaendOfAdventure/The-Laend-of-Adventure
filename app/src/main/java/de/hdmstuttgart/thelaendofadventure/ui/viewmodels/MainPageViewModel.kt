@@ -41,7 +41,8 @@ class MainPageViewModel(application: Application) : AndroidViewModel(application
         CoroutineScope(Dispatchers.IO).launch {
             location = questRepository.getOnlyLocationForAcceptedQuestsByUserID(userID)
             location.forEach { location ->
-                MapHelper.locationMarkers.add(location)
+                val key = location.latitude.toString() + location.longitude.toString()
+                MapHelper.locationMarkers.value?.put(key, location)
             }
         }
     }

@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxViewAnnotationException
@@ -35,25 +37,49 @@ class MapHelper(
     private val userLevel: Int
 
 ) {
-    private lateinit var pointAnnotationManager: PointAnnotationManager
+    private val pointAnnotationManager: PointAnnotationManager =
+        mapview.annotations.createPointAnnotationManager()
     private var iconBitmap: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.chat_icon)?.toBitmap()!!
     private var redMarker: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.red_marker)?.toBitmap()!!
-    var blankImg =
+    private var blankImg =
         AppCompatResources.getDrawable(context, R.drawable.img_blank)?.toBitmap()!!
     private val viewAnnotationManager = mapview.viewAnnotationManager
     val userID = SharedPreferencesHelper.getUserID(context)
+    private var annotationList: HashMap<String, PointAnnotation> = hashMapOf()
 
     private val filteredQuestList = questList.filter { quest ->
         quest.level <= userLevel
+    }
+
+    private val observer: Observer<HashMap<String, Location>> =
+        Observer { list ->
+            list.let { newMap ->
+                val previousMap = locationMarkers.value
+                val removedEntries = previousMap?.entries?.minus(newMap.entries)
+
+                if (!removedEntries.isNullOrEmpty()) {
+                    removeAnnotationMarker(list)
+                }
+            }
+
+            Log.d(TAG, "Updated list: $list")
+        }
+
+    private fun removeAnnotationMarker(markerHashMap: HashMap<String, Location>) {
+        markerHashMap.forEach { (key, _) ->
+            val marker = annotationList[key]
+            marker!!.iconImageBitmap = iconBitmap
+            pointAnnotationManager.delete(marker)
+        }
     }
 
     fun setUpMap() {
         mapview.getMapboxMap().loadStyleUri(
             context.getString(R.string.mapbox_styleURL)
         ) {
-            val pointAnnotationList = prepareAnnotationMarker(mapview)
+            val pointAnnotationList = prepareAnnotationMarker()
             val viewList = prepareViewAnnotation(pointAnnotationList, filteredQuestList)
             // show / hide view annotation based on a marker click
             pointAnnotationManager.addClickListener { clickedAnnotation ->
@@ -70,15 +96,10 @@ class MapHelper(
                 }
                 true
             }
-            setUpMarker()
         }
     }
 
-    private fun prepareAnnotationMarker(
-        mapView: MapView
-    ): List<PointAnnotation> {
-        val annotationPlugin = mapView.annotations
-        pointAnnotationManager = annotationPlugin.createPointAnnotationManager()
+    private fun prepareAnnotationMarker(): List<PointAnnotation> {
         val pointAnnotationOptionsList = getPointAnnotationOptionsList(filteredQuestList)
         return pointAnnotationOptionsList.map { pointAnnotationOptions ->
             pointAnnotationManager.create(pointAnnotationOptions)
@@ -119,7 +140,8 @@ class MapHelper(
                 viewAnnotation.visibility = View.GONE
 
                 questViewBinding(questList[index], viewAnnotation, pointAnnotation)
-                viewAnnotation
+                setUpMarker()
+                return@mapIndexed viewAnnotation
             }
             return viewAnnotationList
         } catch (e: MapboxViewAnnotationException) {
@@ -190,25 +212,36 @@ class MapHelper(
         }
     }
     private fun setUpMarker() {
-        pointAnnotationManager = mapview.annotations.createPointAnnotationManager()
         val pointAnnotationOptionsList = getMarkerOptionsList()
-        pointAnnotationOptionsList.map { pointAnnotationOptions ->
-            pointAnnotationManager.create(pointAnnotationOptions)
+        pointAnnotationOptionsList.forEach { (key, pointAnnotationOptions) ->
+            val createdAnnotation = pointAnnotationManager.create(pointAnnotationOptions)
+            annotationList[key] = createdAnnotation
         }
+
+        locationMarkers.observeForever(observer)
     }
 
-    private fun getMarkerOptionsList():
-        List<PointAnnotationOptions> {
-        val pointAnnotationOptionsList: List<PointAnnotationOptions> =
-            locationMarkers.map { location ->
-                val point = Point.fromLngLat(location.longitude, location.latitude)
-                PointAnnotationOptions()
-                    .withPoint(point)
-                    .withIconImage(redMarker)
-                    .withDraggable(false)
-            }
+    private fun getMarkerOptionsList(): HashMap<String, PointAnnotationOptions> {
+        val locationMarkersMap: HashMap<String, Location> = locationMarkers.value ?: hashMapOf()
+        val pointAnnotationOptionsMap: HashMap<String, PointAnnotationOptions> = hashMapOf()
+
+        locationMarkersMap.forEach { (key, location) ->
+            val point = Point.fromLngLat(location.longitude, location.latitude)
+
+            val pointAnnotationOptions = PointAnnotationOptions()
+                .withPoint(point)
+                .withIconImage(redMarker)
+                .withDraggable(false)
+
+            pointAnnotationOptionsMap[key] = pointAnnotationOptions
+        }
+
         Log.d(TAG, Thread.currentThread().name)
-        return pointAnnotationOptionsList
+        return pointAnnotationOptionsMap
+    }
+
+    fun stopObservingLocationMarkers() {
+        locationMarkers.removeObserver(observer)
     }
 
     private fun View.toggleViewVisibility() {
@@ -216,7 +249,9 @@ class MapHelper(
     }
 
     companion object {
-        var locationMarkers = arrayListOf<Location>()
+        var locationMarkers = MutableLiveData<HashMap<String, Location>>().apply {
+            value = HashMap() // Initialize with an empty HashMap
+        }
         private const val TAG = "MapHelper"
         private const val START_GOAL = 0
     }

@@ -25,6 +25,7 @@ class QuestLogic(private val context: Context) {
         private const val TAG = "QuestLogic"
         private const val EXPERIENCE_PER_QUEST = 50
     }
+
     private val questRepository: QuestRepository = AppDataContainer(context).questRepository
     private val actionRepository: ActionRepository = AppDataContainer(context).actionRepository
 
@@ -123,7 +124,7 @@ class QuestLogic(private val context: Context) {
                 val conversationPopupDialog = ConversationPopupDialog(
                     context,
                     dialogPath,
-                    userID,
+                    userID
                 )
                 conversationPopupDialog.show()
                 conversationPopupDialog.setOnDismissListener {
@@ -155,13 +156,15 @@ class QuestLogic(private val context: Context) {
 
     private fun addLocationMarker(location: Location) {
         if (location != null) {
-            MapHelper.locationMarkers.add(location)
+            val key = location.latitude.toString() + location.longitude.toString()
+            MapHelper.locationMarkers.value?.put(key, location)
         }
     }
 
     private fun removeLocationMarker(location: Location) {
         if (location != null) {
-            MapHelper.locationMarkers.remove(location)
+            val key = location.latitude.toString() + location.longitude.toString()
+            MapHelper.locationMarkers.value?.remove(key)
         }
     }
 }

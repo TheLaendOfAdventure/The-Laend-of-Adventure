@@ -81,7 +81,12 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             setupLocationResetButton()
         }
     }
-
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::mapHelper.isInitialized) {
+            mapHelper.stopObservingLocationMarkers()
+        }
+    }
     private fun isUserLoggedIn(): Boolean {
         val userID = viewModel.userID
         if (userID == -1) {

@@ -80,10 +80,12 @@ class TrackingLogic(private var context: Context) {
                 )
                 val questLogic = QuestLogic(context)
                 Log.d("QuestLogic", "call finish goal in Tracking ")
-                questLogic.finishedQuestGoal(
-                    locationGoal.questID,
-                    locationGoal.currentGoalNumber
-                )
+                withContext(Dispatchers.IO) {
+                    questLogic.finishedQuestGoal(
+                        locationGoal.questID,
+                        locationGoal.currentGoalNumber
+                    )
+                }
             }
         }
     }

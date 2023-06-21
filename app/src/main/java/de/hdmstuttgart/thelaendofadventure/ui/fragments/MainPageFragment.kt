@@ -85,6 +85,17 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         super.onDestroy()
         if (::mapHelper.isInitialized) {
             mapHelper.stopObservingLocationMarkers()
+            MapHelper.previousMap = mapOf()
+            MapHelper.locationMarkers.postValue(hashMapOf())
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (::mapHelper.isInitialized) {
+            mapHelper.stopObservingLocationMarkers()
+            MapHelper.previousMap = mapOf()
+            MapHelper.locationMarkers.postValue(hashMapOf())
         }
     }
     private fun isUserLoggedIn(): Boolean {

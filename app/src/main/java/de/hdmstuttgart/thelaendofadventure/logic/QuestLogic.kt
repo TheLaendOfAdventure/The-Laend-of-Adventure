@@ -8,6 +8,7 @@ import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.repository.ActionRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.ui.dialogpopup.RiddlePopupDialog
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SnackbarHelper
 import de.hdmstuttgart.thelaendofadventure.ui.popupwindow.ConversationPopupDialog
 import kotlinx.coroutines.CoroutineScope
@@ -26,10 +27,7 @@ class QuestLogic(private val context: Context) {
     private val questRepository: QuestRepository = AppDataContainer(context).questRepository
     private val actionRepository: ActionRepository = AppDataContainer(context).actionRepository
 
-    val userID = context.getSharedPreferences(
-        R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE
-    ).getInt(R.string.userID.toString(), -1)
+    val userID = SharedPreferencesHelper.getUserID(context)
 
     /**
      * Updates the quest goal progress for a specific user and checks if the quest is completed.
@@ -63,7 +61,7 @@ class QuestLogic(private val context: Context) {
                 Log.d(TAG, "User userID: $userID completed Quest questID: $questID")
                 notifyQuest(questID)
 
-                UserLogic(context).addExperience(userID, EXPERIENCE_PER_QUEST)
+                UserLogic(context).addExperience(EXPERIENCE_PER_QUEST)
                 BadgeLogic(context).updateBadgeProgress(questID)
             } else {
                 notifyGoal(questID, goalNumber)
@@ -116,13 +114,11 @@ class QuestLogic(private val context: Context) {
         Log.d(TAG, "dialogPath: $dialogPath")
 
         if (dialogPath != null) {
-            val questImage = questRepository.getQuestImageByQuestID(questID) ?: ""
             withContext(Dispatchers.Main) {
                 val conversationPopupDialog = ConversationPopupDialog(
                     context,
                     dialogPath,
                     userID,
-                    questImage
                 )
                 conversationPopupDialog.show()
                 conversationPopupDialog.setOnDismissListener {

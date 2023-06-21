@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
 
     @Insert
-    fun addUser(user: UserEntity): Long
+    suspend fun addUser(user: UserEntity): Long
 
     @Query("SELECT * FROM user WHERE userID = :id")
     fun getUserById(id: Int): Flow<UserEntity>

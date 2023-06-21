@@ -17,6 +17,11 @@ import androidx.room.PrimaryKey
             entity = BadgeEntity::class,
             childColumns = ["badgeID"],
             parentColumns = ["badgeID"]
+        ),
+        ForeignKey(
+            entity = BadgeGoalEntity::class,
+            childColumns = ["badgeGoalID"],
+            parentColumns = ["badgeGoalID"]
         )
     ]
 )
@@ -24,5 +29,6 @@ data class UserBadgeEntity(
     @PrimaryKey(autoGenerate = true) val userBadgeID: Int = 0,
     @ColumnInfo(index = true) val userID: Int,
     @ColumnInfo(index = true) val badgeID: Int,
-    @ColumnInfo(defaultValue = "0") val currentGoalNumber: Int
+    @ColumnInfo(index = true) val badgeGoalID: Int,
+    @ColumnInfo(defaultValue = "0") val isCompleted: Boolean
 )

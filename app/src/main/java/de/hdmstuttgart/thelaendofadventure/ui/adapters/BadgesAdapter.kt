@@ -1,5 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -20,11 +21,12 @@ import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
 import de.hdmstuttgart.thelaendofadventure.ui.helper.StringHelper
 
 class BadgesAdapter(
     private val badgeList: List<BadgeDetails>,
-    val accepted: Boolean,
+    val completed: Boolean,
     private val lifecycleOwner: LifecycleOwner
 ) :
     RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
@@ -47,6 +49,7 @@ class BadgesAdapter(
     }
 
     // binds the list items to a view
+    @SuppressLint("DiscouragedApi")
     override fun onBindViewHolder(
         holder: ViewHolder,
         position: Int
@@ -57,7 +60,7 @@ class BadgesAdapter(
         val imageName = badge.imagePath
         val resourceID = context.resources.getIdentifier(imageName, "drawable", context.packageName)
         holder.imageView.setImageResource(resourceID)
-        if (!accepted) {
+        if (!completed) {
             holder.imageView.setColorFilter(
                 Color.parseColor("#70000000"),
                 PorterDuff.Mode.DARKEN
@@ -76,10 +79,7 @@ class BadgesAdapter(
             badge.targetGoalNumber
         )
 
-        val userID = context.getSharedPreferences(
-            R.string.sharedPreferences.toString(),
-            Context.MODE_PRIVATE
-        ).getInt(R.string.userID.toString(), -1)
+        val userID = SharedPreferencesHelper.getUserID(context)
 
         bindUnacceptedBadges(userID, badge, holder)
         bindAcceptedBadges(userID, badge, holder)

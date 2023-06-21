@@ -58,8 +58,8 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
         binding = FragmentMainPageBinding.inflate(inflater, container, false)
         mapView = binding.mapView
-        viewModel.getLocation()
         observeQuest()
+        viewModel.getLocation()
         return binding.root
     }
 

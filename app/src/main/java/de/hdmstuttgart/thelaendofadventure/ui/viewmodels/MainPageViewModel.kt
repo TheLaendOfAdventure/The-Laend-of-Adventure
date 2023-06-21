@@ -39,10 +39,15 @@ class MainPageViewModel(application: Application) : AndroidViewModel(application
     }
     fun getLocation() {
         CoroutineScope(Dispatchers.IO).launch {
-            location = questRepository.getOnlyLocationForAcceptedQuestsByUserID(userID)
-            location.forEach { location ->
-                val key = location.latitude.toString() + location.longitude.toString()
-                MapHelper.locationMarkers.value?.put(key, location)
+            if (location != null) {
+                location = questRepository.getOnlyLocationForAcceptedQuestsByUserID(userID)
+                location.forEach { location ->
+                    val key = location.latitude.toString() + location.longitude.toString()
+                    val currentMap = MapHelper.locationMarkers.value ?: hashMapOf()
+                    MapHelper.previousMap = HashMap(currentMap).toMap()
+                    currentMap[key] = location
+                    MapHelper.locationMarkers.postValue(currentMap)
+                }
             }
         }
     }

@@ -60,13 +60,15 @@ class TrackingLogic(private var context: Context) {
             while (isActive) {
                 Log.d(TAG, "Current userID: $userID")
                 Log.d(TAG, "Current list: $list")
-                compareLocationGoal(list)
+                withContext(Dispatchers.IO) {
+                    compareLocationGoal(list)
+                }
                 delay(INTERVAL)
             }
         }
     }
 
-    private fun compareLocationGoal(locationGoals: List<LocationGoal>) {
+    private suspend fun compareLocationGoal(locationGoals: List<LocationGoal>) {
         Log.d(TAG, "Current longitude: $longitude Current latitude: $latitude")
         locationGoals.forEach { locationGoal ->
             if (locationGoal.latitude in latitude - ALLOWED_DEVIATION..latitude + ALLOWED_DEVIATION && // ktlint-disable max-line-length
@@ -77,11 +79,11 @@ class TrackingLogic(private var context: Context) {
                     "finished Goal ${locationGoal.currentGoalNumber} for questID: ${locationGoal.questID}"
                 )
                 val questLogic = QuestLogic(context)
+                Log.d("QuestLogic", "call finish goal in Tracking ")
                 questLogic.finishedQuestGoal(
                     locationGoal.questID,
                     locationGoal.currentGoalNumber
                 )
-                return
             }
         }
     }

@@ -250,8 +250,10 @@ class MapHelper(
 
     companion object {
         var locationMarkers = MutableLiveData<HashMap<String, Location>>().apply {
-            value = HashMap() // Initialize with an empty HashMap
+            postValue(HashMap()) // Initialize with an empty HashMap
         }
+        var previousMap: Map<String, Location> = mapOf()
+
         private const val TAG = "MapHelper"
         private const val START_GOAL = 0
     }

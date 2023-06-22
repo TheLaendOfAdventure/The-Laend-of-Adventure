@@ -9,9 +9,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentBadgesPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
+import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.ui.adapters.BadgesAdapter
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.BadgesPageViewModel
 
@@ -31,15 +34,26 @@ class BadgesPageFragment : Fragment() {
 
         val recycleView = binding.badgesPageRecyclerview
         recycleView.layoutManager = LinearLayoutManager(requireContext())
-        recycleView.adapter = BadgesAdapter(emptyList(), this)
+        recycleView.adapter = BadgesAdapter(emptyList())
 
-        val badgeObserver = Observer<List<BadgeDetails>> { badgeList ->
+        var actions = viewModel.getActionsForBadge()
+        val badgeObserver1 = Observer<List<Pair<BadgeDetails, List<Pair<List<String>, Boolean>>>>> { badgeList ->
             // Handle the accepted badgeList
-            val adapter = BadgesAdapter(badgeList, this)
+            val adapter = BadgesAdapter(badgeList)
             recycleView.adapter = adapter
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.badges.observe(viewLifecycleOwner, badgeObserver)
+        actions.observe(viewLifecycleOwner, badgeObserver1)
+
+        val userObserver = Observer<UserEntity> { user ->
+            binding.badgesProfileButtonLevelDisplay.text = user.level.toString()
+            Glide.with(requireContext())
+                .load(user.imagePath)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(binding.badgesPageProfileButton)
+        }
+        viewModel.user.observe(viewLifecycleOwner, userObserver)
 
         return binding.root
     }

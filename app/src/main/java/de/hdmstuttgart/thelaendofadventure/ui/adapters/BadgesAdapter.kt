@@ -23,6 +23,9 @@ class BadgesAdapter(
 
     private lateinit var badgeRepository: BadgeRepository
     private lateinit var context: Context
+    companion object {
+        const val paddingBottom = 200
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
@@ -42,7 +45,6 @@ class BadgesAdapter(
     @SuppressLint("DiscouragedApi")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val (badge, actionDetailsList) = badgeList[position]
-        val (actions, completed) = actionDetailsList
 
         // Fill the information into the holder
         val imageName = badge.imagePath
@@ -57,8 +59,14 @@ class BadgesAdapter(
             badge.targetGoalNumber
         )
 
-        val stringBuilder = StringBuilder()
+        // add padding bottom if last item
+        if (position == badgeList.size - 1) {
+            holder.outer.setPadding(0, 0, 0, paddingBottom)
+        } else {
+            holder.outer.setPadding(0, 0, 0, 0)
+        }
 
+        val stringBuilder = StringBuilder()
         for (actionPair in actionDetailsList) {
             val actions = actionPair.first
             val completed = actionPair.second
@@ -81,6 +89,7 @@ class BadgesAdapter(
 
     // Holds the views for adding it to image and text
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val outer: View = itemView.findViewById(R.id.badge_outer)
         val imageView: ImageView = itemView.findViewById(R.id.badge_image)
         val badgeName: TextView = itemView.findViewById(R.id.badge_name)
         val badgeGoals: TextView = itemView.findViewById(R.id.badge_goals)

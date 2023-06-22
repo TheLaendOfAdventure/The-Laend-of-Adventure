@@ -57,18 +57,34 @@ class MapHelper(
         quest.level <= userLevel
     }
 
+    fun setUpMap() {
+        mapview.getMapboxMap().loadStyleUri(
+            "asset://map/style.json"
+        ) {
+            val pointAnnotationList = prepareAnnotationMarker()
+            val viewList = prepareViewAnnotation(pointAnnotationList, filteredQuestList)
+            // show / hide view annotation based on a marker click
+            pointAnnotationManager.addClickListener { clickedAnnotation ->
+                try {
+                    for (i in pointAnnotationList.indices) {
+                        val pointAnnotation = pointAnnotationList[i]
+                        val viewAnnotation = viewList[i]
+                        if (pointAnnotation == clickedAnnotation) {
+                            viewAnnotation.toggleViewVisibility()
+                        }
+                    }
+                } catch (@Suppress("TooGenericExceptionCaught") e: IndexOutOfBoundsException) {
+                    Log.d(TAG, "Alredy deleted $e")
+                }
+                true
+            }
+        }
+        setUpCompassImage()
+        setUpLocationPuck()
+        locationMarkers.observeForever(observer)
+    }
+
     private val observer: Observer<HashMap<String, Location>> = Observer { newMap ->
-
-        Log.d(TAG, "Previous Entries:")
-        previousMap.forEach { (key, value) ->
-            Log.d(TAG, "$key -> $value")
-        }
-
-        Log.d(TAG, "New Entries:")
-        newMap.forEach { (key, value) ->
-            Log.d(TAG, "$key -> $value")
-        }
-
         val removedEntries: HashMap<String, Location> =
             previousMap.filterKeys { !newMap.containsKey(it) } as HashMap<String, Location>
         val addedEntries: HashMap<String, Location> =
@@ -119,33 +135,6 @@ class MapHelper(
             pointAnnotationManager.delete(marker)
             annotationList.remove(key)
         }
-    }
-
-    fun setUpMap() {
-        mapview.getMapboxMap().loadStyleUri(
-            "asset://map/style.json"
-        ) {
-            val pointAnnotationList = prepareAnnotationMarker()
-            val viewList = prepareViewAnnotation(pointAnnotationList, filteredQuestList)
-            // show / hide view annotation based on a marker click
-            pointAnnotationManager.addClickListener { clickedAnnotation ->
-                try {
-                    for (i in pointAnnotationList.indices) {
-                        val pointAnnotation = pointAnnotationList[i]
-                        val viewAnnotation = viewList[i]
-                        if (pointAnnotation == clickedAnnotation) {
-                            viewAnnotation.toggleViewVisibility()
-                        }
-                    }
-                } catch (@Suppress("TooGenericExceptionCaught") e: IndexOutOfBoundsException) {
-                    Log.d(TAG, "Alredy deleted $e")
-                }
-                true
-            }
-        }
-        setUpCompassImage()
-        setUpLocationPuck()
-        locationMarkers.observeForever(observer)
     }
 
     private fun setUpCompassImage() {

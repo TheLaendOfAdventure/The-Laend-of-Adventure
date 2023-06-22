@@ -10,23 +10,16 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.RecyclerView
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
-import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
-import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
 import de.hdmstuttgart.thelaendofadventure.ui.helper.StringHelper
 
 class BadgesAdapter(
-    private val badgeList: List<BadgeDetails>,
-    private val lifecycleOwner: LifecycleOwner
-) :
-    RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
+    private val badgeList: List<Pair<BadgeDetails, List<Pair<List<String>, Boolean>>>>
+) : RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
 
     private lateinit var badgeRepository: BadgeRepository
     private lateinit var context: Context
@@ -47,80 +40,38 @@ class BadgesAdapter(
 
     // binds the list items to a view
     @SuppressLint("DiscouragedApi")
-    override fun onBindViewHolder(
-        holder: ViewHolder,
-        position: Int
-    ) {
-        val badge = badgeList[position]
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val (badge, actionDetailsList) = badgeList[position]
+        val (actions, completed) = actionDetailsList
 
-        // sets the image to the imageview from our itemHolder class
+        // Fill the information into the holder
         val imageName = badge.imagePath
         val resourceID = context.resources.getIdentifier(imageName, "drawable", context.packageName)
         holder.imageView.setImageResource(resourceID)
-        // sets the text to the textview from our itemHolder class
         holder.badgeName.text = badge.name
-        // sets the max to the progressBar from our itemHolder class
         holder.progressBar.max = badge.targetGoalNumber
-        // sets the progress to the progressBar from our itemHolder class
         holder.progressBar.setProgress(badge.currentGoalNumber, true)
-        // sets the progress to the progress textfield
         holder.progressNumeric.text = context.getString(
             R.string.quest_progress_numeric_text,
             badge.currentGoalNumber,
             badge.targetGoalNumber
         )
 
-        val userID = SharedPreferencesHelper.getUserID(context)
-        bindCompletedGoals(userID, badge, holder)
-        bindUncompletedGoals(userID, badge, holder)
-    }
+        val stringBuilder = StringBuilder()
 
-    private fun bindCompletedGoals(userID: Int, badge: BadgeDetails, holder: ViewHolder) {
-        // show already completed BadgesGoals
-        val actionCompleted = badgeRepository.getCompletedGoalsForBadgeByUserID(
-            userID,
-            badge.badgeID
-        ).asLiveData()
-        val actionObserverCompleted = Observer<List<ActionEntity>> { actions ->
-            addActionsToHolderText(actions, true, holder)
-            if (actions.isEmpty()) {
-                holder.badgeGoalsCompleted.visibility = View.GONE
+        for (actionPair in actionDetailsList) {
+            val actions = actionPair.first
+            val completed = actionPair.second
+
+            if (completed) {
+                stringBuilder.append(StringHelper.strikethroughText(actions.joinToString("\n")))
+            } else {
+                stringBuilder.append(actions.joinToString("\n"))
             }
         }
-        actionCompleted.observe(lifecycleOwner, actionObserverCompleted)
-    }
 
-    private fun bindUncompletedGoals(userID: Int, badge: BadgeDetails, holder: ViewHolder) {
-        // show uncompleted BadgesGoals
-        val actionUncompleted = badgeRepository.getUncompletedGoalsForBadgeByUserID(
-            userID,
-            badge.badgeID
-        ).asLiveData()
-        val actionObserverUncompleted = Observer<List<ActionEntity>> { actions ->
-            addActionsToHolderText(actions, false, holder)
-            if (actions.isEmpty()) {
-                holder.badgeGoalsUncompleted.visibility = View.GONE
-            }
-        }
-        actionUncompleted.observe(lifecycleOwner, actionObserverUncompleted)
-    }
-
-    private fun addActionsToHolderText(actions: List<ActionEntity>, completed: Boolean, holder: ViewHolder) {
-        var textList = ""
-        for ((index, action) in actions.withIndex()) {
-            // Perform your desired operations with the item
-            var line = action.description
-            // check for next line
-            if (index < actions.size - 1) {
-                line += "\n"
-            }
-            textList += line
-        }
-        if (completed) {
-            holder.badgeGoalsCompleted.text = StringHelper.strikethroughText(textList)
-        } else {
-            holder.badgeGoalsUncompleted.text = textList
-        }
+        val allActions = stringBuilder.toString().trim()
+        holder.badgeGoals.text = allActions
     }
 
     // return the number of the items in the list
@@ -132,8 +83,7 @@ class BadgesAdapter(
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.badge_image)
         val badgeName: TextView = itemView.findViewById(R.id.badge_name)
-        val badgeGoalsUncompleted: TextView = itemView.findViewById(R.id.badge_goals_uncompleted)
-        val badgeGoalsCompleted: TextView = itemView.findViewById(R.id.badge_goals_completed)
+        val badgeGoals: TextView = itemView.findViewById(R.id.badge_goals)
         val innerInfo: LinearLayout = itemView.findViewById(R.id.inner_info)
         val wrapper: CardView = itemView.findViewById(R.id.wrapper)
         val progressBar: ProgressBar = itemView.findViewById(R.id.badge_progress)

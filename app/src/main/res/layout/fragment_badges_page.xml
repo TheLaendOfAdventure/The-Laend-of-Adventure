@@ -10,19 +10,28 @@
     tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.BadgesPageFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/badges_top_buttons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
         <LinearLayout
             android:id="@+id/badges_page_linearlayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,10 +42,9 @@
             <TextView
                 android:id="@+id/badges_page_navigation_button_to_user"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:paddingBottom="20dp"
                 android:text="@string/profile_tab_text"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
@@ -45,10 +53,9 @@
             <TextView
                 android:id="@+id/badges_page_navigation_button_to_badges"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:paddingBottom="20dp"
                 android:text="@string/badges_tab_text"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
@@ -57,10 +64,9 @@
             <TextView
                 android:id="@+id/badges_page_navigation_button_to_quest"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:paddingBottom="20dp"
                 android:text="@string/quests_tab_text"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
@@ -70,9 +76,9 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="15dp"
         android:layout_marginBottom="35dp"
         android:fadingEdgeLength="80dp"
         android:requiresFadingEdge="vertical"
@@ -86,11 +92,10 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/badges_page_recyclerviewAccepted"
-                android:layout_marginTop="5dp"
-                android:clipToPadding="false"
-                android:paddingBottom="110dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingBottom="110dp"
                 app:layout_constraintBottom_toTopOf="@+id/badges_page_profile_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -163,5 +168,7 @@
             tools:layout_constraintHeight_max="30dp"
             tools:layout_marginLeft="90dp"
             tools:layout_marginTop="80dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

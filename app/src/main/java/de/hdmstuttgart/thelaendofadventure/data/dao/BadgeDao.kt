@@ -15,27 +15,14 @@ interface BadgeDao {
 
     @Query(
         "SELECT badge.*, COUNT(badgeGoal.badgeGoalID) AS targetGoalNumber, " +
-            "COUNT(CASE WHEN user_badge.isCompleted = 1 THEN 1 END) AS currentGoalNumber " +
-            "FROM badge " +
-            "LEFT JOIN badgeGoal ON badge.badgeID = badgeGoal.badgeID " +
-            "LEFT JOIN user_badge ON badgeGoal.badgeGoalID = user_badge.badgeGoalID " +
-            "WHERE user_badge.userID = :userID " +
-            "GROUP BY badge.badgeID " +
-            "HAVING COUNT(badgeGoal.badgeGoalID) = COUNT(CASE WHEN user_badge.isCompleted = 1 THEN 1 END)"
-    )
-    fun getCompletedBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
-
-    @Query(
-        "SELECT badge.*, COUNT(badgeGoal.badgeGoalID) AS targetGoalNumber, " +
             "COUNT(CASE WHEN user_badge.isCompleted = 1 THEN 0 END) AS currentGoalNumber " +
             "FROM badge " +
             "LEFT JOIN badgeGoal ON badge.badgeID = badgeGoal.badgeID " +
             "LEFT JOIN user_badge ON badgeGoal.badgeGoalID = user_badge.badgeGoalID " +
             "WHERE user_badge.userID = :userID " +
-            "GROUP BY badge.badgeID " +
-            "HAVING COUNT(badgeGoal.badgeGoalID) > COUNT(CASE WHEN user_badge.isCompleted = 1 THEN 1 END)"
+            "GROUP BY badge.badgeID "
     )
-    fun getUnCompletedBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
+    fun getBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
 
     @Query(
         "SELECT * FROM badge " +

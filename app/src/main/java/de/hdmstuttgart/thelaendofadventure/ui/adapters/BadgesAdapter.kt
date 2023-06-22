@@ -2,8 +2,6 @@ package de.hdmstuttgart.thelaendofadventure.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +24,6 @@ import de.hdmstuttgart.thelaendofadventure.ui.helper.StringHelper
 
 class BadgesAdapter(
     private val badgeList: List<BadgeDetails>,
-    val completed: Boolean,
     private val lifecycleOwner: LifecycleOwner
 ) :
     RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
@@ -60,12 +57,6 @@ class BadgesAdapter(
         val imageName = badge.imagePath
         val resourceID = context.resources.getIdentifier(imageName, "drawable", context.packageName)
         holder.imageView.setImageResource(resourceID)
-        if (!completed) {
-            holder.imageView.setColorFilter(
-                Color.parseColor("#70000000"),
-                PorterDuff.Mode.DARKEN
-            )
-        }
         // sets the text to the textview from our itemHolder class
         holder.badgeName.text = badge.name
         // sets the max to the progressBar from our itemHolder class
@@ -80,65 +71,56 @@ class BadgesAdapter(
         )
 
         val userID = SharedPreferencesHelper.getUserID(context)
-
-        bindUnacceptedBadges(userID, badge, holder)
-        bindAcceptedBadges(userID, badge, holder)
+        bindCompletedGoals(userID, badge, holder)
+        bindUncompletedGoals(userID, badge, holder)
     }
 
-    private fun bindAcceptedBadges(userID: Int, badge: BadgeDetails, holder: ViewHolder) {
+    private fun bindCompletedGoals(userID: Int, badge: BadgeDetails, holder: ViewHolder) {
         // show already completed BadgesGoals
         val actionCompleted = badgeRepository.getCompletedGoalsForBadgeByUserID(
             userID,
             badge.badgeID
         ).asLiveData()
         val actionObserverCompleted = Observer<List<ActionEntity>> { actions ->
+            addActionsToHolderText(actions, true, holder)
             if (actions.isEmpty()) {
                 holder.badgeGoalsCompleted.visibility = View.GONE
-            } else {
-                holder.badgeGoalsCompleted.visibility = View.VISIBLE
             }
-            // Handle the questList
-            var textList = ""
-            for ((index, action) in actions.withIndex()) {
-                // Perform your desired operations with the item
-                var line = StringHelper.strikethroughText(action.description)
-                // check for next line
-                if (index < actions.size - 1) {
-                    line += "\n"
-                }
-                textList += line
-            }
-            holder.badgeGoalsCompleted.text = textList
         }
         actionCompleted.observe(lifecycleOwner, actionObserverCompleted)
     }
 
-    private fun bindUnacceptedBadges(userID: Int, badge: BadgeDetails, holder: ViewHolder) {
+    private fun bindUncompletedGoals(userID: Int, badge: BadgeDetails, holder: ViewHolder) {
         // show uncompleted BadgesGoals
         val actionUncompleted = badgeRepository.getUncompletedGoalsForBadgeByUserID(
             userID,
             badge.badgeID
         ).asLiveData()
         val actionObserverUncompleted = Observer<List<ActionEntity>> { actions ->
+            addActionsToHolderText(actions, false, holder)
             if (actions.isEmpty()) {
                 holder.badgeGoalsUncompleted.visibility = View.GONE
-            } else {
-                holder.badgeGoalsUncompleted.visibility = View.VISIBLE
             }
-            // Handle the questList
-            var textList = ""
-            for ((index, action) in actions.withIndex()) {
-                // Perform your desired operations with the item
-                var line = action.description
-                // check for next line
-                if (index < actions.size - 1) {
-                    line += "\n"
-                }
-                textList += line
-            }
-            holder.badgeGoalsUncompleted.text = textList
         }
         actionUncompleted.observe(lifecycleOwner, actionObserverUncompleted)
+    }
+
+    private fun addActionsToHolderText(actions: List<ActionEntity>, completed: Boolean, holder: ViewHolder) {
+        var textList = ""
+        for ((index, action) in actions.withIndex()) {
+            // Perform your desired operations with the item
+            var line = action.description
+            // check for next line
+            if (index < actions.size - 1) {
+                line += "\n"
+            }
+            textList += line
+        }
+        if (completed) {
+            holder.badgeGoalsCompleted.text = StringHelper.strikethroughText(textList)
+        } else {
+            holder.badgeGoalsUncompleted.text = textList
+        }
     }
 
     // return the number of the items in the list

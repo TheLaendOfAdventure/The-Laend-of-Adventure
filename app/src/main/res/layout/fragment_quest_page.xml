@@ -98,7 +98,7 @@
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/user_page_profile_button_container"
+        android:id="@+id/quest_page_profile_button_container"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginEnd="30dp"
@@ -108,7 +108,7 @@
         tools:ignore="RtlHardcoded">
 
         <ImageView
-            android:id="@+id/quest_page_profile_button"
+            android:id="@+id/quest_page_map_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/map"

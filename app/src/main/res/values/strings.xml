@@ -83,5 +83,5 @@
     <string name="expand_arrow">expand arrow</string>
     <string name="resetplayerlocation">resetPlayerLocation</string>
     <string name="feather">feather</string>
-    <string name="too_far_away">Du bist zu weit weg um diese Quest anzunehmen! Komm näher heran!</string>
+    <string name="too_far_away">Du bist zu weit weg um die Quest: &quot;%1$s&quot; anzunehmen! Komm näher heran!</string>
 </resources>

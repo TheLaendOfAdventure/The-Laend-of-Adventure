@@ -6,10 +6,12 @@ import android.location.Location
 import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.* // ktlint-disable no-wildcard-imports
+import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SnackbarHelper
 import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.flow.collectLatest
 
@@ -122,5 +124,27 @@ class TrackingLogic(private var context: Context) {
                 Log.d(TAG, "Failed to get location: ${e.message}")
                 callback.invoke(false)
             }
+    }
+
+    fun notifyTooFarFromQuest(questID: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val quest = questRepository.getQuestByQuestID(questID)
+            val imageResID = getImageResourceID(quest.imagePath)
+            val text = context.getString(R.string.too_far_away, quest.name)
+            showSnackbar(text, imageResID)
+        }
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private fun getImageResourceID(imagePath: String?): Int {
+        val path = imagePath ?: ""
+        return context.resources.getIdentifier(path, "drawable", context.packageName)
+    }
+
+    private suspend fun showSnackbar(message: String, imageResID: Int) {
+        withContext(Dispatchers.Main) {
+            val snackbarHelper = SnackbarHelper.getSnackbarInstance()
+            snackbarHelper.enqueueSnackbar(context, message, imageResID)
+        }
     }
 }

@@ -1,6 +1,8 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +32,7 @@ class QuestPageFragment : Fragment() {
         binding = FragmentQuestPageBinding.inflate(inflater, container, false)
 
         val recycleView = binding.questPageRecyclerview
+        TransitionManager.beginDelayedTransition(recycleView, AutoTransition())
         recycleView.layoutManager = LinearLayoutManager(requireContext())
 
         val questObserver = Observer<List<QuestDetails>> { questList ->
@@ -50,7 +53,7 @@ class QuestPageFragment : Fragment() {
     }
 
     private fun setUpQuestPageProfileButton() {
-        binding.questPageProfileButton.setOnClickListener {
+        binding.questPageMapButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_quest_to_main_page
             )

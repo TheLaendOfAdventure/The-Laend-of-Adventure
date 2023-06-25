@@ -49,7 +49,7 @@ class MapHelper(
 
     fun setUpMap() {
         mapview.getMapboxMap().loadStyleUri(
-            "asset://map/style.json"
+            context.getString(R.string.mapbox_styleURL)
         ) {
             val pointAnnotationList = prepareAnnotationMarker(mapview)
             val viewList = prepareViewAnnotation(pointAnnotationList, filteredQuestList)

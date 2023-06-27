@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/user_page_button_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/profile_top_buttons"
@@ -92,7 +92,7 @@
             android:textSize="34sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintTop_toBottomOf="@+id/user_page_button_layout"
             tools:layout_goneMarginEnd="20dp" />
 
 

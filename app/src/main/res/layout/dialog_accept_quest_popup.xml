@@ -61,7 +61,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/conversation_field"
+            app:srcCompat="@drawable/conversation_field_nine"
             tools:ignore="ImageContrastCheck"
             android:contentDescription="@string/pop_up_quest_name" />
 

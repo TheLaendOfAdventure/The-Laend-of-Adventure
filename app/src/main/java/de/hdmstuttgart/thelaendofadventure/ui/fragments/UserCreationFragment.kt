@@ -27,7 +27,6 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
     private lateinit var permissionManager: PermissionManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Initialize ActivityResultLauncher to pick an image from the gallery
         mPickGallery =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 uri?.let {
@@ -49,6 +48,7 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserCreationBinding.inflate(inflater, container, false)
+        binding.userCreationPageAvatarButton.setImageResource(R.drawable.empty_avatar)
         Log.d(TAG, "UserCreationPage is created!")
         return binding.root
     }

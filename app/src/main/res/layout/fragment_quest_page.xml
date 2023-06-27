@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/quest_page_button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/quest_top_buttons"
@@ -82,7 +82,7 @@
         android:fadingEdgeLength="80dp"
         android:requiresFadingEdge="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/quest_page_button_layout">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/quest_page_recyclerview"

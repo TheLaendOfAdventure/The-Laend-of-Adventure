@@ -72,9 +72,6 @@ class ConversationPopupDialog(
      */
     @SuppressLint("DiscouragedApi")
     private fun setupPopupWindow() {
-        val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
-        binding.partnerProfileImage.setImageResource(resourceId)
-
         val card: View = binding.dialogCard
         setupCardViewClickListener(card)
 
@@ -108,9 +105,22 @@ class ConversationPopupDialog(
                 binding.partnerTextbox.visibility = View.VISIBLE
                 binding.partnerTextView.text = message
                 binding.partnerName.text = speaker
+                val speakerImage = getSpeakerImage(speaker)
+                val resourceId = context.resources.getIdentifier(speakerImage, "drawable", context.packageName)
+                binding.partnerProfileImage.setImageResource(resourceId)
             }
         }
         currentIndex++
+    }
+
+    /**
+     * Retrieves the image path for the speaker.
+     *
+     * @param speaker The speaker name.
+     * @return The image path of the speaker.
+     */
+    private fun getSpeakerImage(speaker: String): String {
+        return imageName.find { it.first == speaker }?.second ?: ""
     }
 
     /**

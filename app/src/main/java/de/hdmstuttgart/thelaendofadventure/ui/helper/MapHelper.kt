@@ -46,7 +46,7 @@ class MapHelper(
     private var iconBitmap: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.chat_icon)?.toBitmap()!!
     private var redMarker: Bitmap =
-        AppCompatResources.getDrawable(context, R.drawable.red_marker)?.toBitmap()!!
+        AppCompatResources.getDrawable(context, R.drawable.banner)?.toBitmap()!!
     private var blankImg =
         AppCompatResources.getDrawable(context, R.drawable.img_blank)?.toBitmap()!!
     private val viewAnnotationManager = mapview.viewAnnotationManager

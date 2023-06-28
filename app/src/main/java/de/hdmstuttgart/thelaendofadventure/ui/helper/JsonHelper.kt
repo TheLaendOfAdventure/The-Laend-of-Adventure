@@ -13,8 +13,22 @@ import java.io.IOException
  */
 class JsonHelper(private val context: Context, private val fileName: String) {
 
-    private val jsonString = readJsonFile()
-    private val jsonObject = JSONObject(jsonString)
+    private var jsonString: String
+    private var jsonObject: JSONObject
+    init {
+        try {
+            jsonString = readJsonFile()
+            jsonObject = JSONObject(jsonString)
+        } catch (e: IOException) {
+            Log.d(TAG, "Error reading JSON file: ${e.message}")
+            jsonString = ""
+            jsonObject = JSONObject()
+        } catch (e: JSONException) {
+            Log.d(TAG, "Error parsing JSON: ${e.message}")
+            jsonString = ""
+            jsonObject = JSONObject()
+        }
+    }
 
     /**
      * Reads the contents of the JSON file and returns it as a String.
@@ -43,8 +57,6 @@ class JsonHelper(private val context: Context, private val fileName: String) {
     fun readNpcNameFromJsonFile(): String {
         try {
             return jsonObject.getString("NPC")
-        } catch (e: IOException) {
-            Log.d(TAG, "Error reading conversation file: ${e.message}")
         } catch (e: JSONException) {
             Log.d(TAG, "Error parsing JSON: ${e.message}")
         }
@@ -59,8 +71,6 @@ class JsonHelper(private val context: Context, private val fileName: String) {
     fun readNpcImgFromJsonFile(): String {
         try {
             return jsonObject.getString("img")
-        } catch (e: IOException) {
-            Log.d(TAG, "Error reading conversation file: ${e.message}")
         } catch (e: JSONException) {
             Log.d(TAG, "Error parsing JSON: ${e.message}")
         }
@@ -83,8 +93,6 @@ class JsonHelper(private val context: Context, private val fileName: String) {
                 val message = dialogueObj.getString("message")
                 dialogueList.add(speaker to message)
             }
-        } catch (e: IOException) {
-            Log.d(TAG, "Error reading conversation file: ${e.message}")
         } catch (e: JSONException) {
             Log.d(TAG, "Error parsing JSON: ${e.message}")
         }

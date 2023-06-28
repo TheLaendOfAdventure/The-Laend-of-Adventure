@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -125,7 +126,13 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             val cameraOptions = CameraOptions.Builder()
                 .zoom(zoomLevel)
                 .build()
+
             mapView.getMapboxMap().setCamera(cameraOptions)
+
+            binding.mainPageResetPlayerLocation.background = AppCompatResources.getDrawable(
+                requireContext(),
+                R.drawable.reset_button
+            )
         }
     }
 
@@ -136,6 +143,11 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
     private val onMoveListener = object : OnMoveListener {
         override fun onMoveBegin(detector: MoveGestureDetector) {
+            binding.mainPageResetPlayerLocation.background = AppCompatResources.getDrawable(
+                requireContext(),
+                R.drawable.reset_button_empty
+            )
+
             mapView.location.removeOnIndicatorPositionChangedListener(
                 onIndicatorPositionChangedListener
             )

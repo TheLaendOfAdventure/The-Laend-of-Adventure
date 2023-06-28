@@ -39,11 +39,6 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(binding.userPageProfilePictureView)
-                    Glide.with(requireContext())
-                        .load(viewModel.imagePath)
-                        .skipMemoryCache(true)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(binding.userPageProfileButton)
                     Log.d(TAG, "User avatar image saved: $uri")
                 }
             }
@@ -67,20 +62,12 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
         val userObserver = Observer<UserEntity> { user ->
             binding.userPageNameField.setText(user.name)
             binding.userPageLevelDisplay.text = user.level.toString()
-            binding.userPageProfileButtonLevelDisplay.text = user.level.toString()
-            if (user.exp == halfXPNumber) {
-                binding.userPageExperienceNumeric.text = halfXP
-                binding.userPageLevelDisplay.setBackgroundResource(R.drawable.lvl_bar_half_full)
-            } else {
-                binding.userPageExperienceNumeric.text = noXP
-                binding.userPageLevelDisplay.setBackgroundResource(R.drawable.lvl_bar_empty)
-            }
+            binding.userPageProgressBar.progress = user.exp
+            binding.userPageExperienceNumeric.text = requireContext().getString(
+                R.string.level_progress_numeric_text,
+                user.exp
+            )
 
-            Glide.with(requireContext())
-                .load(user.imagePath)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(binding.userPageProfileButton)
             Glide.with(requireContext())
                 .load(user.imagePath)
                 .skipMemoryCache(true)
@@ -136,8 +123,5 @@ class UserPageFragment : Fragment(R.layout.fragment_user_page) {
 
     companion object {
         private const val TAG = "UserPageFragment"
-        private const val halfXP = "XP 50/100"
-        private const val noXP = "XP 0/100"
-        private const val halfXPNumber = 50
     }
 }

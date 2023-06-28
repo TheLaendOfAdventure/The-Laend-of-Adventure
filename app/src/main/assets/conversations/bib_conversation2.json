@@ -1,0 +1,49 @@
+{
+  "NPC": "Bibliothekar Luis",
+  "dialogue": [
+    {
+      "speaker": "Player",
+      "message": "Diese Fragen wurden ziemlich seltsam. Wer hat dieses Manuskript geschrieben?"
+    },
+    {
+      "speaker": "Bibliothekar Luis",
+      "message": "Ein Student."
+    },
+    {
+      "speaker": "Player",
+      "message": "... ich verstehe."
+    },
+    {
+      "speaker": "Player",
+      "message": "Es scheint jedoch dennoch zu funktionieren! Die Schrift erscheint!"
+    },
+    {
+      "speaker": "Bibliothekar Luis",
+      "message": "*Lehnt sich rüber und schaut mit drauf*"
+    },
+    {
+      "speaker": "Bibliothekar Luis",
+      "message": "Hm, der Text scheint aber nicht vollständig zu sein."
+    },
+    {
+      "speaker": "Player",
+      "message": "Tatsächlich. Hier steht etwas über ein \"Integral\"... man braucht wohl Rechtecke um das zu berechnen..."
+    },
+    {
+      "speaker": "Bibliothekar Luis",
+      "message": "In diesem Fall solltest du den Quadratmagier aufsuchen, der ein Meister in Allerlei kantiger Angelegenheit."
+    },
+    {
+      "speaker": "Player",
+      "message": "Ein guter Vorschlag! Wo finde ich ihn?"
+    },
+    {
+      "speaker": "Bibliothekar Luis",
+      "message": "In seiner Würfelresidenz. Ich erlaube dir das Manuskript mitzubehmen, solange du es später wieder zurückbringst."
+    },
+    {
+      "speaker": "Player",
+      "message": "Vielen dank, dann mache ich mich mal auf den Weg."
+    }
+  ]
+}

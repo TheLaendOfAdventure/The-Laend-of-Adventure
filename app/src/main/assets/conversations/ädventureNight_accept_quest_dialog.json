@@ -1,0 +1,37 @@
+{
+  "NPC": "Land-of-Adventure-Team",
+  "dialogue": [
+    {
+      "speaker": "Land-of-Adventure-Team",
+      "message": "Seid gegrüßt, wackerer Recke! Eure Abenteuerlust hat uns erreicht, und wir haben eine glorreiche Mission für Euch."
+    },
+    {
+      "speaker": "Player",
+      "message": "Edle Helden! Was verlangt Ihr von mir? Sprecht, und ich werde Eurem Ruf folgen."
+    },
+    {
+      "speaker": "Land-of-Adventure-Team",
+      "message": "Wir schicken Euch auf eine epische Reise zur Erkundung des Hochschulgeländes. Dort warten Geheimnisse und Gefahren, die es zu bezwingen gilt."
+    },
+    {
+      "speaker": "Land-of-Adventure-Team",
+      "message": "In alten Gemäuern und vergessenen Bibliotheken ruht das Wissen vergangener Zeiten. Ihr müsst Rätsel lösen und Prüfungen bestehen, um die Schätze der Weisheit zu bergen."
+    },
+    {
+      "speaker": "Player",
+      "message": "Eure Worte entfachen mein inneres Feuer! Ich werde mich dieser Aufgabe würdig erweisen. Lasst mich die Tore des Wissens durchschreiten."
+    },
+    {
+      "speaker": "Land-of-Adventure-Team",
+      "message": "Doch hütet Euch vor den Prüfungen, die auf Eurem Pfad liegen. Beweist Euren Scharfsinn und Eure Tapferkeit, denn nur die Würdigsten dürfen die Schätze der Bildung erlangen."
+    },
+    {
+      "speaker": "Player",
+      "message": "Fürchtet nicht, edle Helden! Ich werde die Herausforderungen meistern und meinen Namen in den Geschichtsbüchern verewigen."
+    },
+    {
+      "speaker": "Land-of-Adventure-Team",
+      "message": "Auf, wackerer Recke! Euer Schicksal ruft. Macht Euch bereit, das Hochschulgelände zu erkunden und die Geheimnisse der Vergangenheit zu enthüllen!"
+    }
+  ]
+}

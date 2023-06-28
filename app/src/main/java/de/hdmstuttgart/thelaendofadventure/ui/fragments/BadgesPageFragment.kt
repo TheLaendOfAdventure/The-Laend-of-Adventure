@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentBadgesPageBinding
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeActions
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.ui.adapters.BadgesAdapter
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.BadgesPageViewModel
@@ -36,14 +36,14 @@ class BadgesPageFragment : Fragment() {
         recycleView.layoutManager = LinearLayoutManager(requireContext())
         recycleView.adapter = BadgesAdapter(emptyList())
 
-        var actions = viewModel.getActionsForBadge()
-        val badgeObserver1 = Observer<List<Pair<BadgeDetails, List<Pair<List<String>, Boolean>>>>> { badgeList ->
+        val badgeActions = viewModel.getActionsForBadge()
+        val badgeObserver = Observer<List<BadgeActions>> { badgeList ->
             // Handle the accepted badgeList
             val adapter = BadgesAdapter(badgeList)
             recycleView.adapter = adapter
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        actions.observe(viewLifecycleOwner, badgeObserver1)
+        badgeActions.observe(viewLifecycleOwner, badgeObserver)
 
         val userObserver = Observer<UserEntity> { user ->
             binding.badgesProfileButtonLevelDisplay.text = user.level.toString()

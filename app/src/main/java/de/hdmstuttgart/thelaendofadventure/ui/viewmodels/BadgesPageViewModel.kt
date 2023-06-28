@@ -2,9 +2,14 @@ package de.hdmstuttgart.thelaendofadventure.ui.viewmodels
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeAction
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeActions
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
@@ -19,11 +24,11 @@ class BadgesPageViewModel(application: Application) : AndroidViewModel(applicati
     val userID = SharedPreferencesHelper.getUserID(application as Context)
     val user = userRepository.getUserByID(userID).asLiveData()
 
-    fun getActionsForBadge(): LiveData<List<Pair<BadgeDetails, List<Pair<List<String>, Boolean>>>>> {
-        val actionsLiveData = MutableLiveData<List<Pair<BadgeDetails, List<Pair<List<String>, Boolean>>>>>()
+    fun getActionsForBadge(): LiveData<List<BadgeActions>> {
+        val actionsLiveData = MutableLiveData<List<BadgeActions>>()
 
         badgeRepository.getBadgesDetailsByUserID(userID).onEach { badgeList ->
-            val actionsList = mutableListOf<Pair<BadgeDetails, List<Pair<List<String>, Boolean>>>>()
+            val actionsList = mutableListOf<BadgeActions>()
 
             badgeList.forEach { badge ->
                 val badgeId = badge.badgeID
@@ -39,11 +44,11 @@ class BadgesPageViewModel(application: Application) : AndroidViewModel(applicati
                     actionEntity.description
                 } ?: emptyList()
 
-                val innerPair = Pair(completedGoals.map { it }, true)
-                val innerPair2 = Pair(uncompletedGoals.map { it }, false)
+                val completedBadgeAction = BadgeAction(completedGoals, true)
+                val uncompletedBadgeAction = BadgeAction(uncompletedGoals, false)
 
-                val actionsPair = Pair(badge, listOf(innerPair, innerPair2))
-                actionsList.add(actionsPair)
+                val badgeActions = BadgeActions(badge, listOf(completedBadgeAction, uncompletedBadgeAction))
+                actionsList.add(badgeActions)
             }
 
             actionsLiveData.postValue(actionsList)

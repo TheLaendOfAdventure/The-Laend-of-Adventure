@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.BadgespageListitemBinding
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeAction
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeActions
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.ui.helper.StringHelper
 
 class BadgesAdapter(
-    private val badgeList: List<Pair<BadgeDetails, List<Pair<List<String>, Boolean>>>>
+    private val badgeList: List<BadgeActions>
 ) : RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
 
     private lateinit var badgeRepository: BadgeRepository
@@ -49,7 +50,7 @@ class BadgesAdapter(
     // binds the list items to a view
     @SuppressLint("DiscouragedApi")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (badge, actionDetailsList) = badgeList[position]
+        val (badge, badgeActions) = badgeList[position]
 
         // Fill the information into the holder
         val imageName = badge.imagePath
@@ -71,20 +72,22 @@ class BadgesAdapter(
             holder.binding.badgeOuter.setPadding(0, 0, 0, 0)
         }
 
-        val stringBuilder = StringBuilder()
-        for (actionPair in actionDetailsList) {
-            val actions = actionPair.first
-            val completed = actionPair.second
+        holder.binding.badgeGoals.text = getActionString(badgeActions)
+    }
 
-            if (completed) {
+    private fun getActionString(badgeActions: List<BadgeAction>):String{
+        val stringBuilder = StringBuilder()
+        for (action in badgeActions) {
+            val actions = action.description
+
+            if (action.isCompleted) {
                 stringBuilder.append(StringHelper.strikethroughText(actions.joinToString("\n")))
             } else {
                 stringBuilder.append(actions.joinToString("\n"))
             }
         }
 
-        val allActions = stringBuilder.toString().trim()
-        holder.binding.badgeGoals.text = allActions
+        return stringBuilder.toString().trim()
     }
 
     // return the number of the items in the list

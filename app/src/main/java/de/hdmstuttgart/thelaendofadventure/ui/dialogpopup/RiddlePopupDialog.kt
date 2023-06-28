@@ -3,6 +3,7 @@ package de.hdmstuttgart.thelaendofadventure.ui.dialogpopup
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogRiddlePopupBinding
@@ -44,12 +45,26 @@ class RiddlePopupDialog(
                     val zoomAnimation = AnimationUtils.loadAnimation(context, R.anim.zoom_animation)
 
                     if (riddles[position].answer == riddles[position].possibleAnswers) {
+                        zoomAnimation.setAnimationListener(object : Animation.AnimationListener {
+                            override fun onAnimationStart(animation: Animation) {
+                                // Animation start callback (unused)
+                            }
+
+                            override fun onAnimationEnd(animation: Animation) {
+                                // Animation end callback
+                                QuestLogic(context).finishedQuestGoal(
+                                    riddles[position].questID,
+                                    riddles[position].goalNumber
+                                )
+                                dismissDialog()
+                            }
+
+                            override fun onAnimationRepeat(animation: Animation) {
+                                // Animation repeat callback (unused)
+                            }
+                        })
+
                         view!!.startAnimation(zoomAnimation)
-                        QuestLogic(context).finishedQuestGoal(
-                            riddles[position].questID,
-                            riddles[position].goalNumber
-                        )
-                        dismissDialog()
                     } else {
                         view!!.startAnimation(shakeAnimation)
                         UserLogic(context).increaseWrongAnswerCount(userID)

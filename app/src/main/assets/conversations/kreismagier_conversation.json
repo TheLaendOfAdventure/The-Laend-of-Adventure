@@ -1,0 +1,53 @@
+{
+  "NPC": "Kreismagier",
+  "dialogue": [
+    {
+      "speaker": "Kreismagier",
+      "message": "Willkommen, mutiger Recke, zu diesem uralten Ort des Kreisrituals. Ich bin der Kreismagier, Hüter der kreisförmigen Mächte."
+    },
+    {
+      "speaker": "Player",
+      "message": "Ehrwürdiger Kreismagier, ich bin hier, um Eure Weisheit zu suchen. Was kann ich von Euch lernen?"
+    },
+    {
+      "speaker": "Kreismagier",
+      "message": "Im Zentrum dieses heiligen Kreises manifestieren sich die kosmischen Energien. Durch das Ritual der Kreismagie können wir Einfluss auf die Harmonie der Welt nehmen."
+    },
+    {
+      "speaker": "Player",
+      "message": "Ich fühle die Macht, die von diesem Ort ausgeht. Doch erzählt mir, edler Kreismagier, wie steht es um Eure Bemühungen, den Flächeninhalt zu berechnen?"
+    },
+    {
+      "speaker": "Kreismagier",
+      "message": "Dank des Kreissteins und des Rituals habe ich tatsächlich die Erkenntnis erlangt, dass die Zahl Pi für die Berechnung der Fläche des vollkommenen Kreises steht. Doch nun stehe ich vor einer Herausforderung."
+    },
+    {
+      "speaker": "Player",
+      "message": "Welche Herausforderung ist das, edler Kreismagier? Sprecht frei zu mir, und vielleicht kann ich Euch helfen."
+    },
+    {
+      "speaker": "Kreismagier",
+      "message": "Die Bibliothek, die ich erkunden möchte, ist zwar rund, aber nicht vollkommen kreisförmig. Die exakte Berechnung ihres Flächeninhalts entzieht sich meiner bisherigen Magie."
+    },
+    {
+      "speaker": "Player",
+      "message": "Eine unvollkommen kreisförmige Bibliothek? Das ist eine interessante Herausforderung."
+    },
+    {
+      "speaker": "Player",
+      "message": "Ich werde nach eienr Lösung suchen."
+    },
+    {
+      "speaker": "Kreismagier",
+      "message": "Dann zieh los - Ich erwarte deine Rückkehr!"
+    },
+    {
+      "speaker": "Kreismagier",
+      "message": "*Der Kreismagier versinkt wieder in seinen Berechnungen*"
+    },
+    {
+      "speaker": "Player",
+      "message": "*Vielleicht findest du in der Bibliothek mehr Informationen*"
+    }
+  ]
+}

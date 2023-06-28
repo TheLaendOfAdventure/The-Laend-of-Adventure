@@ -3,6 +3,8 @@ package de.hdmstuttgart.thelaendofadventure.ui.dialogpopup
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.animation.AnimationUtils
+import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogRiddlePopupBinding
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
@@ -37,13 +39,19 @@ class RiddlePopupDialog(
             riddles,
             object : RiddleAnswerAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
+                    val view = binding.answerList.findViewHolderForAdapterPosition(position)?.itemView
+                    val shakeAnimation = AnimationUtils.loadAnimation(context, R.anim.shake_animation)
+                    val zoomAnimation = AnimationUtils.loadAnimation(context, R.anim.zoom_animation)
+
                     if (riddles[position].answer == riddles[position].possibleAnswers) {
+                        view!!.startAnimation(zoomAnimation)
                         QuestLogic(context).finishedQuestGoal(
                             riddles[position].questID,
                             riddles[position].goalNumber
                         )
                         dismissDialog()
                     } else {
+                        view!!.startAnimation(shakeAnimation)
                         UserLogic(context).increaseWrongAnswerCount(userID)
                     }
                 }

@@ -187,6 +187,8 @@ class MapHelper(
                         questLogic.finishedQuestGoal(questID, START_GOAL)
                         viewAnnotationManager.removeViewAnnotation(viewAnnotation)
                         pointAnnotationManager.delete(pointAnnotation)
+                    } else {
+                        TrackingLogic(context).notifyTooFarFromQuest(questID)
                     }
                 }
             }

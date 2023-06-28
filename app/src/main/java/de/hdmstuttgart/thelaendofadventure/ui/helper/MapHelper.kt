@@ -45,7 +45,7 @@ class MapHelper(
         mapview.annotations.createPointAnnotationManager()
     private var iconBitmap: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.chat_icon)?.toBitmap()!!
-    private var redMarker: Bitmap =
+    private var locationMarker: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.banner)?.toBitmap()!!
     private var blankImg =
         AppCompatResources.getDrawable(context, R.drawable.img_blank)?.toBitmap()!!
@@ -59,7 +59,7 @@ class MapHelper(
 
     fun setUpMap() {
         mapview.getMapboxMap().loadStyleUri(
-            "asset://map/style.json"
+            context.getString(R.string.mapbox_styleURL)
         ) {
             val pointAnnotationList = prepareAnnotationMarker()
             val viewList = prepareViewAnnotation(pointAnnotationList, filteredQuestList)
@@ -120,7 +120,7 @@ class MapHelper(
 
             val pointAnnotationOptions = PointAnnotationOptions()
                 .withPoint(point)
-                .withIconImage(redMarker)
+                .withIconImage(locationMarker)
                 .withDraggable(false)
 
             pointAnnotationOptionsMap[key] = pointAnnotationOptions
@@ -252,6 +252,8 @@ class MapHelper(
                             Log.d(TAG, "After withContext (FinishQuestLogic)")
                             updateViewAndAnnotation(viewAnnotation, pointAnnotation)
                         }
+                    } else {
+                        TrackingLogic(context).notifyTooFarFromQuest(questID)
                     }
                 }
             }

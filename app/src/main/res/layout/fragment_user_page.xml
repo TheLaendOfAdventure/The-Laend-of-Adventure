@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/user_page_button_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/profile_top_buttons"
@@ -92,7 +92,7 @@
             android:textSize="34sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintTop_toBottomOf="@+id/user_page_button_layout"
             tools:layout_goneMarginEnd="20dp" />
 
 
@@ -100,9 +100,9 @@
             android:id="@+id/user_page_profile_picture"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="40dp"
             app:layout_constraintBottom_toTopOf="@+id/user_page_level_bar"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -146,8 +146,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@+id/user_page_profile_button_container"
             app:layout_constraintEnd_toEndOf="parent"
@@ -212,7 +212,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="RtlHardcoded">

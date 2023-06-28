@@ -11,10 +11,19 @@
     tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.QuestPageFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginTop="65dp"
-        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/quest_page_button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/quest_top_buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,7 +31,7 @@
         <LinearLayout
             android:id="@+id/quest_page_linearlayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,10 +42,9 @@
             <TextView
                 android:id="@+id/quest_page_navigation_button_to_user"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:paddingBottom="20dp"
                 android:text="@string/profile_tab_text"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
@@ -45,10 +53,9 @@
             <TextView
                 android:id="@+id/quest_page_navigation_button_to_badges"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:paddingBottom="20dp"
                 android:text="@string/badges_tab_text"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
@@ -57,10 +64,9 @@
             <TextView
                 android:id="@+id/quest_page_navigation_button_to_quest"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:paddingBottom="20dp"
                 android:text="@string/quests_tab_text"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
@@ -72,15 +78,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="15dp"
         android:layout_marginBottom="35dp"
         android:fadingEdgeLength="80dp"
         android:requiresFadingEdge="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/quest_page_button_layout">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="5dp"
             android:id="@+id/quest_page_recyclerview"
             android:clipToPadding="false"
             android:paddingBottom="110dp"
@@ -94,59 +98,27 @@
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="30dp"
+        android:id="@+id/quest_page_profile_button_container"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="RtlHardcoded">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/quest_page_profile_button"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:contentDescription="@string/profileButton"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:scaleType="centerCrop"
+        <ImageView
+            android:id="@+id/quest_page_map_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/map"
+            android:contentDescription="@string/image_frame"
+            android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/Circular"
-            tools:srcCompat="@android:drawable/ic_menu_my_calendar" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/frame"
-            android:contentDescription="@string/image_frame"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/quest_profile_button_level_display"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:background="@drawable/level_frame"
-            android:fontFamily="@font/minecraft_regular"
-            android:gravity="center"
-            android:maxWidth="30dp"
-            android:maxHeight="30dp"
-            android:paddingLeft="1dp"
-            android:text="@string/player_level"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            app:flow_verticalAlign="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintWidth_max="30dp"
-            tools:ignore="TextViewEdits,TextContrastCheck"
-            tools:layout_constraintHeight_max="30dp"
-            tools:layout_marginLeft="90dp"
-            tools:layout_marginTop="80dp" />
+            tools:ignore="ImageContrastCheck" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

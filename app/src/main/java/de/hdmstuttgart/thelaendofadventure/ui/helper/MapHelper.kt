@@ -45,7 +45,7 @@ class MapHelper(
         mapview.annotations.createPointAnnotationManager()
     private var iconBitmap: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.chat_icon)?.toBitmap()!!
-    private var redMarker: Bitmap =
+    private var locationMarker: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.banner)?.toBitmap()!!
     private var blankImg =
         AppCompatResources.getDrawable(context, R.drawable.img_blank)?.toBitmap()!!
@@ -120,7 +120,7 @@ class MapHelper(
 
             val pointAnnotationOptions = PointAnnotationOptions()
                 .withPoint(point)
-                .withIconImage(redMarker)
+                .withIconImage(locationMarker)
                 .withDraggable(false)
 
             pointAnnotationOptionsMap[key] = pointAnnotationOptions
@@ -259,6 +259,23 @@ class MapHelper(
             }
         }
     }
+
+    private fun updateViewAndAnnotation(
+        viewAnnotation: View,
+        pointAnnotation: PointAnnotation
+    ) {
+        viewAnnotationManager.removeViewAnnotation(viewAnnotation)
+        pointAnnotationManager.delete(pointAnnotation)
+        Log.d(TAG, "$pointAnnotation got deleted")
+        pointAnnotation.iconImageBitmap = blankImg
+        pointAnnotationManager.update(pointAnnotation)
+        Log.d(TAG, Thread.currentThread().name)
+    }
+
+    fun stopObservingLocationMarkers() {
+        locationMarkers.removeObserver(observer)
+    }
+
     private fun View.toggleViewVisibility() {
         visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }

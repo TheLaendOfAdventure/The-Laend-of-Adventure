@@ -75,7 +75,7 @@ class BadgesAdapter(
         holder.binding.badgeGoals.text = getActionString(badgeActions)
     }
 
-    private fun getActionString(badgeActions: List<BadgeAction>):String{
+    private fun getActionString(badgeActions: List<BadgeAction>): String {
         val stringBuilder = StringBuilder()
         for (action in badgeActions) {
             val actions = action.description

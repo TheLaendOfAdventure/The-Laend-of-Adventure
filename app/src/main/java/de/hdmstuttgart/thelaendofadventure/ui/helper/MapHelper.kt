@@ -59,7 +59,7 @@ class MapHelper(
 
     fun setUpMap() {
         mapview.getMapboxMap().loadStyleUri(
-            "asset://map/style.json"
+            context.getString(R.string.mapbox_styleURL)
         ) {
             val pointAnnotationList = prepareAnnotationMarker()
             val viewList = prepareViewAnnotation(pointAnnotationList, filteredQuestList)
@@ -252,28 +252,13 @@ class MapHelper(
                             Log.d(TAG, "After withContext (FinishQuestLogic)")
                             updateViewAndAnnotation(viewAnnotation, pointAnnotation)
                         }
+                    } else {
+                        TrackingLogic(context).notifyTooFarFromQuest(questID)
                     }
                 }
             }
         }
     }
-
-    private fun updateViewAndAnnotation(
-        viewAnnotation: View,
-        pointAnnotation: PointAnnotation
-    ) {
-        viewAnnotationManager.removeViewAnnotation(viewAnnotation)
-        pointAnnotationManager.delete(pointAnnotation)
-        Log.d(TAG, "$pointAnnotation got deleted")
-        pointAnnotation.iconImageBitmap = blankImg
-        pointAnnotationManager.update(pointAnnotation)
-        Log.d(TAG, Thread.currentThread().name)
-    }
-
-    fun stopObservingLocationMarkers() {
-        locationMarkers.removeObserver(observer)
-    }
-
     private fun View.toggleViewVisibility() {
         visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }

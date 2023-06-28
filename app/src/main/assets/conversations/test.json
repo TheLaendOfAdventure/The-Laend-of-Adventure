@@ -1,6 +1,15 @@
 {
 	"NPC" : "Reihner Zufall",
-    "img" : "chat_icon" ,
+	"image" : [
+		{
+			"speaker": "Reihner Zufall",
+			"path"    : "chat_icon"
+		},
+		{
+			"speaker": "Johannes",
+			"path"    : "compass"
+		}
+		],
 	"dialogue" : [
 		{
 			"speaker": "Player",
@@ -17,6 +26,10 @@
 		{
 			"speaker": "Reihner Zufall",
 			"message": "Zu schwach!"
+		},
+		{
+			"speaker": "Johannes",
+			"message": "Ich bin Entäuscht"
 		}
 	]
 }

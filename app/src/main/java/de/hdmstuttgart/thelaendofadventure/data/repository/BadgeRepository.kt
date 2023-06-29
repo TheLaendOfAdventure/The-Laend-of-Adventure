@@ -14,20 +14,12 @@ import kotlinx.coroutines.flow.Flow
 interface BadgeRepository {
 
     /**
-     * Gets all completed badges for a given user.
+     * Gets all badges for a given user.
      *
      * @param userID the ID of the user to get the badges for
-     * @return a [Flow] emitting a list of [BadgeDetails] objects representing the completed badges
+     * @return a [Flow] emitting a list of [BadgeDetails] objects representing the badges
      */
-    fun getCompletedBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
-
-    /**
-     * Gets all uncompleted badges for a given user.
-     *
-     * @param userID the ID of the user to get the badges for
-     * @return a [Flow] emitting a list of [BadgeDetails] objects representing the uncompleted badges
-     */
-    fun getUnCompletedBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
+    fun getBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
 
     /**
      * Gets the progress of a specific badge for a specific user.

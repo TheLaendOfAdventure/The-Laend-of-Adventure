@@ -12,11 +12,8 @@ import kotlinx.coroutines.flow.Flow
 
 class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
 
-    override fun getCompletedBadgesDetailsByUserID(userID: Int):
-        Flow<List<BadgeDetails>> = badgeDao.getCompletedBadgesDetailsByUserID(userID)
-
-    override fun getUnCompletedBadgesDetailsByUserID(userID: Int):
-        Flow<List<BadgeDetails>> = badgeDao.getUnCompletedBadgesDetailsByUserID(userID)
+    override fun getBadgesDetailsByUserID(userID: Int):
+        Flow<List<BadgeDetails>> = badgeDao.getBadgesDetailsByUserID(userID)
 
     override fun getProgressForBadgeByUserID(userID: Int, badgeID: Int):
         Flow<Progress> = badgeDao.getProgressForBadgeByUserID(userID, badgeID)

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/badge_outer">
 
 
     <androidx.cardview.widget.CardView
@@ -58,10 +59,10 @@
                 android:id="@+id/badge_progress_numeric"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:paddingBottom="5dp"
                 android:text="@string/quest_progress_numeric_text"
                 android:textColor="#000000"
-                android:layout_marginBottom="10dp"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,17 +81,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/badge_progress_numeric">
 
                 <TextView
-                    android:id="@+id/badge_goals_uncompleted"
+                    android:id="@+id/badge_goals"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    tools:text="@string/badge_Goals" />
-
-                <TextView
-                    android:id="@+id/badge_goals_completed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:textSize="16sp"
                     tools:text="@string/badge_Goals" />
             </LinearLayout>
@@ -109,8 +102,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

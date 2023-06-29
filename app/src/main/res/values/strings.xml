@@ -26,7 +26,7 @@
     <string name="popup_acceptButton">Ja</string>
     <string name="userCreationPage_nameInputField">Name</string>
     <string name="userCreationPage_title">The Länd of Adventure</string>
-    <string name="userCreationPage_confirmButton">Bestätigen</string>
+    <string name="userCreationPage_confirmButton">ERSTELLEN</string>
     <string name="userCreationPage_secondaryTitle">Charaktererstellung</string>
     <string name="userCreationPage_avatarButton">Profil Avatar</string>
     <string name="userPage_name">Name</string>

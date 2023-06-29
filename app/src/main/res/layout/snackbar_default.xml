@@ -4,21 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    app:cardBackgroundColor="@color/black"
-    app:cardCornerRadius="16dp">
+    app:cardBackgroundColor="@color/black">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/text_field_nine">
 
-        <!--The top margin must be set, otherwise there will be a transparent bar above the ProgressBar-->
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="?android:attr/progressBarStyleHorizontal"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:scaleY="2" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="-8dp">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:scaleY="2"
+                app:layout_constraintBottom_toBottomOf="@+id/user_page_progress_bar_image"
+                app:layout_constraintEnd_toEndOf="@+id/user_page_progress_bar_image"
+                app:layout_constraintStart_toStartOf="@+id/user_page_progress_bar_image"
+                app:layout_constraintTop_toTopOf="@+id/user_page_progress_bar_image" />
+
+            <ImageView
+                android:id="@+id/user_page_progress_bar_image"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/xp_bar"
+                android:src="@drawable/snackbar_progressbar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <LinearLayout
@@ -33,13 +55,42 @@
                 android:layout_margin="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/image_icon"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/snackbar_image_container"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/image_icon"
-                    app:srcCompat="@drawable/circle" />
+                    app:layout_constraintBottom_toTopOf="@+id/user_page_level_bar"
+                    app:layout_constraintDimensionRatio="1:1">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/snackbar_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:contentDescription="@string/profileButton"
+                        android:minWidth="48dp"
+                        android:minHeight="48dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearanceOverlay="@style/Circular"/>
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/frame"
+                        android:contentDescription="@string/image_frame"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/textMessage"

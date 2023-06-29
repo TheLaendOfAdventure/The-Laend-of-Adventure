@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentBadgesPageBinding
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeActions
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.ui.adapters.BadgesAdapter
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.BadgesPageViewModel
@@ -32,29 +32,18 @@ class BadgesPageFragment : Fragment() {
 
         binding = FragmentBadgesPageBinding.inflate(inflater, container, false)
 
-        val completedRecycleView = binding.badgesPageRecyclerviewAccepted
-        completedRecycleView.layoutManager = LinearLayoutManager(requireContext())
-        completedRecycleView.adapter = BadgesAdapter(emptyList(), completed = true, this)
+        val recycleView = binding.badgesPageRecyclerview
+        recycleView.layoutManager = LinearLayoutManager(requireContext())
+        recycleView.adapter = BadgesAdapter(emptyList())
 
-        val completedBadgeObserver = Observer<List<BadgeDetails>> { badgeList ->
+        val badgeActions = viewModel.getActionsForBadge()
+        val badgeObserver = Observer<List<BadgeActions>> { badgeList ->
             // Handle the accepted badgeList
-            val adapter = BadgesAdapter(badgeList, completed = true, this)
-            completedRecycleView.adapter = adapter
+            val adapter = BadgesAdapter(badgeList)
+            recycleView.adapter = adapter
         }
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.completedBadges.observe(viewLifecycleOwner, completedBadgeObserver)
-
-        val unCompletedRecycleView = binding.badgesPageRecyclerviewUnaccepted
-        unCompletedRecycleView.layoutManager = LinearLayoutManager(requireContext())
-        unCompletedRecycleView.adapter = BadgesAdapter(emptyList(), completed = false, this)
-
-        val unCompletedBadgeObserver = Observer<List<BadgeDetails>> { badgeList ->
-            // Handle the unaccepted badgeList
-            val adapter = BadgesAdapter(badgeList, completed = false, this)
-            unCompletedRecycleView.adapter = adapter
-        }
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.unCompletedBadges.observe(viewLifecycleOwner, unCompletedBadgeObserver)
+        badgeActions.observe(viewLifecycleOwner, badgeObserver)
 
         val userObserver = Observer<UserEntity> { user ->
             binding.badgesProfileButtonLevelDisplay.text = user.level.toString()

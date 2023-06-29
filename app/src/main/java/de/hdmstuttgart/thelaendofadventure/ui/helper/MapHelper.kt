@@ -1,6 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.helper
 
-import android.annotation.SuppressLint
+import android.annotation.SuppressLint // ktlint-disable import-ordering
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
@@ -47,6 +47,7 @@ class MapHelper(
     private val pointAnnotationManager: PointAnnotationManager =
         mapview.annotations.createPointAnnotationManager()
     private var iconBitmap: Bitmap =
+        AppCompatResources.getDrawable(context, R.drawable.scroll)?.toBitmap()!!
         AppCompatResources.getDrawable(context, R.drawable.chat_icon)?.toBitmap()!!
     private var locationMarker: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.banner)?.toBitmap()!!

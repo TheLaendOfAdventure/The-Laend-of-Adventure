@@ -27,7 +27,7 @@ import de.hdmstuttgart.thelaendofadventure.ui.helper.JsonHelper
 class ConversationPopupDialog(
     private val context: Context,
     private val dialogPath: String,
-    userID: Int,
+    userID: Int
 ) {
     private val userRepository: UserRepository = AppDataContainer(context).userRepository
     val user = userRepository.getUserByID(userID).asLiveData()
@@ -97,11 +97,15 @@ class ConversationPopupDialog(
         if (currentIndex < dialogueList.size) {
             val (speaker, message) = dialogueList[currentIndex]
             if (speaker == "Player") {
+                binding.userBackgroundContainer.visibility = View.VISIBLE
                 binding.userTextbox.visibility = View.VISIBLE
+                binding.partnerBackgroundContainer.visibility = View.GONE
                 binding.partnerTextbox.visibility = View.GONE
                 binding.userTextView.text = message
             } else {
+                binding.userBackgroundContainer.visibility = View.GONE
                 binding.userTextbox.visibility = View.GONE
+                binding.partnerBackgroundContainer.visibility = View.VISIBLE
                 binding.partnerTextbox.visibility = View.VISIBLE
                 binding.partnerTextView.text = message
                 binding.partnerName.text = speaker

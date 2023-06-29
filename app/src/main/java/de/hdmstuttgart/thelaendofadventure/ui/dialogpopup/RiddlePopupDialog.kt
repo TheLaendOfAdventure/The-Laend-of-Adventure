@@ -2,6 +2,7 @@ package de.hdmstuttgart.thelaendofadventure.ui.dialogpopup
 
 import android.app.Dialog
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -12,6 +13,9 @@ import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.logic.UserLogic
 import de.hdmstuttgart.thelaendofadventure.ui.adapters.RiddleAnswerAdapter
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RiddlePopupDialog(
     private val context: Context,
@@ -65,6 +69,14 @@ class RiddlePopupDialog(
                         })
 
                         view!!.startAnimation(zoomAnimation)
+                        Log.d("QuestLogic", "call finish goal in Riddle Popup ")
+                        CoroutineScope(Dispatchers.IO).launch {
+                            QuestLogic(context).finishedQuestGoal(
+                                riddles[position].questID,
+                                riddles[position].goalNumber
+                            )
+                        }
+                        dismissDialog()
                     } else {
                         view!!.startAnimation(shakeAnimation)
                         UserLogic(context).increaseWrongAnswerCount(userID)

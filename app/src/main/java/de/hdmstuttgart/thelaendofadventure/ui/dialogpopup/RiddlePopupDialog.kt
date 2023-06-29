@@ -53,6 +53,7 @@ class RiddlePopupDialog(
 
                     if (riddles[position].answer == riddles[position].possibleAnswers) {
                         zoomAnimation.setAnimationListener(object : Animation.AnimationListener {
+                            @Suppress("EmptyFunctionBlock")
                             override fun onAnimationStart(animation: Animation) {
                             }
 
@@ -66,6 +67,7 @@ class RiddlePopupDialog(
                                 dismissDialog()
                             }
 
+                            @Suppress("EmptyFunctionBlock")
                             override fun onAnimationRepeat(animation: Animation) {
                             }
                         })

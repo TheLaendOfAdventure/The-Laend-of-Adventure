@@ -2,14 +2,14 @@ package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.*
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
+import de.hdmstuttgart.thelaendofadventure.data.entity.*
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.*
-import de.hdmstuttgart.thelaendofadventure.data.entity.*
 import kotlinx.coroutines.flow.Flow
 
 @Suppress("TooManyFunctions")

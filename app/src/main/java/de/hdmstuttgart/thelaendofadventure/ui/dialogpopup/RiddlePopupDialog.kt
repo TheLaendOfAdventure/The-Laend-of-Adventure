@@ -44,27 +44,29 @@ class RiddlePopupDialog(
             riddles,
             object : RiddleAnswerAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
-                    val view = binding.answerList.findViewHolderForAdapterPosition(position)?.itemView
-                    val shakeAnimation = AnimationUtils.loadAnimation(context, R.anim.shake_animation)
+                    val view = binding.answerList.findViewHolderForAdapterPosition(position)?.itemView // ktlint-disable max-line-length
+                    val shakeAnimation = AnimationUtils.loadAnimation(
+                        context,
+                        R.anim.shake_animation
+                    )
                     val zoomAnimation = AnimationUtils.loadAnimation(context, R.anim.zoom_animation)
 
                     if (riddles[position].answer == riddles[position].possibleAnswers) {
                         zoomAnimation.setAnimationListener(object : Animation.AnimationListener {
                             override fun onAnimationStart(animation: Animation) {
-                                // Animation start callback (unused)
                             }
 
                             override fun onAnimationEnd(animation: Animation) {
-                                // Animation end callback
-                                QuestLogic(context).finishedQuestGoal(
-                                    riddles[position].questID,
-                                    riddles[position].goalNumber
-                                )
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    QuestLogic(context).finishedQuestGoal(
+                                        riddles[position].questID,
+                                        riddles[position].goalNumber
+                                    )
+                                }
                                 dismissDialog()
                             }
 
                             override fun onAnimationRepeat(animation: Animation) {
-                                // Animation repeat callback (unused)
                             }
                         })
 

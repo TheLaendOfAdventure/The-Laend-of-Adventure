@@ -46,9 +46,8 @@ class MapHelper(
 ) {
     private val pointAnnotationManager: PointAnnotationManager =
         mapview.annotations.createPointAnnotationManager()
-    private var iconBitmap: Bitmap =
+    private var questIcon: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.scroll)?.toBitmap()!!
-        AppCompatResources.getDrawable(context, R.drawable.chat_icon)?.toBitmap()!!
     private var locationMarker: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.banner)?.toBitmap()!!
     private var blankImg =
@@ -143,7 +142,7 @@ class MapHelper(
     private fun removeAnnotationMarker(markerHashMap: HashMap<String, Location>) {
         markerHashMap.forEach { (key, _) ->
             val marker = annotationList[key]
-            marker!!.iconImageBitmap = iconBitmap
+            marker!!.iconImageBitmap = questIcon
             pointAnnotationManager.delete(marker)
             annotationList.remove(key)
         }
@@ -176,7 +175,7 @@ class MapHelper(
 
             PointAnnotationOptions()
                 .withPoint(point)
-                .withIconImage(iconBitmap)
+                .withIconImage(questIcon)
                 .withIconAnchor(IconAnchor.BOTTOM)
                 .withDraggable(false)
         }

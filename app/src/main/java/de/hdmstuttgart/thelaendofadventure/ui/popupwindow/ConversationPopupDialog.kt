@@ -27,7 +27,7 @@ import de.hdmstuttgart.thelaendofadventure.ui.helper.JsonHelper
 class ConversationPopupDialog(
     private val context: Context,
     private val dialogPath: String,
-    userID: Int,
+    userID: Int
 ) {
     private val userRepository: UserRepository = AppDataContainer(context).userRepository
     val user = userRepository.getUserByID(userID).asLiveData()
@@ -72,9 +72,6 @@ class ConversationPopupDialog(
      */
     @SuppressLint("DiscouragedApi")
     private fun setupPopupWindow() {
-        val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
-        binding.partnerProfileImage.setImageResource(resourceId)
-
         val card: View = binding.dialogCard
         setupCardViewClickListener(card)
 
@@ -100,17 +97,34 @@ class ConversationPopupDialog(
         if (currentIndex < dialogueList.size) {
             val (speaker, message) = dialogueList[currentIndex]
             if (speaker == "Player") {
+                binding.userBackgroundContainer.visibility = View.VISIBLE
                 binding.userTextbox.visibility = View.VISIBLE
+                binding.partnerBackgroundContainer.visibility = View.GONE
                 binding.partnerTextbox.visibility = View.GONE
                 binding.userTextView.text = message
             } else {
+                binding.userBackgroundContainer.visibility = View.GONE
                 binding.userTextbox.visibility = View.GONE
+                binding.partnerBackgroundContainer.visibility = View.VISIBLE
                 binding.partnerTextbox.visibility = View.VISIBLE
                 binding.partnerTextView.text = message
                 binding.partnerName.text = speaker
+                val speakerImage = getSpeakerImage(speaker)
+                val resourceId = context.resources.getIdentifier(speakerImage, "drawable", context.packageName)
+                binding.partnerProfileImage.setImageResource(resourceId)
             }
         }
         currentIndex++
+    }
+
+    /**
+     * Retrieves the image path for the speaker.
+     *
+     * @param speaker The speaker name.
+     * @return The image path of the speaker.
+     */
+    private fun getSpeakerImage(speaker: String): String {
+        return imageName.find { it.first == speaker }?.second ?: ""
     }
 
     /**

@@ -54,7 +54,8 @@ class JsonHelperTest {
     @Test
     fun readNpcImgFromJsonFile_ExistingNpcImg_ReturnsNpcImgPath() {
         val npcImg = jsonHelper!!.readNpcImgFromJsonFile()
-        assertEquals("Expected NPC image path", "chat_icon", npcImg)
+        val expectedNpcImg = "[(Reihner Zufall, chat_icon), (Johannes, compass)]"
+        assertEquals("Expected NPC image path", expectedNpcImg, npcImg.toString())
     }
 
     /**
@@ -64,7 +65,8 @@ class JsonHelperTest {
     @Test
     fun readNpcImgFromJsonFile_NonExistingNpcImg_ReturnsNoImgFound() {
         val npcImg = negativeJsonHelper!!.readNpcImgFromJsonFile()
-        assertEquals("Expected No Img Found", "No Img Found", npcImg)
+        val expectedNpcImg = emptyList<Pair<String, String>>()
+        assertEquals("Expected No Img Found", expectedNpcImg, npcImg)
     }
 
     /**
@@ -102,12 +104,13 @@ class JsonHelperTest {
 
     /**
      * Tests the readNpcImgFromJsonFile() method when a non-existing file is provided.
-     * It asserts that the returned image path is "No Img Found".
+     * It asserts that the returned image path is "[]".
      */
     @Test
     fun readNpcImgFromJsonFile_NonExistingFile_ReturnsNoImgFound() {
         val img = nonExistingJsonHelper?.readNpcImgFromJsonFile()
-        assertEquals("Expected No Img Found", "No Img Found", img)
+        val expectedNpcImg = emptyList<Pair<String, String>>()
+        assertEquals("Expected empty List", expectedNpcImg, img)
     }
 
     /**

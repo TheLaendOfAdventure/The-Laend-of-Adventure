@@ -1,0 +1,39 @@
+{
+  "NPC": "Bibliothekar Luis",
+  "image" : [
+    {
+      "speaker": "Bibliothekar Luis",
+      "path"    : "luis"
+    }
+  ],
+  "dialogue": [
+    {
+      "speaker": "Bibliothekar Luis",
+      "message": "Willkommen, verehrter Gast, in unserer magischen Bibliothek. Hier ruht das Wissen vergangener Zeiten."
+    },
+    {
+      "speaker": "Player",
+      "message": "Ehrwürdiger Bibliothekar Luis, ich bin auf der Suche nach Wissen über die Berechnung von Flächeninhalten. Könnt Ihr mir dabei helfen?"
+    },
+    {
+      "speaker": "Bibliothekar Luis",
+      "message": "Natürlich, tapferer Recke. Wir haben ein altes Manuskript über die Berechnung von Flächeninhalten mit Integralen. Doch dieses Buch ist magisch und verlangt nach einer besonderen Enthüllung."
+    },
+    {
+      "speaker": "Player",
+      "message": "Was genau muss ich tun, um das Wissen aus dem Manuskript freizuschalten?"
+    },
+    {
+      "speaker": "Bibliothekar Luis",
+      "message": "Zuerst musst du ein Rätsel lösen. Wenn du die Fragen richtig beantwortest, wird die Tinte des Manuskripts erscheinen und du wirst das Wissen enthüllen können."
+    },
+    {
+      "speaker": "Player",
+      "message": "Verstanden, ehrwürdiger Bibliothekar Luis. Lasst mich das Quiz beginnen und das Wissen über die Berechnung von Flächeninhalten erlangen."
+    },
+    {
+      "speaker": "Player",
+      "message": "Danke, ehrwürdiger Bibliothekar Luis. Ich werde mein Bestes geben, um das Wissen zu erlangen."
+    }
+  ]
+}

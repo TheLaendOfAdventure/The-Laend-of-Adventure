@@ -1,0 +1,67 @@
+{
+  "NPC": "Quadratmagier",
+  "image" : [
+    {
+      "speaker": "Quadratmagier",
+      "path"    : "wizardrectangle"
+    }
+  ],
+  "dialogue": [
+    {
+      "speaker": "Player",
+      "message": "Ehrenwerter Quadratmagier, ich komme zu dir in der Hoffnung, dass du mir bei meinem Problem helfen kannst."
+    },
+    {
+      "speaker": "Quadratmagier",
+      "message": "Ah, ein Besucher! Ich bin der Quadratmagier und stehe bereit, um dir mit meinen kantigen Kenntnissen zu helfen. Erzähle mir, womit du kämpfst."
+    },
+    {
+      "speaker": "Player",
+      "message": "Ich bin auf einer Reise, um den Flächeninhalt einer nicht ganz runden Bibliothek zu berechnen. Ich habe bereits von Integralen gehört, aber dafür muss ich wissen wie man Rechtecke berechnet."
+    },
+    {
+      "speaker": "Quadratmagier",
+      "message": "Ah, die Macht der Rechtecke! Ein wunderbares Werkzeug, um Flächen zu berechnen. Lass mich dir helfen. Steht dein Problem auf diesem Manuskript?"
+    },
+    {
+      "speaker": "Player",
+      "message": "Ja, tut es. Aber es ist nicht vollständig."
+    },
+    {
+      "speaker": "Quadratmagier",
+      "message": "... Interessant. Ich habe das Wissen wonach du suchst, aber kann es dir aber nicht geben."
+    },
+    {
+      "speaker": "Player",
+      "message": "Wieso nicht?"
+    },
+    {
+      "speaker": "Quadratmagier",
+      "message": "Hier steht etwas von runden Formen und davon sollte man sich möglichst verhalten. Besonders dieser Kreismagier ist eine Pest, mit dem werde ich nie arbeiten können und wollen! *Beäugt misstrauisch* Bist du ihm schon begegnet?"
+    },
+    {
+      "speaker": "Player",
+      "message": "... noch nie von ihm gehört. Aber ich muss dennoch dieses Mansukript vervollständigen. Ähm... Luis hat mich drum gebeten."
+    },
+    {
+      "speaker": "Quadratmagier",
+      "message": "Der Bibliothekar? Hm, ich bin ihm was schuldig, also gut. Aber du musst dich erst als würdig erweisen!"
+    },
+    {
+      "speaker": "Player",
+      "message": "*flüsterd* Was ist das nur mit Magiern und würdig erweisen"
+    },
+    {
+      "speaker": "Quadratmagier",
+      "message": "Was?"
+    },
+    {
+      "speaker": "Player",
+      "message": "Nichts. Ich bin bereit, deine Herausforderungen anzunehmen. Zeige mir, was ich tun muss!"
+    },
+    {
+      "speaker": "Quadratmagier",
+      "message": "Sehr gut! Hier ist deine erste Aufgabe:"
+    }
+  ]
+}

@@ -1,5 +1,15 @@
 {
   "NPC": "Kreismagier",
+  "image" : [
+    {
+      "speaker": "Kreismagier",
+      "path"    : "wizardcircle"
+    },
+    {
+      "speaker": "Quadratmagiere",
+      "path"    : "wizardrectangle"
+    }
+  ],
   "dialogue": [
     {
       "speaker": "Player",

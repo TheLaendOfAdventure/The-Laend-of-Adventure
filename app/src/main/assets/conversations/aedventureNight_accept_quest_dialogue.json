@@ -1,5 +1,11 @@
 {
   "NPC": "Land-of-Adventure-Team",
+  "image" : [
+    {
+      "speaker": "Land-of-Adventure-Team",
+      "path"    : "logorund"
+    }
+  ],
   "dialogue": [
     {
       "speaker": "Land-of-Adventure-Team",

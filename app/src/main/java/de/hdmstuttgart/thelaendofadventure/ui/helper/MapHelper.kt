@@ -39,7 +39,7 @@ class MapHelper(
 ) {
     private lateinit var pointAnnotationManager: PointAnnotationManager
     private var iconBitmap: Bitmap =
-        AppCompatResources.getDrawable(context, R.drawable.chat_icon)?.toBitmap()!!
+        AppCompatResources.getDrawable(context, R.drawable.scroll)?.toBitmap()!!
     private val viewAnnotationManager = mapview.viewAnnotationManager
     val userID = SharedPreferencesHelper.getUserID(context)
 

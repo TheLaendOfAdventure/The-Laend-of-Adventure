@@ -2,7 +2,7 @@
   "NPC": "Quadratmagier",
   "image" : [
     {
-      "speaker": "Quadratmagiere",
+      "speaker": "Quadratmagier",
       "path"    : "wizardrectangle"
     }
   ],

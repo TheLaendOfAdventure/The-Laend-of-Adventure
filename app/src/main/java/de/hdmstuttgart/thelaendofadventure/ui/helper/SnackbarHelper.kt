@@ -40,7 +40,7 @@ class SnackbarHelper private constructor() {
     private fun showSnackbar(context: Context, message: String, iconResource: Int) {
         val binding = SnackbarDefaultBinding.inflate(LayoutInflater.from(context))
         binding.textMessage.text = message
-        binding.imageIcon.setImageResource(iconResource)
+        binding.snackbarImage.setImageResource(iconResource)
 
         val progressBar = binding.progressBar
         progressBar.max = TIMER_DURATION.toInt()

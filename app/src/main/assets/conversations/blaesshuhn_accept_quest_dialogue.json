@@ -1,5 +1,11 @@
 {
   "NPC": "Naturkundler Sven",
+  "image" : [
+    {
+      "speaker": "Naturkundler Sven",
+      "path"    : "naturalist"
+    }
+  ],
   "dialogue": [
     {
       "speaker": "Naturkundler Sven",

@@ -1,5 +1,11 @@
 {
   "NPC": "Die weise Kräuterfrau",
+  "image" : [
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "path"    : "herbalist"
+    }
+  ],
   "dialogue": [
     {
       "speaker": "Die weise Kräuterfrau",

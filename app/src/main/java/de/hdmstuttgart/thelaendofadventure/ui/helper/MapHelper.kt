@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.mapbox.geojson.Point
@@ -34,11 +35,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@Suppress("TooManyFunctions")
 class MapHelper(
     private val mapview: MapView,
     questList: List<QuestEntity>,
     private val context: Context,
-    private val userLevel: Int
+    private val userLevel: Int,
+    private val viewLifecycleOwner: LifecycleOwner
 
 ) {
     private val pointAnnotationManager: PointAnnotationManager =
@@ -74,14 +77,21 @@ class MapHelper(
                         }
                     }
                 } catch (@Suppress("TooGenericExceptionCaught") e: IndexOutOfBoundsException) {
-                    Log.d(TAG, "Alredy deleted $e")
+                    Log.d(TAG, "Already deleted $e")
                 }
                 true
             }
         }
         setUpCompassImage()
         setUpLocationPuck()
-        locationMarkers.observeForever(observer)
+        addObserver()
+    }
+
+    private fun addObserver() {
+        if (!locationMarkers.hasActiveObservers()) {
+            Log.d(TAG, "Now observing!")
+            locationMarkers.observe(viewLifecycleOwner, observer)
+        }
     }
 
     private val observer: Observer<HashMap<String, Location>> = Observer { newMap ->
@@ -112,7 +122,8 @@ class MapHelper(
         }
     }
 
-    private fun getMarkerOptionsList(addedEntries: HashMap<String, Location>): HashMap<String, PointAnnotationOptions> {
+    private fun getMarkerOptionsList(addedEntries: HashMap<String, Location>):
+        HashMap<String, PointAnnotationOptions> {
         val pointAnnotationOptionsMap: HashMap<String, PointAnnotationOptions> = hashMapOf()
 
         addedEntries.forEach { (key, location) ->
@@ -273,7 +284,8 @@ class MapHelper(
     }
 
     fun stopObservingLocationMarkers() {
-        locationMarkers.removeObserver(observer)
+        locationMarkers.removeObservers(viewLifecycleOwner)
+        Log.d(TAG, "locationMarkers are observed: ${locationMarkers.hasActiveObservers()}")
     }
 
     private fun View.toggleViewVisibility() {

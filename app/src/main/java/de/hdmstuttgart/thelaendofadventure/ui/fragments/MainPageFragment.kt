@@ -66,7 +66,13 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
 
     private fun observeQuest() {
         val questObserver = Observer<QuestWithUserLevel> { questList ->
-            mapHelper = MapHelper(mapView, questList.quest, requireContext(), questList.userLevel)
+            mapHelper = MapHelper(
+                mapView,
+                questList.quest,
+                requireContext(),
+                questList.userLevel,
+                viewLifecycleOwner
+            )
             mapHelper.setUpMap()
         }
         mapView.gestures.addOnMoveListener(onMoveListener)
@@ -82,6 +88,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             setupLocationResetButton()
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         if (::mapHelper.isInitialized) {
@@ -91,14 +98,6 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         MapHelper.locationMarkers.postValue(hashMapOf())
     }
 
-    override fun onPause() {
-        super.onPause()
-        if (::mapHelper.isInitialized) {
-            mapHelper.stopObservingLocationMarkers()
-        }
-        MapHelper.previousMap = mapOf()
-        MapHelper.locationMarkers.postValue(hashMapOf())
-    }
     private fun isUserLoggedIn(): Boolean {
         val userID = viewModel.userID
         if (userID == -1) {
@@ -131,6 +130,11 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_main_to_user_page
             )
+            if (::mapHelper.isInitialized) {
+                mapHelper.stopObservingLocationMarkers()
+            }
+            MapHelper.previousMap = mapOf()
+            MapHelper.locationMarkers.postValue(hashMapOf())
         }
     }
 

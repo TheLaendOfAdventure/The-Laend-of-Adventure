@@ -71,7 +71,7 @@ class MapHelper(
         AppCompatResources.getDrawable(context, R.drawable.banner)?.toBitmap()!!
 
     /**
-     * The blank image bitmap.
+     * The blank image bitmap for replacing other icons.
      */
     private var blankImg =
         AppCompatResources.getDrawable(context, R.drawable.img_blank)?.toBitmap()!!

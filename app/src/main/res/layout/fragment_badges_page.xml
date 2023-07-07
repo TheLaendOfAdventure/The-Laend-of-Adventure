@@ -48,7 +48,8 @@
                 android:text="@string/profile_tab_text"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
-                app:layout_constraintWidth_max="320dp" />
+                app:layout_constraintWidth_max="320dp"
+                tools:ignore="TextContrastCheck" />
 
             <TextView
                 android:id="@+id/badges_page_navigation_button_to_badges"
@@ -115,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/map"
-                android:contentDescription="@string/image_frame"
+                android:contentDescription="@string/map"
                 android:scaleType="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

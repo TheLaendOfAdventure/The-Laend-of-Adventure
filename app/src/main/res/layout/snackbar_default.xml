@@ -1,45 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    app:cardBackgroundColor="@color/black"
-    app:cardCornerRadius="16dp">
+    app:cardBackgroundColor="@android:color/transparent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!--The top margin must be set, otherwise there will be a transparent bar above the ProgressBar-->
         <ProgressBar
             android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="8dp"
+            android:layout_height="7dp"
+            android:progressTint="#03AC13"
+            android:indeterminateTint="@android:color/transparent"
+            android:progressBackgroundTint="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
             android:scaleY="2" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/text_field_nine">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UselessParent">
 
-                <ImageView
-                    android:id="@+id/image_icon"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/snackbar_image_container"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/image_icon"
-                    app:srcCompat="@drawable/circle" />
+                    app:layout_constraintBottom_toTopOf="@+id/user_page_level_bar"
+                    app:layout_constraintDimensionRatio="1:1">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/snackbar_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:contentDescription="@string/profileButton"
+                        android:minWidth="48dp"
+                        android:minHeight="48dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearanceOverlay="@style/Circular"/>
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/frame"
+                        android:contentDescription="@string/image_frame"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/textMessage"
@@ -49,7 +90,7 @@
                     android:layout_marginStart="5dp"
                     android:padding="8dp"
                     android:text="@string/snackbar_message"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -58,4 +99,5 @@
 
     </LinearLayout>
 
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

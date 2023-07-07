@@ -59,8 +59,8 @@
     <string name="quest_description_text">Beschreibung</string>
     <string name="npc_name">%1$s will dir eine Quest Anbieten</string>
     <string name="quest_details">%1$f, %2$f \n Aufgabe: %3$s</string>
-    <string name="quest_accept">Accept</string>
-    <string name="quest_decline">Decline</string>
+    <string name="quest_accept">Akzeptieren</string>
+    <string name="quest_decline">Ablehnen</string>
     <string name="riddle_text">Rätsel</string>
     <string name="answer_1">Antwort_1</string>
     <string name="answer_2">Antwort_2</string>

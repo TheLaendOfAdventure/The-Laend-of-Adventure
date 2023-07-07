@@ -1,5 +1,11 @@
 {
   "NPC": "Küchenmeister Juri",
+  "image" : [
+    {
+      "speaker": "Küchenmeister Juri",
+      "path"    : "kuechenchefjuri"
+    }
+  ],
   "dialogue": [
     {
       "speaker": "Küchenmeister Juri",

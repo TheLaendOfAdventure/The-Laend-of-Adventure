@@ -1,22 +1,18 @@
 package de.hdmstuttgart.thelaendofadventure.ui.viewmodels
 
-import android.app.Application // ktlint-disable import-ordering
+import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.IOException
 
@@ -36,15 +32,13 @@ class UserCreationViewModel(private val application: Application) : AndroidViewM
     /**
      * Coroutine function for creating a new user with the given name and image path.
      */
-    fun createUser() = viewModelScope.launch(Dispatchers.IO) {
-        var userID: Int
+    suspend fun createUser() {
         val user = UserEntity(name = name, imagePath = imagePath)
 
-        runBlocking {
-            userID = userRepository.addUser(user).toInt()
-            SharedPreferencesHelper.addUser(application as Context, userID)
-        }
+        val userID = userRepository.addUser(user).toInt()
+        SharedPreferencesHelper.addUser(application as Context, userID)
 
+        Log.i(TAG, "User created with the ID: $userID.")
         badgeRepository.assignAllBadgesToUser(userID)
     }
 

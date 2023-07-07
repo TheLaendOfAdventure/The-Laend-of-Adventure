@@ -18,6 +18,10 @@ import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentUserCreationBi
 import de.hdmstuttgart.thelaendofadventure.ui.helper.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.helper.Permissions
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.UserCreationViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
 
@@ -27,7 +31,6 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
     private lateinit var permissionManager: PermissionManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Initialize ActivityResultLauncher to pick an image from the gallery
         mPickGallery =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 uri?.let {
@@ -49,6 +52,7 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserCreationBinding.inflate(inflater, container, false)
+        binding.userCreationPageAvatarButton.setImageResource(R.drawable.empty_avatar)
         Log.d(TAG, "UserCreationPage is created!")
         return binding.root
     }
@@ -83,12 +87,16 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
      */
     private fun setupConfirmButton() {
         binding.userCreationPageConfirmButton.setOnClickListener {
-            viewModel.name = binding.nameTextInput.text.toString()
-            viewModel.createUser()
-            Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_creation_to_main_page
-            )
-            Log.d(TAG, "User created with name: ${viewModel.name}")
+            CoroutineScope(Dispatchers.Main).launch {
+                viewModel.name = binding.nameTextInput.text.toString()
+                withContext(Dispatchers.IO) {
+                    viewModel.createUser()
+                }
+                Navigation.findNavController(requireView()).navigate(
+                    R.id.navigate_from_creation_to_main_page
+                )
+                Log.d(TAG, "User created with name: ${viewModel.name}")
+            }
         }
     }
 

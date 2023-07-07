@@ -1,5 +1,11 @@
 {
 	"NPC" : "Brückentroll",
+	"image" : [
+		{
+			"speaker": "Brückentroll",
+			"path"    : "troll"
+		}
+	],
 	"dialogue": [
 		{
 			"speaker": "Brückentroll",

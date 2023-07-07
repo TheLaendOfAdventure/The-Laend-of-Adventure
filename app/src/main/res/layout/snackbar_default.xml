@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
@@ -12,42 +13,13 @@
         android:orientation="vertical"
         android:background="@drawable/text_field_nine">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="-8dp">
-
             <ProgressBar
                 android:id="@+id/progress_bar"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:scaleY="2"
-                app:layout_constraintBottom_toBottomOf="@+id/user_page_progress_bar_image"
-                app:layout_constraintEnd_toEndOf="@+id/user_page_progress_bar_image"
-                app:layout_constraintStart_toStartOf="@+id/user_page_progress_bar_image"
-                app:layout_constraintTop_toTopOf="@+id/user_page_progress_bar_image" />
-
-            <ImageView
-                android:id="@+id/user_page_progress_bar_image"
-                android:layout_width="match_parent"
-                android:layout_height="41dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/xp_bar"
-                android:src="@drawable/snackbar_progressbar"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+                android:layout_width="321dp"
+                android:layout_height="7dp"
+                android:progressTint="#03AC13"
+                android:scaleY="2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -78,7 +50,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:shapeAppearanceOverlay="@style/Circular"/>
+                        app:shapeAppearanceOverlay="@style/Circular"
+                        tools:ignore="ImageContrastCheck" />
 
                     <ImageView
                         android:layout_width="0dp"
@@ -88,7 +61,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ImageContrastCheck" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -101,11 +75,10 @@
                     android:padding="8dp"
                     android:text="@string/snackbar_message"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:ignore="TextContrastCheck" />
 
             </LinearLayout>
-
-        </LinearLayout>
 
     </LinearLayout>
 

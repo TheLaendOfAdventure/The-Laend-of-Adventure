@@ -11,7 +11,8 @@ import android.view.View
 import android.widget.ProgressBar
 import com.google.android.material.snackbar.Snackbar
 import de.hdmstuttgart.the_laend_of_adventure.databinding.SnackbarDefaultBinding
-import java.util.*
+import java.util.LinkedList
+import java.util.Queue
 
 class SnackbarHelper private constructor() {
 
@@ -57,6 +58,7 @@ class SnackbarHelper private constructor() {
         snackbar?.show()
         onClickDismissSnackbar()
     }
+
     private fun onClickDismissSnackbar() {
         snackbar?.view?.setOnClickListener {
             dismissSnackbar()

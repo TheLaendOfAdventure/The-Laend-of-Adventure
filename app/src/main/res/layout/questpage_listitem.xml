@@ -39,6 +39,7 @@
                 android:id="@+id/quest_progress"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="200dp"
+                android:progressTint="#03AC13"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

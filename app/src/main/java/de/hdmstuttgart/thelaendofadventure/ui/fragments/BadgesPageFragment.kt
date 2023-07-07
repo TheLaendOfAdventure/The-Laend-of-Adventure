@@ -9,12 +9,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentBadgesPageBinding
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeActions
-import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
 import de.hdmstuttgart.thelaendofadventure.ui.adapters.BadgesAdapter
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.BadgesPageViewModel
 
@@ -45,16 +42,6 @@ class BadgesPageFragment : Fragment() {
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         badgeActions.observe(viewLifecycleOwner, badgeObserver)
 
-        val userObserver = Observer<UserEntity> { user ->
-            binding.badgesProfileButtonLevelDisplay.text = user.level.toString()
-            Glide.with(requireContext())
-                .load(user.imagePath)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(binding.badgesPageProfileButton)
-        }
-        viewModel.user.observe(viewLifecycleOwner, userObserver)
-
         return binding.root
     }
 
@@ -65,7 +52,7 @@ class BadgesPageFragment : Fragment() {
     }
 
     private fun setUpBadgePageProfileButton() {
-        binding.badgesPageProfileButton.setOnClickListener {
+        binding.badgePageMapButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_badges_to_main_page
             )

@@ -41,7 +41,7 @@ class BadgeLogic(private val context: Context) {
             userID
         )
         if (badgeGoalEntity != null) {
-            // @todo set badgeGoal.isCompleted true
+            badgeRepository.completeBadgeGoalByUserID(userID, badgeGoalEntity.badgeID, badgeGoalEntity.badgeGoalID)
             notifyBadge(badgeGoalEntity.badgeID)
         }
     }

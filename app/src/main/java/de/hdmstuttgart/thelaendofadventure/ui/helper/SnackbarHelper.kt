@@ -56,6 +56,13 @@ class SnackbarHelper private constructor() {
         setupSnackbarCallbacks()
         Log.d(TAG, "Snackbar: $message is shown!")
         snackbar?.show()
+        onClickDismissSnackbar()
+    }
+
+    private fun onClickDismissSnackbar() {
+        snackbar?.view?.setOnClickListener {
+            dismissSnackbar()
+        }
     }
 
     private fun setupTimer(progressBar: ProgressBar) {

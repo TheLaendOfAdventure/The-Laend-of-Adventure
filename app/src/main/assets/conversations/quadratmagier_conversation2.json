@@ -1,0 +1,23 @@
+{
+  "NPC": "Quadratmagier",
+  "image" : [
+    {
+      "speaker": "Quadratmagier",
+      "path"    : "wizardrectangle"
+    }
+  ],
+  "dialogue": [
+    {
+      "speaker": "Quadratmagier",
+      "message": "Fantastisch! Du hast alle meine Rätsel gelöst und bewiesen, dass du würdig bist. Nun zeige ich dir wie man dasselbe berechnet für Rechtecke, die keine Quadrate sind."
+    },
+    {
+      "speaker": "Player",
+      "message": "Vielen Dank, Quadratmagier! Damit kann ich das Manuskript vervollständigen."
+    },
+    {
+      "speaker": "Quadratmagier",
+      "message": "Gut gemacht, tapferer Abenteurer! Nun denn, ziehe los und tu was du tun musst. Und halte dich von diesem Kreismagier fern!"
+    }
+  ]
+}

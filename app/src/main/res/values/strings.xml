@@ -87,4 +87,5 @@
     <string name="too_far_away">Du bist zu weit weg um die Quest: &quot;%1$s&quot; anzunehmen! Komm näher heran!</string>
     <string name="xp_bar">xp bar</string>
     <string name="logo">logo</string>
+    <string name="map">map</string>
 </resources>

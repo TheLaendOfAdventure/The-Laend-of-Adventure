@@ -1,0 +1,35 @@
+{
+	"NPC" : "Reihner Zufall",
+	"image" : [
+		{
+			"speaker": "Reihner Zufall",
+			"path"    : "chat_icon"
+		},
+		{
+			"speaker": "Johannes",
+			"path"    : "compass"
+		}
+		],
+	"dialogue" : [
+		{
+			"speaker": "Player",
+			"message": "Hallo, kannst du mich bitte trainieren, damit ich stark genug bin, den besten Code der Welt zu schreiben?"
+		},
+		{
+			"speaker": "Reihner Zufall",
+			"message": "Gerne, aber beweis es mir erst, indem du mir hier eine regex schreibst, die nur Wörter mit Kleinbuchstaben und 2 er im Wort akzeptiert."
+		},
+		{
+			"speaker": "Player",
+			"message": "Unmöglich!"
+		},
+		{
+			"speaker": "Reihner Zufall",
+			"message": "Zu schwach!"
+		},
+		{
+			"speaker": "Johannes",
+			"message": "Ich bin Entäuscht"
+		}
+	]
+}

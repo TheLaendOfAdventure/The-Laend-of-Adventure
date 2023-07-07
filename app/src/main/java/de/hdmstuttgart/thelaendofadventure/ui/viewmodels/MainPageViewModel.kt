@@ -5,12 +5,17 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Location
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestWithUserLevel
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
+import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 
 class MainPageViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -31,5 +36,22 @@ class MainPageViewModel(application: Application) : AndroidViewModel(application
                 QuestWithUserLevel(value1, value2)
             }
             )
+    }
+
+    fun getLocation() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val currentMap: HashMap<String, Location> = hashMapOf()
+            val locationList = questRepository.getOnlyLocationForAcceptedQuestsByUserID(userID)
+
+            locationList.forEach { location ->
+                val key = location.latitude.toString() + location.longitude.toString()
+                currentMap[key] = location
+            }
+
+            CoroutineScope(Dispatchers.Main).launch {
+                MapHelper.previousMap = hashMapOf<String, Location>().toMap()
+                MapHelper.locationMarkers.value = currentMap
+            }
+        }
     }
 }

@@ -1,10 +1,7 @@
 package de.hdmstuttgart.thelaendofadventure.data.offlinerepository
 
 import de.hdmstuttgart.thelaendofadventure.data.dao.QuestDao
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.*
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
@@ -86,5 +83,13 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
 
     override suspend fun getNameByQuestByGoal(questID: Int, goalNumber: Int): String {
         return questDao.getNameByQuestByGoal(questID, goalNumber)
+    }
+
+    override suspend fun getLocationByQuestByGoal(questID: Int, goalNumber: Int): Location {
+        return questDao.getLocationByQuestByGoal(questID, goalNumber)
+    }
+
+    override suspend fun getOnlyLocationForAcceptedQuestsByUserID(userID: Int): List<Location> {
+        return questDao.getOnlyLocationForAcceptedQuestsByUserID(userID)
     }
 }

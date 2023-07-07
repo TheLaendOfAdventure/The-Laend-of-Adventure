@@ -2,6 +2,7 @@ package de.hdmstuttgart.thelaendofadventure.ui.dialogpopup
 
 import android.app.Dialog
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogRiddlePopupBinding
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
@@ -9,6 +10,9 @@ import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
 import de.hdmstuttgart.thelaendofadventure.logic.UserLogic
 import de.hdmstuttgart.thelaendofadventure.ui.adapters.RiddleAnswerAdapter
 import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RiddlePopupDialog(
     private val context: Context,
@@ -38,10 +42,13 @@ class RiddlePopupDialog(
             object : RiddleAnswerAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
                     if (riddles[position].answer == riddles[position].possibleAnswers) {
-                        QuestLogic(context).finishedQuestGoal(
-                            riddles[position].questID,
-                            riddles[position].goalNumber
-                        )
+                        Log.d("QuestLogic", "call finish goal in Riddle Popup ")
+                        CoroutineScope(Dispatchers.IO).launch {
+                            QuestLogic(context).finishedQuestGoal(
+                                riddles[position].questID,
+                                riddles[position].goalNumber
+                            )
+                        }
                         dismissDialog()
                     } else {
                         UserLogic(context).increaseWrongAnswerCount(userID)

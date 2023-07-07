@@ -77,7 +77,7 @@ class TrackingLogic(private var context: Context) {
     }
 
     /**
-     * Constructor for the TrackingLogic class
+     * Initializer for the TrackingLogic class
      */
     init {
         fusedLocationClient.requestLocationUpdates(

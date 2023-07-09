@@ -23,24 +23,19 @@ class RiddleAnswerAdapter(
         return ViewHolder(view)
     }
 
-    // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val riddleDetails = riddleDetailsList[position]
 
-        // sets the text to the textview from our itemHolder class
         holder.textViewAnswer.text = riddleDetails.possibleAnswers
-        // sets the OnClickListener to the textview from our itemHolder class
         holder.textViewAnswer.setOnClickListener {
             listener.onItemClick(position)
         }
     }
 
-    // return the number of the items in the list
     override fun getItemCount(): Int {
         return riddleDetailsList.size
     }
 
-    // Holds the views for adding it to image and text
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewAnswer: TextView = itemView.findViewById(R.id.riddleAnswer)
     }

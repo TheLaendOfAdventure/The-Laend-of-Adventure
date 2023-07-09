@@ -5,12 +5,17 @@
 
     <TextView
         android:id="@+id/riddleAnswer"
-        style="?android:attr/buttonBarButtonStyle"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:gravity="center"
         android:enabled="true"
         android:padding="20dp"
-        android:text="@string/answer_1" />
-
+        android:textSize="20sp"
+        android:text="@string/answer_1"
+        android:background="@drawable/button"/>
 </LinearLayout>

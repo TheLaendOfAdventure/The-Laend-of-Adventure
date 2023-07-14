@@ -195,18 +195,6 @@ class TrackingLogic(private var context: Context) {
     }
 
     /**
-     * Get the resource ID for the specified image path.
-     *
-     * @param imagePath The path of the image.
-     * @return The resource ID of the image.
-     */
-    @SuppressLint("DiscouragedApi")
-    private fun getImageResourceID(imagePath: String?): Int {
-        val path = imagePath ?: ""
-        return context.resources.getIdentifier(path, "drawable", context.packageName)
-    }
-
-    /**
      * Show a Snackbar with the specified message and image resource ID.
      *
      * @param message The message to display in the Snackbar.

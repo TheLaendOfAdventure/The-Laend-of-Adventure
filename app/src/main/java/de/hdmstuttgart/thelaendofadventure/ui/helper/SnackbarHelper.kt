@@ -37,6 +37,7 @@ class SnackbarHelper private constructor() {
         }
     }
 
+    @Suppress("DestructuringDeclarationWithTooManyEntries")
     private fun showNextSnackbar() {
         if (snackbarQueue.isNotEmpty() && snackbar == null) {
             val (context, message, iconResource, type) = snackbarQueue.poll()!!

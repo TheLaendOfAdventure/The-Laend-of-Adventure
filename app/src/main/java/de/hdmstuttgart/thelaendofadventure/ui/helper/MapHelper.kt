@@ -35,6 +35,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * Helper class for managing the map and annotations in the UI.
+ * @param mapview The MapView instance.
+ * @param questList The list of quests.
+ * @param context The context.
+ * @param userLevel The user level.
+ * @param viewLifecycleOwner The LifecycleOwner for observing changes.
+ */
 @Suppress("TooManyFunctions")
 class MapHelper(
     private val mapview: MapView,
@@ -42,24 +50,57 @@ class MapHelper(
     private val context: Context,
     private val userLevel: Int,
     private val viewLifecycleOwner: LifecycleOwner
-
 ) {
+
+    /**
+     * The [PointAnnotationManager] responsible for managing point annotations on the map.
+     */
     private val pointAnnotationManager: PointAnnotationManager =
         mapview.annotations.createPointAnnotationManager()
+
+    /**
+     * The icon bitmap for quests.
+     */
     private var questIcon: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.scroll)?.toBitmap()!!
+
+    /**
+     * The icon bitmap for location markers.
+     */
     private var locationMarker: Bitmap =
         AppCompatResources.getDrawable(context, R.drawable.banner)?.toBitmap()!!
+
+    /**
+     * The blank image bitmap for replacing other icons.
+     */
     private var blankImg =
         AppCompatResources.getDrawable(context, R.drawable.img_blank)?.toBitmap()!!
+
+    /**
+     * The [viewAnnotationManager] responsible for managing view annotations on the map.
+     */
     private val viewAnnotationManager = mapview.viewAnnotationManager
+
+    /**
+     * The ID of the user.
+     */
     val userID = SharedPreferencesHelper.getUserID(context)
+
+    /**
+     * A map of annotation IDs to [PointAnnotation] objects.
+     */
     private var annotationList: HashMap<String, PointAnnotation> = hashMapOf()
 
+    /**
+     * The filtered list of quests based on user level.
+     */
     private val filteredQuestList = questList.filter { quest ->
         quest.level <= userLevel
     }
 
+    /**
+     * Sets up the map by loading the map style, adding annotations, setting up compass, and location puck.
+     */
     fun setUpMap() {
         mapview.getMapboxMap().loadStyleUri(
             context.getString(R.string.mapbox_styleURL)
@@ -87,6 +128,9 @@ class MapHelper(
         addObserver()
     }
 
+    /**
+     * Adds an observer to the [locationMarkers] LiveData to track changes in location markers.
+     */
     private fun addObserver() {
         if (!locationMarkers.hasActiveObservers()) {
             Log.d(TAG, "Now observing!")
@@ -94,6 +138,9 @@ class MapHelper(
         }
     }
 
+    /**
+     * Observer for location markers.
+     */
     private val observer: Observer<HashMap<String, Location>> = Observer { newMap ->
         val removedEntries: HashMap<String, Location> =
             previousMap.filterKeys { !newMap.containsKey(it) } as HashMap<String, Location>
@@ -114,6 +161,10 @@ class MapHelper(
         Log.d(TAG, " The annotationMarkerList has been updated: $newMap")
     }
 
+    /**
+     * Adds annotation markers to the map for the given locations.
+     * @param addedEntries The map of Markers to add.
+     */
     private fun addAnnotationMarker(addedEntries: HashMap<String, Location>) {
         val pointAnnotationOptionsList = getMarkerOptionsList(addedEntries)
         pointAnnotationOptionsList.forEach { (key, pointAnnotationOptions) ->
@@ -122,6 +173,10 @@ class MapHelper(
         }
     }
 
+    /**
+     * Creates a list of point annotation options for the given locations.
+     * @param addedEntries The map of Markers to add.
+     */
     private fun getMarkerOptionsList(addedEntries: HashMap<String, Location>):
         HashMap<String, PointAnnotationOptions> {
         val pointAnnotationOptionsMap: HashMap<String, PointAnnotationOptions> = hashMapOf()
@@ -139,6 +194,10 @@ class MapHelper(
         return pointAnnotationOptionsMap
     }
 
+    /**
+     * Removes annotation markers from the map for the given locations.
+     * @param markerHashMap The map of Markers to remove.
+     */
     private fun removeAnnotationMarker(markerHashMap: HashMap<String, Location>) {
         markerHashMap.forEach { (key, _) ->
             val marker = annotationList[key]
@@ -148,10 +207,16 @@ class MapHelper(
         }
     }
 
+    /**
+     * Sets up the compass image on the map.
+     */
     private fun setUpCompassImage() {
         mapview.compass.image = AppCompatResources.getDrawable(context, R.drawable.compass)
     }
 
+    /**
+     * Sets up the location puck on the map.
+     */
     private fun setUpLocationPuck() {
         mapview.location.locationPuck = LocationPuck2D(
             topImage = AppCompatResources.getDrawable(
@@ -161,6 +226,10 @@ class MapHelper(
         )
     }
 
+    /**
+     * Prepares and adds point annotations to the map for quests.
+     * @return The list of created [PointAnnotation] objects.
+     */
     private fun prepareAnnotationMarker(): List<PointAnnotation> {
         val pointAnnotationOptionsList = getPointAnnotationOptionsList(filteredQuestList)
         return pointAnnotationOptionsList.map { pointAnnotationOptions ->
@@ -168,6 +237,10 @@ class MapHelper(
         }
     }
 
+    /**
+     * Creates a list of point annotation options for the given quests.
+     * @return The list of created [PointAnnotationOptions] objects.
+     */
     private fun getPointAnnotationOptionsList(questList: List<QuestEntity>):
         List<PointAnnotationOptions> {
         return questList.map { quest ->
@@ -181,6 +254,12 @@ class MapHelper(
         }
     }
 
+    /**
+     * Prepares and adds view annotations to the map for quests.
+     * @param pointAnnotationList The list of point annotations.
+     * @param questList The list of quests.
+     * @return The list of created [View] objects.
+     */
     private fun prepareViewAnnotation(
         pointAnnotationList: List<PointAnnotation>,
         questList: List<QuestEntity>
@@ -211,6 +290,12 @@ class MapHelper(
         return emptyList()
     }
 
+    /**
+     * Sets up the data binding for the quest view annotation.
+     * @param quest The quest entity.
+     * @param viewAnnotation The view annotation.
+     * @param pointAnnotation The corresponding point annotation.
+     */
     @SuppressLint("DiscouragedApi")
     private fun questViewBinding(
         quest: QuestEntity,
@@ -218,9 +303,6 @@ class MapHelper(
         pointAnnotation: PointAnnotation
     ) {
         val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
-        val imageName = quest.imagePath ?: ""
-        val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
-        binding.dialogAcceptQuestImage.setImageResource(resourceId)
         binding.dialogAcceptQuestName.text = quest.name
         val json = JsonHelper(context, quest.dialogPath)
         val npcName = json.readNpcNameFromJsonFile()
@@ -230,17 +312,20 @@ class MapHelper(
         )
         binding.dialogAcceptQuestQuestDetails.text = context.getString(
             R.string.quest_details,
-            quest.latitude,
-            quest.longitude,
             quest.description
         )
-
         binding.dialogAcceptQuestAcceptButton.text = context.getString(R.string.quest_accept)
         binding.dialogAcceptQuestDeclineButton.text = context.getString(R.string.quest_decline)
 
         configureViewAnnotationButtons(viewAnnotation, quest.questID, pointAnnotation)
     }
 
+    /**
+     * Configures the buttons in the view annotation.
+     * @param viewAnnotation The view annotation.
+     * @param questID The ID of the quest.
+     * @param pointAnnotation The corresponding point annotation.
+     */
     private fun configureViewAnnotationButtons(
         viewAnnotation: View,
         questID: Int,
@@ -271,31 +356,49 @@ class MapHelper(
         }
     }
 
+    /**
+     * Updates the view annotation and corresponding point annotation after accepting a quest.
+     * @param viewAnnotation The view annotation.
+     * @param pointAnnotation The corresponding point annotation.
+     */
     private fun updateViewAndAnnotation(
         viewAnnotation: View,
         pointAnnotation: PointAnnotation
     ) {
         viewAnnotationManager.removeViewAnnotation(viewAnnotation)
-        pointAnnotationManager.delete(pointAnnotation)
-        Log.d(TAG, "$pointAnnotation got deleted")
         pointAnnotation.iconImageBitmap = blankImg
         pointAnnotationManager.update(pointAnnotation)
+        pointAnnotationManager.delete(pointAnnotation)
+        Log.d(TAG, "$pointAnnotation got deleted")
         Log.d(TAG, Thread.currentThread().name)
     }
 
+    /**
+     * Stops the Observer.
+     */
     fun stopObservingLocationMarkers() {
         locationMarkers.removeObservers(viewLifecycleOwner)
         Log.d(TAG, "locationMarkers are observed: ${locationMarkers.hasActiveObservers()}")
     }
 
+    /**
+     * Toggles visibility from GONE to VISIBLE and vice versa.
+     */
     private fun View.toggleViewVisibility() {
         visibility = if (visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
     companion object {
+        /**
+         * A static Map of location Markers to add.
+         */
         var locationMarkers = MutableLiveData<HashMap<String, Location>>().apply {
             postValue(HashMap()) // Initialize with an empty HashMap
         }
+
+        /**
+         * A static Map of the location markers from the previous map.
+         */
         var previousMap: Map<String, Location> = mapOf()
 
         private const val TAG = "MapHelper"

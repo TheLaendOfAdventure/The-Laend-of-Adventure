@@ -24,4 +24,23 @@ data class BadgeGoalEntity(
     @PrimaryKey(autoGenerate = true) val badgeGoalID: Int = 0,
     @ColumnInfo(index = true) val badgeID: Int,
     @ColumnInfo(index = true) val actionID: Int
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as BadgeGoalEntity
+
+        if (badgeID != other.badgeID) return false
+        if (actionID != other.actionID) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = badgeID
+        result = 31 * result + actionID
+        return result
+    }
+}
+

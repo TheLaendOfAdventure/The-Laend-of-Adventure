@@ -39,7 +39,7 @@ class QuestDaoTest {
     companion object {
         private val QUEST = QuestEntity(
             name = "Test quest",
-            imagePath = "path/to/image.jpg",
+            imagePath = "path/to/image",
             dialogPath = "path/to/dialog",
             description = "Test quest",
             targetGoalNumber = 10,
@@ -85,6 +85,24 @@ class QuestDaoTest {
         assertEquals(quest.name, insertedQuest.name)
         assertEquals(quest.targetGoalNumber, insertedQuest.targetGoalNumber)
         assertEquals(quest.description, insertedQuest.description)
+    }
+
+    @Test
+    fun testAddQuestGoal() = runBlocking {
+        val userID = addUser()
+        val questID = addQuest()
+        val actionID = addAction()
+        questDao.assignQuestToUser(userID, questID)
+
+        val goals = questDao.getUncompletedGoalsForQuestByUserID(userID, questID).first()
+        assertTrue(goals.isEmpty())
+        assertTrue(goals.all { it.actionID != actionID })
+
+        addQuestGoal(questID, actionID, 1)
+
+        val updatedGoals = questDao.getUncompletedGoalsForQuestByUserID(userID, questID).first()
+        assertTrue(updatedGoals.isNotEmpty())
+        assertTrue(updatedGoals.any { it.actionID == actionID })
     }
 
     @Test
@@ -316,6 +334,8 @@ class QuestDaoTest {
         assertTrue(quests.all { it != questID })
 
         addBadgeGoal(badgeID, actionID)
+        badgeDao.assignAllBadgesToUser(userID)
+
         val updatedQuests = questDao.getQuestForBadgeByUserID(userID, badgeID).first()
         assertTrue(updatedQuests.isNotEmpty())
         assertTrue(updatedQuests.any { it == questID })
@@ -323,15 +343,23 @@ class QuestDaoTest {
 
     @Test
     fun testGetAllActionDescriptionsByQuestID() = runBlocking {
-        val questID = 1
+        val questID = addQuest()
+        val actionID = addAction()
+
         val actionDescriptions = questDao.getAllActionDescriptionsByQuestID(questID).first()
-        assertNotNull(actionDescriptions)
-        // Weitere Assertions entsprechend den erwarteten Daten
+        assertTrue(actionDescriptions.isEmpty())
+        assertTrue(actionDescriptions.all { it != "Test Description" })
+
+        addQuestGoal(questID, actionID, 1)
+        val updatedActionDescriptions = questDao.getAllActionDescriptionsByQuestID(questID).first()
+        assertTrue(updatedActionDescriptions.isNotEmpty())
+        assertTrue(updatedActionDescriptions.any { it == "Test Description" })
     }
 
     @Test
     fun testGetQuestImageByQuestID() = runBlocking {
-        val questID = 1
+        val questID = addQuest()
+
         val imagePath = questDao.getQuestImageByQuestID(questID)
         assertNotNull(imagePath)
         assertEquals("path/to/image", imagePath)
@@ -339,47 +367,62 @@ class QuestDaoTest {
 
     @Test
     fun testGetNameByQuestByGoal() = runBlocking {
-        val questID = 1
+        val questID = addQuest()
+        val actionID = addAction()
         val goalNumber = 1
+        addQuestGoal(questID, actionID, goalNumber)
+
         val name = questDao.getNameByQuestByGoal(questID, goalNumber)
         assertNotNull(name)
-        assertEquals("Action Name", name)
+        assertEquals("Test Action", name)
     }
 
     @Test
     fun testGetLocationByQuestByGoal() = runBlocking {
-        val questID = 1
+        val questID = addQuest()
+        val actionID = addAction()
+        val prepLocation = addLocation(actionID)
         val goalNumber = 1
+
         val location = questDao.getLocationByQuestByGoal(questID, goalNumber)
-        assertNotNull(location)
-        // Weitere Assertions entsprechend den erwarteten Daten
+        assertNull(location)
+        assertNotEquals(prepLocation, location)
+
+        addQuestGoal(questID, actionID, 1)
+        val updatedLocation = questDao.getLocationByQuestByGoal(questID, goalNumber)
+        assertTrue(
+            prepLocation.latitude == updatedLocation.latitude &&
+                prepLocation.longitude == updatedLocation.longitude
+        )
     }
 
     @Test
     fun testGetOnlyLocationForAcceptedQuestsByUserID() = runBlocking {
-        val userID = 1
+        val userID = addUser()
+        val questID = addQuest()
+        val actionID = addAction()
+        val location = addLocation(actionID)
+        addQuestGoal(questID, actionID, 1)
+
         val locations = questDao.getOnlyLocationForAcceptedQuestsByUserID(userID)
-        assertNotNull(locations)
-        // Weitere Assertions entsprechend den erwarteten Daten
+        assertTrue(locations.isEmpty())
+        assertTrue(
+            locations.all { it.latitude != location.latitude && it.longitude != location.longitude }
+        )
+
+        questDao.assignQuestToUser(userID, questID)
+        questDao.updateQuestProgressByUserID(userID, questID, 1)
+
+        val updatedLocations = questDao.getOnlyLocationForAcceptedQuestsByUserID(userID)
+        assertTrue(updatedLocations.isNotEmpty())
+        assertTrue(
+            updatedLocations.any {
+                it.latitude == location.latitude && it.longitude == location.longitude
+            }
+        )
     }
 
     // Negativtests
-    @Test
-    fun testAddQuest_Negative() = runBlocking {
-        val quest = QuestEntity(
-            name = "Meine Quest",
-            imagePath = "path/zum/bild.jpg",
-            dialogPath = "path/zum/dialog.txt",
-            description = "Beschreibung der Quest",
-            targetGoalNumber = 10,
-            longitude = 123.456,
-            latitude = 78.9,
-            level = 5
-        )
-        val insertedId = questDao.addQuest(quest)
-        assertEquals(-1, insertedId)
-    }
-
     @Test
     fun testGetDialogPathByQuestID_Negative() = runBlocking {
         val questID = -1

@@ -83,7 +83,34 @@ class BadgeDaoTest {
     }
 
     @Test
-    fun testGetBadgeByBadgeGoalID_returnBadgeGoalEntity() = runBlocking {
+    fun testAddStatTracking() = runBlocking {
+        val actionID = addAction()
+        val statTrackingID = addStatTracking(actionID)
+
+        assertNotEquals(-1, statTrackingID)
+
+        val loadedStatTracking = badgeDao.getStatTrackingByID(statTrackingID)
+        assertNotNull(loadedStatTracking)
+        assertEquals(actionID, loadedStatTracking?.actionID)
+        assertEquals(3, loadedStatTracking?.goal)
+        assertEquals("wrongAnswerCount", loadedStatTracking?.goalUnit)
+    }
+
+    @Test
+    fun testGetStatTrackingByID() = runBlocking {
+        val actionID = addAction()
+        val statTrackingID = addStatTracking(actionID)
+
+        val loadedStatTracking = badgeDao.getStatTrackingByID(statTrackingID)
+
+        assertNotNull(loadedStatTracking)
+        assertEquals(actionID, loadedStatTracking?.actionID)
+        assertEquals(3, loadedStatTracking?.goal)
+        assertEquals("wrongAnswerCount", loadedStatTracking?.goalUnit)
+    }
+
+    @Test
+    fun testGetBadgeByBadgeGoalID() = runBlocking {
         val insertedID = addBadge()
         val insertBadgeGoalID = addBadgeGoal(insertedID)
         assertNotEquals(-1, insertBadgeGoalID)
@@ -92,7 +119,7 @@ class BadgeDaoTest {
     }
 
     @Test
-    fun testGetCompletedBadgesDetailsByUserID_returnsBadgeDetailsList() = runBlocking {
+    fun testGetBadgesDetailsByUserID() = runBlocking {
         val userID = addUser()
         val badgeDetailsListEmpty = badgeDao.getBadgesDetailsByUserID(userID).first()
         assertEquals(0, badgeDetailsListEmpty.size)
@@ -102,26 +129,32 @@ class BadgeDaoTest {
         badgeDao.assignAllBadgesToUser(userID)
         badgeDao.completeBadgeGoalByUserID(userID, insertBadgeID, insertBadgeGoalID)
 
-        val badgeDetailsList = badgeDao.getCompletedGoalsForBadgeByUserID(userID, insertBadgeID).first()
+        val badgeDetailsList =
+            badgeDao.getCompletedGoalsForBadgeByUserID(userID, insertBadgeID).first()
         assertEquals(1, badgeDetailsList.size)
     }
 
     @Test
-    fun testGetBadgeByBadgeID_validBadgeID_returnsBadgeEntity() = runBlocking {
+    fun testGetBadgeByBadgeID() = runBlocking {
         val badgeID = addBadge()
         val badgeEntity = badgeDao.getBadgeByBadgeID(badgeID)
         assertEquals(badgeID, badgeEntity?.badgeID)
     }
 
     @Test
-    fun testGetBadgeByBadgeID_invalidBadgeID_returnsNull() = runBlocking {
+    fun testGetBadgeByBadgeID_invalidBadgeID() = runBlocking {
         val badgeID = -1
         val badgeEntity = badgeDao.getBadgeByBadgeID(badgeID)
         assertNull(badgeEntity)
     }
 
     @Test
-    fun testGetCompletedGoalsForBadgeByUserID_validUserIDAndBadgeID_returnsActionEntityList() =
+    fun testGetProgressForBadgeByUserID() = runBlocking {
+        assertTrue(false)
+    }
+
+    @Test
+    fun testGetCompletedGoalsForBadgeByUserID() =
         runBlocking {
             val userID = addUser()
             val insertBadgeID = addBadge()
@@ -140,7 +173,7 @@ class BadgeDaoTest {
         }
 
     @Test
-    fun testGetUncompletedGoalsForBadgeByUserID_validUserIDAndBadgeID_returnsActionEntityList() =
+    fun testGetUncompletedGoalsForBadgeByUserID() =
         runBlocking {
             val userID = addUser()
             val insertBadgeID = addBadge()
@@ -154,29 +187,34 @@ class BadgeDaoTest {
                 badgeDao.getUncompletedGoalsForBadgeByUserID(userID, insertBadgeID).first()
             assertEquals(1, actionEntityList.size)
             assertEquals(actionEntity, actionEntityList[0])
-
         }
 
     @Test
-    fun testGetUserBadgesByUserIDAndQuestID_validUserIDAndQuestID_returnsBadgeDetailsList() =
+    fun testGetUserBadgesByUserIDAndQuestID() =
         runBlocking {
             val userID = addUser()
             val questID = addQuest()
             val insertBadgeID = addBadge()
             val insertBadgeGoalID = addBadgeGoal(insertBadgeID)
             badgeDao.assignAllBadgesToUser(userID)
-            val badgeDetailsListEmpty = badgeDao.getUserBadgesByUserIDAndQuestID(userID, questID).first()
+            val badgeDetailsListEmpty =
+                badgeDao.getUserBadgesByUserIDAndQuestID(userID, questID).first()
             assertEquals(0, badgeDetailsListEmpty.size)
 
             val insertBadgeGoal = badgeDao.getBadgeByBadgeGoalID(insertBadgeGoalID)
             addAchievement(insertBadgeGoal.actionID, questID)
             val badgeDetailsList = badgeDao.getUserBadgesByUserIDAndQuestID(userID, questID).first()
             assertEquals(1, badgeDetailsList.size)
-            assertEquals(insertBadgeID,badgeDetailsList[0].badgeID)
+            assertEquals(insertBadgeID, badgeDetailsList[0].badgeID)
         }
 
     @Test
-    fun testAssignAllBadgesToUser_assignsBadgeToUser() = runBlocking {
+    fun testCompleteBadgeGoalByUserID() = runBlocking {
+        assertTrue(false)
+    }
+
+    @Test
+    fun testAssignAllBadgesToUser() = runBlocking {
         val userID = addUser()
         val badgeID = addBadge()
         addBadgeGoal(badgeID)
@@ -190,8 +228,7 @@ class BadgeDaoTest {
     }
 
     @Test
-    fun testGetBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID_returnsBadgeGoalEntity() =
-        // ktlint-disable max-line-length
+    fun testGetBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID() =
         runBlocking {
             val userID = addUser()
             val insertBadgeID = addBadge()
@@ -199,7 +236,7 @@ class BadgeDaoTest {
             val insertBadgeGoalID = addBadgeGoal(insertBadgeID)
             assertNotEquals(-1, insertBadgeGoalID)
             val insertBadgeGoal = badgeDao.getBadgeByBadgeGoalID(insertBadgeGoalID)
-            addStateTracking(insertBadgeGoal.actionID)
+            addStatTracking(insertBadgeGoal.actionID)
             badgeDao.assignAllBadgesToUser(userID)
             val badgeGoalEntityNull =
                 badgeDao.getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID)
@@ -213,7 +250,7 @@ class BadgeDaoTest {
         }
 
     @Test
-    fun testGetBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID_invalidUserID_returnsNull() =
+    fun testGetBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID_invalidUserID() =
         runBlocking {
             val userID = -1
             val badgeGoalEntity =
@@ -222,7 +259,7 @@ class BadgeDaoTest {
         }
 
     @Test
-    fun testGetCompletedGoalsForBadgeByUserID_invalidUserIDAndBadgeID_returnsEmptyList() =
+    fun testGetCompletedGoalsForBadgeByUserID_invalidUserIDAndBadgeID() =
         runBlocking {
             val userID = -1
             val badgeID = -1
@@ -232,7 +269,7 @@ class BadgeDaoTest {
         }
 
     @Test
-    fun testGetUncompletedGoalsForBadgeByUserID_invalidUserIDAndBadgeID_returnsEmptyList() =
+    fun testGetUncompletedGoalsForBadgeByUserID_invalidUserIDAndBadgeID() =
         runBlocking {
             val userID = -1
             val badgeID = -1
@@ -261,7 +298,7 @@ class BadgeDaoTest {
             actionID = addAction()
         )
 
-       return badgeDao.addBadgeGoal(badgeGoal).toInt()
+        return badgeDao.addBadgeGoal(badgeGoal).toInt()
     }
 
     private suspend fun addAction(): Int {
@@ -288,18 +325,17 @@ class BadgeDaoTest {
         return questDao.addQuest(quest).toInt()
     }
 
-    private suspend fun addStateTracking(actionID: Int): Int{
-        val stateTracking = StatTrackingEntity(
+    private suspend fun addStatTracking(actionID: Int): Int {
+        val statTracking = StatTrackingEntity(
             actionID = actionID,
             goal = 3,
             goalUnit = "wrongAnswerCount"
         )
-        return badgeDao.addStateTracking(stateTracking).toInt()
+        return badgeDao.addStatTracking(statTracking).toInt()
     }
 
-    private suspend fun addAchievement(actionID:Int, questID:Int):Int{
-        val insertAchievemenID = actionDao.addAchievement(AchievementEntity(actionID,questID)).toInt()
-        return insertAchievemenID
+    private suspend fun addAchievement(actionID: Int, questID: Int): Int {
+        return actionDao.addAchievement(AchievementEntity(actionID, questID)).toInt()
     }
 
     private fun isBadgeIdInList(badgeList: List<BadgeDetails>, badgeID: Int): Boolean {

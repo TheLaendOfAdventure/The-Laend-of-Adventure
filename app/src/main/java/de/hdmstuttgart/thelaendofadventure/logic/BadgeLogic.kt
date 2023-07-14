@@ -49,7 +49,8 @@ class BadgeLogic(private val context: Context) {
     private suspend fun notifyBadge(badgeID: Int) {
         val badge = badgeRepository.getBadgeByBadgeID(badgeID)
         val imageResID = getImageResourceID(badge.imagePath)
-        showSnackbar(context.getString(R.string.badge_completed_message, badge.name), imageResID)
+        val type = "badge"
+        showSnackbar(context.getString(R.string.badge_completed_message, badge.name), imageResID, type)
     }
 
     @SuppressLint("DiscouragedApi")
@@ -58,10 +59,10 @@ class BadgeLogic(private val context: Context) {
         return context.resources.getIdentifier(path, "drawable", context.packageName)
     }
 
-    private suspend fun showSnackbar(message: String, imageResID: Int) {
+    private suspend fun showSnackbar(message: String, imageResID: Int, type: String) {
         withContext(Dispatchers.Main) {
             val snackbarHelper = SnackbarHelper.getSnackbarInstance()
-            snackbarHelper.enqueueSnackbar(context, message, imageResID)
+            snackbarHelper.enqueueSnackbar(context, message, imageResID, type)
         }
     }
 }

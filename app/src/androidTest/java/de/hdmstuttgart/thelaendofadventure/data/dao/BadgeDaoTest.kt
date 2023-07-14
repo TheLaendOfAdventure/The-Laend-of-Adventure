@@ -150,7 +150,19 @@ class BadgeDaoTest {
 
     @Test
     fun testGetProgressForBadgeByUserID() = runBlocking {
-        assertTrue(false)
+        val userID = addUser()
+        val badgeID = addBadge()
+        addBadgeGoal(badgeID)
+        badgeDao.assignAllBadgesToUser(userID)
+
+        val progress = badgeDao.getProgressForBadgeByUserID(userID, badgeID).first()
+        assertNotNull(progress)
+        assertEquals(0, progress.currentGoalNumber)
+        badgeDao.completeBadgeGoalByUserID(userID, badgeID, 1)
+
+        val updatedProgress = badgeDao.getProgressForBadgeByUserID(userID, badgeID).first()
+        assertNotNull(updatedProgress)
+        assertEquals(1, updatedProgress.currentGoalNumber)
     }
 
     @Test
@@ -210,7 +222,19 @@ class BadgeDaoTest {
 
     @Test
     fun testCompleteBadgeGoalByUserID() = runBlocking {
-        assertTrue(false)
+        val userID = addUser()
+        val badgeID = addBadge()
+        addBadgeGoal(badgeID)
+        badgeDao.assignAllBadgesToUser(userID)
+
+        val progress = badgeDao.getProgressForBadgeByUserID(userID, badgeID).first()
+        assertNotNull(progress)
+        assertEquals(0, progress.currentGoalNumber)
+        badgeDao.completeBadgeGoalByUserID(userID, badgeID, 1)
+
+        val updatedProgress = badgeDao.getProgressForBadgeByUserID(userID, badgeID).first()
+        assertNotNull(updatedProgress)
+        assertEquals(1, updatedProgress.currentGoalNumber)
     }
 
     @Test

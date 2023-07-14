@@ -121,12 +121,12 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
                 .load(user.imagePath)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(binding.mainPageProfileButton)
+                .into(binding.acceptPopupProfileButton)
         }
     }
 
     private fun setUpProfileButton() {
-        binding.mainPageProfileButton.setOnClickListener {
+        binding.acceptPopupProfileButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_main_to_user_page
             )

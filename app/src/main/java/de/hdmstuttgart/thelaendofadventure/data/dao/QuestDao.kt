@@ -24,12 +24,6 @@ interface QuestDao {
     suspend fun addQuestGoal(questGoal: QuestGoalEntity): Long
 
     @Query(
-        "SELECT * FROM questGoal " +
-                "WHERE questGoal.questGoalID = :questGoalID"
-    )
-    suspend fun getQuestGoalByID(questGoalID: Int): QuestGoalEntity
-
-    @Query(
         "SELECT dialogPath FROM quest " +
             "WHERE quest.questID = :questID"
     )

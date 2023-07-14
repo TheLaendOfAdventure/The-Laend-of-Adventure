@@ -2,12 +2,15 @@ package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.entity.AchievementEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.LocationEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestGoalEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleAnswersEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,10 +19,16 @@ interface ActionDao {
     @Insert
     suspend fun addAction(action: ActionEntity): Long
 
-    @Insert
-    suspend fun addLocation(location: LocationEntity): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addLocation(location: LocationEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addRiddle(riddle: RiddleEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addRiddleAnswer(riddleAnswer: RiddleAnswersEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addAchievement(achievementEntity: AchievementEntity): Long
 
     @Insert

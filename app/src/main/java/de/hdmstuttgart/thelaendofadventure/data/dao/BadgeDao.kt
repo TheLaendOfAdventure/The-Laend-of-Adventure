@@ -25,10 +25,9 @@ interface BadgeDao {
 
     @Query(
         "SELECT * FROM badgeGoal " +
-                "WHERE badgeGoal.badgeGoalID = :badgeGoalID"
+            "WHERE badgeGoal.badgeGoalID = :badgeGoalID"
     )
     fun getBadgeByBadgeGoalID(badgeGoalID: Int): BadgeGoalEntity
-
 
     @Query(
         "SELECT badge.*, COUNT(badgeGoal.badgeGoalID) AS targetGoalNumber, " +

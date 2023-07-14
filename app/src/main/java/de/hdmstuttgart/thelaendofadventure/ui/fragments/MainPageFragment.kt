@@ -117,16 +117,17 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private fun observeUser() {
         viewModel.user.observe(viewLifecycleOwner) { user ->
             binding.mainPageProfileLevelDisplay.text = user.level.toString()
+            binding.mainPageProfileButtonCircularBar.progress = user.exp
             Glide.with(requireContext())
                 .load(user.imagePath)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(binding.acceptPopupProfileButton)
+                .into(binding.mainPageProfileButton)
         }
     }
 
     private fun setUpProfileButton() {
-        binding.acceptPopupProfileButton.setOnClickListener {
+        binding.mainPageProfileButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_main_to_user_page
             )

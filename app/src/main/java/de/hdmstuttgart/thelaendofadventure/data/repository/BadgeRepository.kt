@@ -1,7 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.data.repository
 
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
@@ -20,15 +19,6 @@ interface BadgeRepository {
      * @return a [Flow] emitting a list of [BadgeDetails] objects representing the badges
      */
     fun getBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
-
-    /**
-     * Gets the progress of a specific badge for a specific user.
-     *
-     * @param userID the ID of the user to get the badge progress for
-     * @param badgeID the ID of the badge to get the progress for
-     * @return a [Flow] emitting a [Progress] object representing the progress of the badge
-     */
-    fun getProgressForBadgeByUserID(userID: Int, badgeID: Int): Flow<Progress>
 
     /**
      * Gets all the completed goals for a specific badge and user.
@@ -79,7 +69,7 @@ interface BadgeRepository {
      * @param badgeID The ID of the badge to retrieve.
      * @return The badge entity with the specified badge ID, or null if no badge is found.
      */
-    suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity
+    suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity?
 
     /**
      * Get a [BadgeGoalEntity] for a specific user when the number of wrong riddle answers are reached.

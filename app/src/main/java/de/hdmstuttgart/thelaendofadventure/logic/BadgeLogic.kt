@@ -48,7 +48,7 @@ class BadgeLogic(private val context: Context) {
 
     private suspend fun notifyBadge(badgeID: Int) {
         val badge = badgeRepository.getBadgeByBadgeID(badgeID)
-        val imageResID = getImageResourceID(badge.imagePath)
+        val imageResID = getImageResourceID(badge!!.imagePath)
         showSnackbar(context.getString(R.string.badge_completed_message, badge.name), imageResID)
     }
 

@@ -21,7 +21,10 @@ interface BadgeDao {
     suspend fun addBadgeGoal(badgeGoalEntity: BadgeGoalEntity): Long
 
     @Insert
-    suspend fun addStateTracking(stateTracking: StatTrackingEntity): Long
+    suspend fun addStatTracking(statTracking: StatTrackingEntity): Long
+
+    @Query("SELECT * FROM statTracking WHERE actionID = :actionID")
+    suspend fun getStatTrackingByID(actionID: Int): StatTrackingEntity?
 
     @Query(
         "SELECT * FROM badgeGoal " +

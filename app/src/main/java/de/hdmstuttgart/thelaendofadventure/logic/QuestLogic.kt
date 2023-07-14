@@ -80,22 +80,26 @@ class QuestLogic(private val context: Context) {
     private suspend fun notifyGoal(questID: Int, goalNumber: Int) {
         val name: String
         val message: String
+        val imageResID: Int
+        val type = "quest"
         if (goalNumber == 0) {
             val quest = questRepository.getQuestByQuestID(questID)
             name = quest.name
+            imageResID = R.drawable.quest_accept_scroll
             message = context.getString(R.string.quest_accept_message, name)
         } else {
+            imageResID = R.drawable.goal_completed_scroll
             name = questRepository.getNameByQuestByGoal(questID, goalNumber)
             message = context.getString(R.string.goal_completed_message, name)
         }
-        val imageResID = getImageResourceID("")
-        showSnackbar(message, imageResID)
+        showSnackbar(message, imageResID, type)
     }
 
     private suspend fun notifyQuest(questID: Int) {
         val quest = questRepository.getQuestByQuestID(questID)
         val imageResID = getImageResourceID(quest.imagePath)
-        showSnackbar(context.getString(R.string.quest_completed_message, quest.name), imageResID)
+        val type = "quest_complete"
+        showSnackbar(context.getString(R.string.quest_completed_message, quest.name), imageResID, type)
     }
 
     @SuppressLint("DiscouragedApi")
@@ -104,10 +108,10 @@ class QuestLogic(private val context: Context) {
         return context.resources.getIdentifier(path, "drawable", context.packageName)
     }
 
-    private suspend fun showSnackbar(message: String, imageResID: Int) {
+    private suspend fun showSnackbar(message: String, imageResID: Int, type: String) {
         withContext(Dispatchers.Main) {
             val snackbarHelper = SnackbarHelper.getSnackbarInstance()
-            snackbarHelper.enqueueSnackbar(context, message, imageResID)
+            snackbarHelper.enqueueSnackbar(context, message, imageResID, type)
         }
     }
 

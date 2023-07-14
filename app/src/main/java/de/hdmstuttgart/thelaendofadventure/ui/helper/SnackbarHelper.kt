@@ -21,7 +21,12 @@ class SnackbarHelper private constructor() {
     private var snackbar: Snackbar? = null
     private val snackbarQueue: Queue<SnackbarData> = LinkedList()
 
-    data class SnackbarData(val context: Context, val message: String, val iconResource: Int, val type: String)
+    data class SnackbarData(
+        val context: Context,
+        val message: String,
+        val iconResource: Int,
+        val type: String
+    )
 
     fun enqueueSnackbar(context: Context, message: String, iconResource: Int, type: String) {
         val snackbarData = SnackbarData(context, message, iconResource, type)

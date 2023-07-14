@@ -8,6 +8,7 @@ import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.StatTrackingEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserBadgeEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -19,8 +20,15 @@ interface BadgeDao {
     @Insert
     suspend fun addBadgeGoal(badgeGoalEntity: BadgeGoalEntity): Long
 
-    @Query("DELETE FROM badge")
-    suspend fun deleteAllBadges()
+    @Insert
+    suspend fun addStateTracking(stateTracking: StatTrackingEntity): Long
+
+    @Query(
+        "SELECT * FROM badgeGoal " +
+                "WHERE badgeGoal.badgeGoalID = :badgeGoalID"
+    )
+    fun getBadgeByBadgeGoalID(badgeGoalID: Int): BadgeGoalEntity
+
 
     @Query(
         "SELECT badge.*, COUNT(badgeGoal.badgeGoalID) AS targetGoalNumber, " +

@@ -6,6 +6,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "io.gitlab.arturbosch.detekt" version "1.22.0"
     id 'com.google.devtools.ksp'version '1.8.0-1.0.8'
+    id 'org.jetbrains.dokka' version "1.8.20"
 }
 
 detekt {
@@ -77,8 +78,6 @@ dependencies {
 
     // Mapbox library
     implementation 'com.mapbox.maps:android:10.12.1'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 
     //In App Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'

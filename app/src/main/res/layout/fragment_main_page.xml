@@ -40,8 +40,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_page_profile_button"
-            android:layout_width="108dp"
-            android:layout_height="108dp"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:contentDescription="@string/profileButton"
             android:minWidth="48dp"
             android:minHeight="48dp"

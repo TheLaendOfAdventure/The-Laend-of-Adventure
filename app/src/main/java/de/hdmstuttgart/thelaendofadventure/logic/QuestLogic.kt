@@ -99,13 +99,16 @@ class QuestLogic(private val context: Context) {
         val quest = questRepository.getQuestByQuestID(questID)
         val imageResID = getImageResourceID(quest.imagePath)
         val type = "quest_complete"
-        showSnackbar(context.getString(R.string.quest_completed_message, quest.name), imageResID, type)
+        showSnackbar(
+            context.getString(R.string.quest_completed_message, quest.name),
+            imageResID,
+            type
+        )
     }
 
     @SuppressLint("DiscouragedApi")
     private fun getImageResourceID(imagePath: String?): Int {
-        val path = imagePath ?: ""
-        return context.resources.getIdentifier(path, "drawable", context.packageName)
+        return context.resources.getIdentifier(imagePath, "drawable", context.packageName)
     }
 
     private suspend fun showSnackbar(message: String, imageResID: Int, type: String) {

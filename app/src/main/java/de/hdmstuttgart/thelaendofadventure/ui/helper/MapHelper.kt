@@ -12,11 +12,14 @@ import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxViewAnnotationException
 import com.mapbox.maps.ViewAnnotationAnchor
 import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
+import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import com.mapbox.maps.plugin.compass.compass
+import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.DialogAcceptQuestPopupBinding
@@ -36,7 +39,7 @@ class MapHelper(
 ) {
     private lateinit var pointAnnotationManager: PointAnnotationManager
     private var iconBitmap: Bitmap =
-        AppCompatResources.getDrawable(context, R.drawable.chat_icon)?.toBitmap()!!
+        AppCompatResources.getDrawable(context, R.drawable.scroll)?.toBitmap()!!
     private val viewAnnotationManager = mapview.viewAnnotationManager
     val userID = SharedPreferencesHelper.getUserID(context)
 
@@ -66,6 +69,21 @@ class MapHelper(
                 true
             }
         }
+        setUpCompassImage()
+        setUpLocationPuck()
+    }
+
+    private fun setUpCompassImage() {
+        mapview.compass.image = AppCompatResources.getDrawable(context, R.drawable.compass)
+    }
+
+    private fun setUpLocationPuck() {
+        mapview.location.locationPuck = LocationPuck2D(
+            topImage = AppCompatResources.getDrawable(
+                context,
+                R.drawable.location_puck
+            )
+        )
     }
 
     private fun prepareAnnotationMarker(

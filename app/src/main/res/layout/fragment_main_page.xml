@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_page_background"
     tools:context="de.hdmstuttgart.thelaendofadventure.ui.fragments.MainPageFragment">
 
     <!--
@@ -15,6 +16,10 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="58dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,12 +29,14 @@
         app:mapbox_cameraZoom="17.0" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_page_profile_button_container"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="RtlHardcoded">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/mainPage_profileButton"
@@ -50,11 +57,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/frame"
+            android:contentDescription="@string/image_frame"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/image_frame" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/mainPage_profileLevelDisplay"
@@ -78,12 +85,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/mainPage_resetPlayerLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/resetplayerlocation"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:id="@+id/main_page_reset_player_location"
+        android:layout_width="61.8dp"
+        android:layout_height="61.8dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/reset_button"
+        app:layout_constraintBottom_toTopOf="@+id/main_page_profile_button_container"
+        app:layout_constraintEnd_toEndOf="@+id/main_page_profile_button_container"
+        app:layout_constraintStart_toStartOf="@+id/main_page_profile_button_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

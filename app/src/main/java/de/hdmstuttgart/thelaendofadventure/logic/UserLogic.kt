@@ -55,7 +55,7 @@ class UserLogic(private val context: Context) {
     }
 
     private suspend fun notifyLevel(level: Int) {
-        val imageResID = R.drawable.chat_icon // @todo implement new Icon
+        val imageResID = R.drawable.scroll // @todo implement new Icon
         showSnackbar(context.getString(R.string.level_up_message, level), imageResID)
     }
 

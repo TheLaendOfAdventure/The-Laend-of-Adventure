@@ -43,4 +43,3 @@ data class BadgeGoalEntity(
         return result
     }
 }
-

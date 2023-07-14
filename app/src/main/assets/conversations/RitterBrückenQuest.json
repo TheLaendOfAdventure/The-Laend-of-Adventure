@@ -1,5 +1,11 @@
 {
 	"NPC" : "Ritter",
+	"image" : [
+		{
+			"speaker": "Ritter",
+			"path"    : "knight"
+		}
+	],
 	"dialogue": [
 		{
 			"speaker": "Player",

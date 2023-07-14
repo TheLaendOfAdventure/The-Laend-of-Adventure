@@ -60,12 +60,19 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         binding = FragmentMainPageBinding.inflate(inflater, container, false)
         mapView = binding.mapView
         observeQuest()
+        viewModel.getLocation()
         return binding.root
     }
 
     private fun observeQuest() {
         val questObserver = Observer<QuestWithUserLevel> { questList ->
-            mapHelper = MapHelper(mapView, questList.quest, requireContext(), questList.userLevel)
+            mapHelper = MapHelper(
+                mapView,
+                questList.quest,
+                requireContext(),
+                questList.userLevel,
+                viewLifecycleOwner
+            )
             mapHelper.setUpMap()
         }
         mapView.gestures.addOnMoveListener(onMoveListener)
@@ -80,6 +87,15 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
             setUpProfileButton()
             setupLocationResetButton()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::mapHelper.isInitialized) {
+            mapHelper.stopObservingLocationMarkers()
+        }
+        MapHelper.previousMap = mapOf()
+        MapHelper.locationMarkers.postValue(hashMapOf())
     }
 
     private fun isUserLoggedIn(): Boolean {
@@ -105,15 +121,20 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
                 .load(user.imagePath)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(binding.mainPageProfileButton)
+                .into(binding.acceptPopupProfileButton)
         }
     }
 
     private fun setUpProfileButton() {
-        binding.mainPageProfileButton.setOnClickListener {
+        binding.acceptPopupProfileButton.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(
                 R.id.navigate_from_main_to_user_page
             )
+            if (::mapHelper.isInitialized) {
+                mapHelper.stopObservingLocationMarkers()
+            }
+            MapHelper.previousMap = mapOf()
+            MapHelper.locationMarkers.postValue(hashMapOf())
         }
     }
 

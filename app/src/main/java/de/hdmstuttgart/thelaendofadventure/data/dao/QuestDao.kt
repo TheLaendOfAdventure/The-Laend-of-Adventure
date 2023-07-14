@@ -2,10 +2,12 @@ package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.*
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
+import de.hdmstuttgart.thelaendofadventure.data.entity.*
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import kotlinx.coroutines.flow.Flow
@@ -144,4 +146,24 @@ interface QuestDao {
             "AND goalNumber = :goalNumber"
     )
     suspend fun getNameByQuestByGoal(questID: Int, goalNumber: Int): String
+
+    @Query(
+        "SELECT location.* FROM location " +
+            "JOIN action ON action.actionID = location.actionID " +
+            "JOIN questGoal ON questGoal.actionID = action.actionID " +
+            "WHERE questGoal.goalNumber = :goalNumber AND questGoal.questID = :questID"
+    )
+    suspend fun getLocationByQuestByGoal(questID: Int, goalNumber: Int): Location
+
+    @Query(
+        "SELECT location.longitude, location.latitude " +
+            "FROM quest " +
+            "JOIN user_quest ON quest.questID = user_quest.questID " +
+            "JOIN questGoal ON questGoal.questID = quest.questID " +
+            "JOIN location ON questGoal.actionID = location.actionID " +
+            "WHERE user_quest.userID = :userID " +
+            "AND user_quest.currentGoalNumber < quest.targetGoalNumber " +
+            "AND user_quest.currentGoalNumber = questGoal.goalNumber"
+    )
+    suspend fun getOnlyLocationForAcceptedQuestsByUserID(userID: Int): List<Location>
 }

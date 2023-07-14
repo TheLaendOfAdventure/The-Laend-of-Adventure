@@ -1,5 +1,11 @@
 {
   "NPC": "Der königliche Jäger",
+  "image": [
+    {
+      "speaker": "Der königliche Jäger",
+      "path": "hunter"
+    }
+  ],
   "dialogue": [
     {
       "speaker": "Der königliche Jäger",

@@ -7,7 +7,7 @@
     android:background="@drawable/conversation_field_nine">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main_page_profile_button_container"
+        android:id="@+id/accept_popup_profile_button_container"
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="@+id/quest_name_layout"
@@ -16,7 +16,7 @@
         tools:ignore="RtlHardcoded">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/mainPage_profileButton"
+            android:id="@+id/accept_popup_profile_button"
             android:layout_width="88dp"
             android:layout_height="88dp"
             android:contentDescription="@string/profileButton"
@@ -50,7 +50,7 @@
         android:layout_height="119dp"
         android:layout_marginStart="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/main_page_profile_button_container"
+        app:layout_constraintStart_toEndOf="@+id/accept_popup_profile_button_container"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView

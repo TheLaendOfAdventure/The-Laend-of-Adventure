@@ -117,6 +117,7 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
     private fun observeUser() {
         viewModel.user.observe(viewLifecycleOwner) { user ->
             binding.mainPageProfileLevelDisplay.text = user.level.toString()
+            binding.mainPageProfileButtonCircularBar.progress = user.exp
             Glide.with(requireContext())
                 .load(user.imagePath)
                 .skipMemoryCache(true)

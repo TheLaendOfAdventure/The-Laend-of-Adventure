@@ -303,9 +303,6 @@ class MapHelper(
         pointAnnotation: PointAnnotation
     ) {
         val binding = DialogAcceptQuestPopupBinding.bind(viewAnnotation)
-        val imageName = quest.imagePath ?: ""
-        val resourceId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
-        binding.dialogAcceptQuestImage.setImageResource(resourceId)
         binding.dialogAcceptQuestName.text = quest.name
         val json = JsonHelper(context, quest.dialogPath)
         val npcName = json.readNpcNameFromJsonFile()
@@ -315,11 +312,8 @@ class MapHelper(
         )
         binding.dialogAcceptQuestQuestDetails.text = context.getString(
             R.string.quest_details,
-            quest.latitude,
-            quest.longitude,
             quest.description
         )
-
         binding.dialogAcceptQuestAcceptButton.text = context.getString(R.string.quest_accept)
         binding.dialogAcceptQuestDeclineButton.text = context.getString(R.string.quest_decline)
 

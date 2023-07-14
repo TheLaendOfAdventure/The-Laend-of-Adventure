@@ -30,8 +30,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_page_profile_button_container"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,9 +39,9 @@
         tools:ignore="RtlHardcoded">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/mainPage_profileButton"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
+            android:id="@+id/main_page_profile_button"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:contentDescription="@string/profileButton"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -53,10 +53,27 @@
             app:shapeAppearanceOverlay="@style/Circular"
             tools:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/main_page_profile_button_circular_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="-7dp"
+            android:layout_marginTop="-7dp"
+            android:layout_marginEnd="-7dp"
+            android:layout_marginBottom="-7dp"
+            android:max="100"
+            android:progress="50"
+            android:rotation="180"
+            app:indicatorColor="#03AC13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/frame"
+            android:background="@drawable/barframe"
             android:contentDescription="@string/image_frame"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -41,7 +41,11 @@ class BadgeLogic(private val context: Context) {
             userID
         )
         if (badgeGoalEntity != null) {
-            badgeRepository.completeBadgeGoalByUserID(userID, badgeGoalEntity.badgeID, badgeGoalEntity.badgeGoalID)
+            badgeRepository.completeBadgeGoalByUserID(
+                userID,
+                badgeGoalEntity.badgeID,
+                badgeGoalEntity.badgeGoalID
+            )
             notifyBadge(badgeGoalEntity.badgeID)
         }
     }
@@ -50,7 +54,11 @@ class BadgeLogic(private val context: Context) {
         val badge = badgeRepository.getBadgeByBadgeID(badgeID)
         val imageResID = getImageResourceID(badge.imagePath)
         val type = "badge"
-        showSnackbar(context.getString(R.string.badge_completed_message, badge.name), imageResID, type)
+        showSnackbar(
+            context.getString(R.string.badge_completed_message, badge.name),
+            imageResID,
+            type
+        )
     }
 
     @SuppressLint("DiscouragedApi")

@@ -306,6 +306,9 @@ class MapHelper(
         binding.dialogAcceptQuestName.text = quest.name
         val json = JsonHelper(context, quest.dialogPath)
         val npcName = json.readNpcNameFromJsonFile()
+        val imageResID = getImageResourceID(quest.imagePath)
+
+        binding.acceptPopupQuestImage.setImageResource(imageResID)
         binding.dialogAcceptQuestQuestDescription.text = context.getString(
             R.string.npc_name,
             npcName
@@ -318,6 +321,11 @@ class MapHelper(
         binding.dialogAcceptQuestDeclineButton.text = context.getString(R.string.quest_decline)
 
         configureViewAnnotationButtons(viewAnnotation, quest.questID, pointAnnotation)
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private fun getImageResourceID(imagePath: String?): Int {
+        return context.resources.getIdentifier(imagePath, "drawable", context.packageName)
     }
 
     /**

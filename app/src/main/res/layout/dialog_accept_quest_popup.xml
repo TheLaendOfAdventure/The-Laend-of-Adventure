@@ -16,7 +16,7 @@
         tools:ignore="RtlHardcoded">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/accept_popup_profile_button"
+            android:id="@+id/accept_popup_quest_image"
             android:layout_width="88dp"
             android:layout_height="88dp"
             android:contentDescription="@string/profileButton"

@@ -55,7 +55,7 @@ class UserLogic(private val context: Context) {
     }
 
     private suspend fun notifyLevel(level: Int) {
-        val imageResID = R.drawable.compass // @todo implement new Icon
+        val imageResID = R.drawable.compass
         showSnackbar(context.getString(R.string.level_up_message, level), imageResID)
     }
 

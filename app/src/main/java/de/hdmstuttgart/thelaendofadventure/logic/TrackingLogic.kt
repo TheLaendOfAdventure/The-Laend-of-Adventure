@@ -188,22 +188,10 @@ class TrackingLogic(private var context: Context) {
     fun notifyTooFarFromQuest(questID: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val quest = questRepository.getQuestByQuestID(questID)
-            val imageResID = getImageResourceID(quest.imagePath)
+            val imageResID = R.drawable.map
             val text = context.getString(R.string.too_far_away, quest.name)
             showSnackbar(text, imageResID)
         }
-    }
-
-    /**
-     * Get the resource ID for the specified image path.
-     *
-     * @param imagePath The path of the image.
-     * @return The resource ID of the image.
-     */
-    @SuppressLint("DiscouragedApi")
-    private fun getImageResourceID(imagePath: String?): Int {
-        val path = imagePath ?: ""
-        return context.resources.getIdentifier(path, "drawable", context.packageName)
     }
 
     /**
@@ -215,7 +203,8 @@ class TrackingLogic(private var context: Context) {
     private suspend fun showSnackbar(message: String, imageResID: Int) {
         withContext(Dispatchers.Main) {
             val snackbarHelper = SnackbarHelper.getSnackbarInstance()
-            snackbarHelper.enqueueSnackbar(context, message, imageResID)
+            val type = "tracking"
+            snackbarHelper.enqueueSnackbar(context, message, imageResID, type)
         }
     }
 }

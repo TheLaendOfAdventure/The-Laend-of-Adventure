@@ -77,44 +77,41 @@
             tools:ignore="TextContrastCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/buttons_layout"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+    <TextView
+        android:id="@+id/dialog_accept_quest_decline_button"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/button"
+        android:gravity="center"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quest_description_layout"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/dialog_accept_quest_accept_button"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button"
+        android:gravity="center"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quest_description_layout">
-
-        <TextView
-            android:id="@+id/dialog_accept_quest_decline_button"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/button"
-            android:gravity="center"
-            android:textAlignment="center"
-            tools:ignore="TextContrastCheck" />
-
-        <TextView
-            android:id="@+id/dialog_accept_quest_accept_button"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/button"
-            android:gravity="center"
-            android:textAlignment="center"
-            tools:ignore="TextContrastCheck" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/quest_description_layout"
+        tools:ignore="TextContrastCheck" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/quest_description_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/conversation_field_nine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/conversation_field_nine"
         app:layout_constraintTop_toBottomOf="@+id/quest_name_layout">
 
         <TextView

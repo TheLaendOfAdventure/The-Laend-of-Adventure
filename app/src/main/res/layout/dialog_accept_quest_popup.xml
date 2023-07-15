@@ -81,12 +81,12 @@
         android:id="@+id/dialog_accept_quest_decline_button"
         android:layout_width="150dp"
         android:layout_height="60dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="15dp"
         android:background="@drawable/button"
         android:gravity="center"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quest_description_layout"
         tools:ignore="TextContrastCheck" />
 
@@ -94,12 +94,12 @@
         android:id="@+id/dialog_accept_quest_accept_button"
         android:layout_width="150dp"
         android:layout_height="60dp"
-        android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/button"
         android:gravity="center"
         android:textAlignment="center"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quest_description_layout"
         tools:ignore="TextContrastCheck" />
 

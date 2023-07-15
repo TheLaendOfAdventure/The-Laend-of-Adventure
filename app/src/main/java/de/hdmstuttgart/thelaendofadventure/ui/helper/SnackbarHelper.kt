@@ -1,5 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.ui.helper
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ProgressBar
 import com.google.android.material.snackbar.Snackbar
+import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.SnackbarDefaultBinding
 import java.util.LinkedList
 import java.util.Queue
@@ -19,10 +21,15 @@ class SnackbarHelper private constructor() {
     private var snackbar: Snackbar? = null
     private val snackbarQueue: Queue<SnackbarData> = LinkedList()
 
-    data class SnackbarData(val context: Context, val message: String, val iconResource: Int)
+    data class SnackbarData(
+        val context: Context,
+        val message: String,
+        val iconResource: Int,
+        val type: String
+    )
 
-    fun enqueueSnackbar(context: Context, message: String, iconResource: Int) {
-        val snackbarData = SnackbarData(context, message, iconResource)
+    fun enqueueSnackbar(context: Context, message: String, iconResource: Int, type: String) {
+        val snackbarData = SnackbarData(context, message, iconResource, type)
         snackbarQueue.offer(snackbarData)
         Log.d(TAG, "Snackbar: $message is added to queue!")
         if (snackbar == null) {
@@ -30,17 +37,30 @@ class SnackbarHelper private constructor() {
         }
     }
 
+    @Suppress("DestructuringDeclarationWithTooManyEntries")
     private fun showNextSnackbar() {
         if (snackbarQueue.isNotEmpty() && snackbar == null) {
-            val (context, message, iconResource) = snackbarQueue.poll()!!
-            showSnackbar(context, message, iconResource)
+            val (context, message, iconResource, type) = snackbarQueue.poll()!!
+            showSnackbar(context, message, iconResource, type)
         }
     }
 
-    private fun showSnackbar(context: Context, message: String, iconResource: Int) {
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun showSnackbar(context: Context, message: String, iconResource: Int, type: String) {
         val binding = SnackbarDefaultBinding.inflate(LayoutInflater.from(context))
         binding.textMessage.text = message
-        binding.snackbarImage.setImageResource(iconResource)
+        when (type) {
+            "quest", "tracking" -> {
+                binding.snackbarImageFrame.setImageResource(iconResource)
+            }
+            "quest_complete" -> {
+                binding.snackbarImageFrame.setImageResource(iconResource)
+                binding.snackbarImageFrame.background = context.getDrawable(R.drawable.frame)
+            }
+            else -> {
+                binding.snackbarImage.setImageResource(iconResource)
+            }
+        }
 
         val progressBar = binding.progressBar
         progressBar.max = TIMER_DURATION.toInt()

@@ -55,14 +55,15 @@ class UserLogic(private val context: Context) {
     }
 
     private suspend fun notifyLevel(level: Int) {
-        val imageResID = R.drawable.scroll // @todo implement new Icon
+        val imageResID = R.drawable.compass // @todo implement new Icon
         showSnackbar(context.getString(R.string.level_up_message, level), imageResID)
     }
 
     private suspend fun showSnackbar(message: String, imageResID: Int) {
         withContext(Dispatchers.Main) {
             val snackbarHelper = SnackbarHelper.getSnackbarInstance()
-            snackbarHelper.enqueueSnackbar(context, message, imageResID)
+            val type = "user"
+            snackbarHelper.enqueueSnackbar(context, message, imageResID, type)
         }
     }
 }

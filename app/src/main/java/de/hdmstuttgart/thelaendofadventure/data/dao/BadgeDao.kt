@@ -1,17 +1,36 @@
 package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.StatTrackingEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.UserBadgeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BadgeDao {
+    @Insert
+    suspend fun addBadge(badgeEntity: BadgeEntity): Long
+
+    @Insert
+    suspend fun addBadgeGoal(badgeGoalEntity: BadgeGoalEntity): Long
+
+    @Insert
+    suspend fun addStatTracking(statTracking: StatTrackingEntity): Long
+
+    @Query("SELECT * FROM statTracking WHERE actionID = :actionID")
+    suspend fun getStatTrackingByID(actionID: Int): StatTrackingEntity?
+
+    @Query(
+        "SELECT * FROM badgeGoal " +
+            "WHERE badgeGoal.badgeGoalID = :badgeGoalID"
+    )
+    fun getBadgeByBadgeGoalID(badgeGoalID: Int): BadgeGoalEntity
 
     @Query(
         "SELECT badge.*, COUNT(badgeGoal.badgeGoalID) AS targetGoalNumber, " +
@@ -28,7 +47,7 @@ interface BadgeDao {
         "SELECT * FROM badge " +
             "WHERE badge.badgeID = :badgeID"
     )
-    suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity
+    suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity?
 
     @Query(
         "SELECT COUNT(CASE WHEN user_badge.isCompleted = 1 THEN 1 END) AS currentGoalNumber, " +
@@ -93,5 +112,5 @@ interface BadgeDao {
             "AND statTracking.goal = user.wrongAnswerCount " +
             "AND statTracking.goalUnit = 'wrongAnswerCount'"
     )
-    suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity
+    suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity?
 }

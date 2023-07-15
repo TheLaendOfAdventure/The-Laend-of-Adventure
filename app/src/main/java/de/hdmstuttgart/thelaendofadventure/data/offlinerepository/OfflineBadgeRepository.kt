@@ -2,7 +2,6 @@ package de.hdmstuttgart.thelaendofadventure.data.offlinerepository
 
 import de.hdmstuttgart.thelaendofadventure.data.dao.BadgeDao
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
@@ -14,9 +13,6 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
 
     override fun getBadgesDetailsByUserID(userID: Int):
         Flow<List<BadgeDetails>> = badgeDao.getBadgesDetailsByUserID(userID)
-
-    override fun getProgressForBadgeByUserID(userID: Int, badgeID: Int):
-        Flow<Progress> = badgeDao.getProgressForBadgeByUserID(userID, badgeID)
 
     override fun getCompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int):
         Flow<List<ActionEntity>> = badgeDao.getCompletedGoalsForBadgeByUserID(userID, badgeID)
@@ -35,9 +31,9 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
         badgeDao.assignAllBadgesToUser(userID)
     }
 
-    override suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity =
+    override suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity? =
         badgeDao.getBadgeByBadgeID(badgeID)
 
     override suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int):
-        BadgeGoalEntity = badgeDao.getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID)
+        BadgeGoalEntity? = badgeDao.getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID)
 }

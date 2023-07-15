@@ -20,7 +20,7 @@ import org.hamcrest.core.IsInstanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
+// Reinstall the app before tests to ensure data deletion and use API 33.
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class RenameUserTest {

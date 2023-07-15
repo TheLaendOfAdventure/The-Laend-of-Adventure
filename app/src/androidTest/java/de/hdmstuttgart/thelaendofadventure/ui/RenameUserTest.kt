@@ -33,12 +33,43 @@ class RenameUserTest {
     @JvmField
     var mGrantPermissionRule =
         GrantPermissionRule.grant(
-            "android.permission.ACCESS_FINE_LOCATION"
+            "android.permission.ACCESS_FINE_LOCATION",
+            "android.permission.READ_MEDIA_IMAGES"
         )
 
     @Test
-    @Suppress("LongMethod")
     fun startTest() {
+        val appCompatEditText = onView(
+            allOf(
+                withId(R.id.name_text_input),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.fragment_user_creation),
+                        0
+                    ),
+                    6
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatEditText.perform(replaceText("Reihner"), closeSoftKeyboard())
+
+        val appCompatEditText2 = onView(
+            allOf(
+                withId(R.id.name_text_input),
+                withText("Reihner"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.fragment_user_creation),
+                        0
+                    ),
+                    6
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatEditText2.perform(pressImeActionButton())
+
         val materialTextView = onView(
             allOf(
                 withId(R.id.user_creation_page_confirm_button),
@@ -48,7 +79,7 @@ class RenameUserTest {
                         withId(R.id.fragment_user_creation),
                         0
                     ),
-                    2
+                    7
                 ),
                 isDisplayed()
             )
@@ -57,7 +88,7 @@ class RenameUserTest {
 
         val shapeableImageView = onView(
             allOf(
-                withId(R.id.mainPage_profileButton),
+                withId(R.id.main_page_profile_button),
                 withContentDescription("Profilebutton"),
                 childAtPosition(
                     allOf(
@@ -74,22 +105,7 @@ class RenameUserTest {
         )
         shapeableImageView.perform(click())
 
-        val appCompatEditText = onView(
-            allOf(
-                withId(R.id.user_page_name_field),
-                childAtPosition(
-                    childAtPosition(
-                        withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                        0
-                    ),
-                    1
-                ),
-                isDisplayed()
-            )
-        )
-        appCompatEditText.perform(replaceText("Reihner"), closeSoftKeyboard())
-
-        val appCompatEditText2 = onView(
+        val appCompatEditText3 = onView(
             allOf(
                 withId(R.id.user_page_name_field),
                 withText("Reihner"),
@@ -103,7 +119,55 @@ class RenameUserTest {
                 isDisplayed()
             )
         )
-        appCompatEditText2.perform(pressImeActionButton())
+        appCompatEditText3.perform(click())
+
+        val appCompatEditText4 = onView(
+            allOf(
+                withId(R.id.user_page_name_field),
+                withText("Reihner"),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
+                        0
+                    ),
+                    1
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatEditText4.perform(replaceText("Zufall"))
+
+        val appCompatEditText5 = onView(
+            allOf(
+                withId(R.id.user_page_name_field),
+                withText("Zufall"),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
+                        0
+                    ),
+                    1
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatEditText5.perform(closeSoftKeyboard())
+
+        val appCompatEditText6 = onView(
+            allOf(
+                withId(R.id.user_page_name_field),
+                withText("Zufall"),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
+                        0
+                    ),
+                    1
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatEditText6.perform(pressImeActionButton())
 
         val appCompatImageView = onView(
             allOf(
@@ -126,7 +190,7 @@ class RenameUserTest {
 
         val shapeableImageView2 = onView(
             allOf(
-                withId(R.id.mainPage_profileButton),
+                withId(R.id.main_page_profile_button),
                 withContentDescription("Profilebutton"),
                 childAtPosition(
                     allOf(
@@ -146,22 +210,12 @@ class RenameUserTest {
         val editText = onView(
             allOf(
                 withId(R.id.user_page_name_field),
-                withText("Reihner"),
+                withText("Zufall"),
                 withParent(withParent(IsInstanceOf.instanceOf(android.view.ViewGroup::class.java))),
                 isDisplayed()
             )
         )
-        editText.check(matches(withText("Reihner")))
-
-        val editText2 = onView(
-            allOf(
-                withId(R.id.user_page_name_field),
-                withText("Reihner"),
-                withParent(withParent(IsInstanceOf.instanceOf(android.view.ViewGroup::class.java))),
-                isDisplayed()
-            )
-        )
-        editText2.check(matches(withText("Reihner")))
+        editText.check(matches(withText("Zufall")))
     }
 
     private fun childAtPosition(

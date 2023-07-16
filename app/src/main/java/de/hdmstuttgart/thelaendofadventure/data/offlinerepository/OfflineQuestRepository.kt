@@ -1,10 +1,7 @@
 package de.hdmstuttgart.thelaendofadventure.data.offlinerepository
 
 import de.hdmstuttgart.thelaendofadventure.data.dao.QuestDao
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.*
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
@@ -13,6 +10,9 @@ import kotlinx.coroutines.flow.first
 
 @Suppress("TooManyFunctions")
 class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
+    override suspend fun getDialogPathByQuestID(questID: Int): String {
+        return questDao.getDialogPathByQuestID(questID)
+    }
 
     override fun getAcceptedQuestsByUserID(userID: Int): Flow<List<QuestEntity>> =
         questDao.getAcceptedQuestsByUserID(userID)
@@ -67,5 +67,29 @@ class OfflineQuestRepository(private val questDao: QuestDao) : QuestRepository {
 
     override fun getLocationForAcceptedQuestsByUserID(userID: Int): Flow<List<LocationGoal>> {
         return questDao.getLocationForAcceptedQuestsByUserID(userID)
+    }
+
+    override fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>> {
+        return questDao.getAllActionDescriptionsByQuestID(questID)
+    }
+
+    override suspend fun getQuestImageByQuestID(questID: Int): String {
+        return questDao.getQuestImageByQuestID(questID)
+    }
+
+    override suspend fun getQuestByQuestID(questID: Int): QuestEntity {
+        return questDao.getQuestByQuestID(questID)
+    }
+
+    override suspend fun getNameByQuestByGoal(questID: Int, goalNumber: Int): String {
+        return questDao.getNameByQuestByGoal(questID, goalNumber)
+    }
+
+    override suspend fun getLocationByQuestByGoal(questID: Int, goalNumber: Int): Location {
+        return questDao.getLocationByQuestByGoal(questID, goalNumber)
+    }
+
+    override suspend fun getOnlyLocationForAcceptedQuestsByUserID(userID: Int): List<Location> {
+        return questDao.getOnlyLocationForAcceptedQuestsByUserID(userID)
     }
 }

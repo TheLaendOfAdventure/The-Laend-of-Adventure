@@ -23,9 +23,10 @@ import de.hdmstuttgart.thelaendofadventure.data.entity.*
         BadgeGoalEntity::class,
         BadgeEntity::class,
         ActionEntity::class,
-        AchievementEntity::class
+        AchievementEntity::class,
+        StatTrackingEntity::class,
     ],
-    version = 4,
+    version = 8,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

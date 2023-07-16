@@ -1,77 +1,116 @@
 package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.StatTrackingEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.UserBadgeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BadgeDao {
+    @Insert
+    suspend fun addBadge(badgeEntity: BadgeEntity): Long
+
+    @Insert
+    suspend fun addBadgeGoal(badgeGoalEntity: BadgeGoalEntity): Long
+
+    @Insert
+    suspend fun addStatTracking(statTracking: StatTrackingEntity): Long
+
+    @Query("SELECT * FROM statTracking WHERE actionID = :actionID")
+    suspend fun getStatTrackingByID(actionID: Int): StatTrackingEntity?
 
     @Query(
-        "SELECT badge.* FROM badge " +
-            "INNER JOIN user_badge ON badge.badgeID = user_badge.badgeID " +
-            "WHERE user_badge.userID = :userID"
+        "SELECT * FROM badgeGoal " +
+            "WHERE badgeGoal.badgeGoalID = :badgeGoalID"
     )
-    fun getAcceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>>
+    fun getBadgeByBadgeGoalID(badgeGoalID: Int): BadgeGoalEntity
 
     @Query(
-        "SELECT badge.* FROM badge " +
-            "LEFT JOIN user_badge ON badge.badgeID = user_badge.badgeID " +
-            "AND user_badge.userID = :userID " +
-            "WHERE user_badge.userID IS NULL"
+        "SELECT badge.*, COUNT(badgeGoal.badgeGoalID) AS targetGoalNumber, " +
+            "COUNT(CASE WHEN user_badge.isCompleted = 1 THEN 0 END) AS currentGoalNumber " +
+            "FROM badge " +
+            "LEFT JOIN badgeGoal ON badge.badgeID = badgeGoal.badgeID " +
+            "LEFT JOIN user_badge ON badgeGoal.badgeGoalID = user_badge.badgeGoalID " +
+            "WHERE user_badge.userID = :userID " +
+            "GROUP BY badge.badgeID "
     )
-    fun getUnacceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>>
+    fun getBadgesDetailsByUserID(userID: Int): Flow<List<BadgeDetails>>
 
     @Query(
-        "SELECT user_badge.currentGoalNumber, badge.targetGoalNumber FROM user_badge " +
-            "INNER JOIN badge ON user_badge.badgeID = badge.badgeID " +
-            "WHERE user_badge.userID = :userID AND user_badge.badgeID = :badgeID"
+        "SELECT * FROM badge " +
+            "WHERE badge.badgeID = :badgeID"
+    )
+    suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity?
+
+    @Query(
+        "SELECT COUNT(CASE WHEN user_badge.isCompleted = 1 THEN 1 END) AS currentGoalNumber, " +
+            "COUNT(DISTINCT user_badge.badgeGoalID) as targetGoalNumber " +
+            "FROM user_badge " +
+            "JOIN badgeGoal ON user_badge.badgeGoalID = badgeGoal.badgeGoalID " +
+            "WHERE user_badge.userID = :userID AND user_badge.badgeID = :badgeID " +
+            "GROUP BY user_badge.userID, user_badge.badgeID"
     )
     fun getProgressForBadgeByUserID(userID: Int, badgeID: Int): Flow<Progress>
 
     @Query(
-        "SELECT [action].* From [action] " +
-            "INNER JOIN badgeGoal ON [action].actionID = badgeGoal.actionID " +
-            "INNER JOIN user_badge ON user_badge.badgeID = badgeGoal.badgeID " +
-            "WHERE user_badge.currentGoalNumber >= badgeGoal.goalNumber " +
-            "AND user_badge.userID = :userID AND badgeGoal.badgeID = :badgeID"
+        "SELECT action.* FROM action " +
+            "JOIN badgeGoal ON action.actionID = badgeGoal.actionID " +
+            "JOIN user_badge ON badgeGoal.badgeGoalID = user_badge.badgeGoalID " +
+            "WHERE user_badge.userID = :userID AND user_badge.badgeID = :badgeID AND user_badge.isCompleted = 1"
     )
     fun getCompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
 
     @Query(
-        "SELECT [action].* From [action] " +
-            "INNER JOIN badgeGoal ON [action].actionID = badgeGoal.actionID " +
-            "INNER JOIN user_badge ON user_badge.badgeID = badgeGoal.badgeID " +
-            "WHERE user_badge.currentGoalNumber < badgeGoal.goalNumber " +
-            "AND user_badge.userID = :userID AND badgeGoal.badgeID = :badgeID"
+        "SELECT action.* FROM action " +
+            "JOIN badgeGoal ON action.actionID = badgeGoal.actionID " +
+            "JOIN user_badge ON badgeGoal.badgeGoalID = user_badge.badgeGoalID " +
+            "WHERE user_badge.userID = :userID AND user_badge.badgeID = :badgeID AND user_badge.isCompleted = 0"
     )
     fun getUncompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<ActionEntity>>
 
     @Query(
-        "SELECT badge.*, user_badge.currentGoalNumber FROM badge " +
-            "JOIN badgeGoal ON badge.badgeID = badgeGoal.badgeID " +
-            "JOIN user_badge ON user_badge.badgeID = badge.badgeID " +
+        "SELECT user_badge.* " +
+            "FROM user_badge " +
+            "JOIN badgeGoal ON user_badge.badgeID = badgeGoal.badgeID " +
+            "JOIN achievement ON badgeGoal.actionID = achievement.actionID " +
+            "WHERE user_badge.userID = :userID " +
+            "AND achievement.questID = :questID " +
+            "AND badgeGoal.actionID = achievement.actionID"
+    )
+    fun getUserBadgesByUserIDAndQuestID(userID: Int, questID: Int): Flow<List<UserBadgeEntity>>
+
+    @Query(
+        "UPDATE user_badge SET isCompleted = 1 " +
+            "WHERE badgeID = :badgeID " +
+            "AND userID = :userID " +
+            "AND badgeGoalID = :badgeGoalID "
+    )
+    suspend fun completeBadgeGoalByUserID(userID: Int, badgeID: Int, badgeGoalID: Int)
+
+    @Query(
+        "INSERT INTO user_badge (userID, badgeID, badgeGoalID) " +
+            "SELECT :userID, badgeID, badgeGoalID " +
+            "FROM badgeGoal"
+    )
+    suspend fun assignAllBadgesToUser(userID: Int)
+
+    @Query(
+        "SELECT badgeGoal.* " +
+            "FROM badgeGoal " +
             "JOIN action ON badgeGoal.actionID = action.actionID " +
-            "JOIN achievement ON action.actionID = achievement.actionID " +
-            "WHERE user_badge.currentGoalNumber = badgeGoal.goalNumber " +
-            "AND user_badge.userID = :userID " +
-            "AND achievement.questID = :questID"
+            "JOIN user_badge ON badgeGoal.badgeID = user_badge.badgeID " +
+            "JOIN user ON user_badge.userID = user.userID " +
+            "JOIN statTracking ON action.actionID = statTracking.actionID " +
+            "WHERE user.userID = :userID " +
+            "AND statTracking.goal = user.wrongAnswerCount " +
+            "AND statTracking.goalUnit = 'wrongAnswerCount'"
     )
-    fun getBadgesByUserIDAndQuestID(userID: Int, questID: Int): Flow<List<BadgeDetails>>
-
-    @Query(
-        "UPDATE user_badge SET currentGoalNumber = :goalNumber " +
-            "WHERE badgeID = :badgeID AND userID = :userID"
-    )
-    suspend fun updateBadgeProgressByUserID(userID: Int, badgeID: Int, goalNumber: Int)
-
-    @Query(
-        "INSERT INTO user_badge (userID, badgeID)" +
-            "VALUES (:userID, (:badgeIDs))"
-    )
-    suspend fun assignAllBadgesToUser(userID: Int, badgeIDs: List<Int>)
+    suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int): BadgeGoalEntity?
 }

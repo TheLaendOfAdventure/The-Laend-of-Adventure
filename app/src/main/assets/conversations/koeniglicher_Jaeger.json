@@ -1,0 +1,35 @@
+{
+  "NPC": "Der königliche Jäger",
+  "image": [
+    {
+      "speaker": "Der königliche Jäger",
+      "path": "hunter"
+    }
+  ],
+  "dialogue": [
+    {
+      "speaker": "Der königliche Jäger",
+      "message": "Ah, ein mutiger Abenteurer, der den geheimnisvollen Nistplatz der Blässhühner suchen möchte. Was führt euch zu mir?"
+    },
+    {
+      "speaker": "Player",
+      "message": "Ehrwürdiger Jäger, ich suche den geheimnisvollen Nistplatz der Blässhühner. Könnt ihr mir einen Hinweis geben?"
+    },
+    {
+      "speaker": "Der königliche Jäger",
+      "message": "Ah, die Blässhühner und ihr geheimer Nistplatz. Sie bevorzugen stehende oder langsam fließende Gewässer mit flachen Ufern und einer üppigen Ufervegetation, die ihnen als Nistplatz dient. Sucht nach einem solchen Gewässer mit einer gut ausgeprägten Röhrichtzone oder Gebüschen, die ins Wasser ragen."
+    },
+    {
+      "speaker": "Player",
+      "message": "Also ein Gewässer mit flachen Ufern und einer üppigen Ufervegetation. Verstehe. Gibt es noch andere Merkmale, auf die ich achten sollte?"
+    },
+    {
+      "speaker": "Der königliche Jäger",
+      "message": "Ja, neben den flachen, krautigen Stellen sollte es auch offene Wasserflächen geben. Das Wasser sollte einen hohen oder mittleren Nährstoffgehalt aufweisen. Achtet darauf, dass das Gewässer nicht zu nährstoffarm ist, da die Blässhühner solche Gewässer meiden."
+    },
+    {
+      "speaker": "Player",
+      "message": "Ein Gewässer mit flachen Ufern, üppiger Ufervegetation, offenen Wasserflächen und einem hohen oder mittleren Nährstoffgehalt. Das werde ich im Auge behalten. Vielen Dank, ehrwürdiger Jäger!"
+    }
+  ]
+}

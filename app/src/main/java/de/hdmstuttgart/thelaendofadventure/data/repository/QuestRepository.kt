@@ -1,13 +1,7 @@
 package de.hdmstuttgart.thelaendofadventure.data.repository
 
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
-import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleAnswersEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.RiddleEntity
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.*
+import de.hdmstuttgart.thelaendofadventure.data.entity.*
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -15,6 +9,14 @@ import kotlinx.coroutines.flow.Flow
  */
 @Suppress("TooManyFunctions")
 interface QuestRepository {
+
+    /**
+     * Retrieves the dialog path for a given quest ID.
+     *
+     * @param questID The ID of the quest.
+     * @return The dialog path associated with the quest ID, or an empty string if no dialog path is found.
+     */
+    suspend fun getDialogPathByQuestID(questID: Int): String
 
     /**
      * Retrieves a list of all quests accepted by the user with the given ID.
@@ -112,4 +114,52 @@ interface QuestRepository {
      * @param userID The ID of the user
      */
     fun getLocationForAcceptedQuestsByUserID(userID: Int): Flow<List<LocationGoal>>
+
+    /**
+     * Retrieves a list of [String] of all quest actions descriptions.
+     *
+     * @param questID The ID of the quest
+     */
+    fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>>
+
+    /**
+     * Retrieves a [String] of the quest image path.
+     *
+     * @param questID The ID of the quest
+     */
+    suspend fun getQuestImageByQuestID(questID: Int): String?
+
+    /**
+     * Retrieves a QuestEntity object from the database based on the provided quest ID.
+     *
+     * @param questID The ID of the quest to retrieve.
+     * @return The QuestEntity object representing the quest with the specified ID, or null if not found.
+     */
+    suspend fun getQuestByQuestID(questID: Int): QuestEntity
+
+    /**
+     * Retrieves the name of a goal based on the quest ID and goal number.
+     *
+     * @param questID The ID of the quest.
+     * @param goalNumber The goal number of the quest.
+     * @return The name of the quest.
+     */
+    suspend fun getNameByQuestByGoal(questID: Int, goalNumber: Int): String
+
+    /**
+     * Retrieves the Location for specific goal.
+     *
+     * @param questID The ID of the quest.
+     * @param goalNumber The goal number of the quest.
+     * @return Location Entity.
+     */
+    suspend fun getLocationByQuestByGoal(questID: Int, goalNumber: Int): Location
+
+    /**
+     * Retrieves the Location for specific userID.
+     *
+     * @param userID the ID of the user
+     * @return Location.
+     */
+    suspend fun getOnlyLocationForAcceptedQuestsByUserID(userID: Int): List<Location>
 }

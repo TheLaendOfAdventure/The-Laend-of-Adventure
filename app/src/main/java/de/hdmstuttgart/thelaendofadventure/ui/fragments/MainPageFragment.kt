@@ -1,54 +1,188 @@
 package de.hdmstuttgart.thelaendofadventure.ui.fragments
 
-import android.Manifest
-import android.annotation.SuppressLint
+import android.Manifest // ktlint-disable import-ordering
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
+import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.gestures
-import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
-import com.mapbox.maps.viewannotation.ViewAnnotationManager
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentMainPageBinding
-import de.hdmstuttgart.thelaendofadventure.data.Tracking
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
-import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
-import de.hdmstuttgart.thelaendofadventure.data.entity.UserEntity
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestWithUserLevel
 import de.hdmstuttgart.thelaendofadventure.logic.QuestLogic
-import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
+import de.hdmstuttgart.thelaendofadventure.logic.TrackingLogic
 import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
+import de.hdmstuttgart.thelaendofadventure.ui.helper.PermissionManager
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.MainPageViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
+@Suppress("TooManyFunctions")
 class MainPageFragment : Fragment(R.layout.fragment_main_page) {
-
-    companion object {
-        private const val TAG = "MainPageFragment"
-        private const val questID = 7
-        private const val questGoal = 1
-    }
 
     private lateinit var binding: FragmentMainPageBinding
     private lateinit var viewModel: MainPageViewModel
     private lateinit var mapView: MapView
     private lateinit var mapHelper: MapHelper
     private lateinit var permissionManager: PermissionManager
-    private lateinit var viewAnnotationManager: ViewAnnotationManager
+    private lateinit var trackingLogic: TrackingLogic
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        CoroutineScope(Dispatchers.IO).launch { QuestLogic(requireContext()).checkRiddle() }
+        trackingLogic = TrackingLogic(requireContext())
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
+        binding = FragmentMainPageBinding.inflate(inflater, container, false)
+        mapView = binding.mapView
+        observeQuest()
+        viewModel.getLocation()
+        return binding.root
+    }
+
+    private fun observeQuest() {
+        val questObserver = Observer<QuestWithUserLevel> { questList ->
+            mapHelper = MapHelper(
+                mapView,
+                questList.quest,
+                requireContext(),
+                questList.userLevel,
+                viewLifecycleOwner
+            )
+            mapHelper.setUpMap()
+        }
+        mapView.gestures.addOnMoveListener(onMoveListener)
+        viewModel.combinedList.observe(viewLifecycleOwner, questObserver)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (isUserLoggedIn()) {
+            requestLocationPermission()
+            observeUser()
+            setUpProfileButton()
+            setupLocationResetButton()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::mapHelper.isInitialized) {
+            mapHelper.stopObservingLocationMarkers()
+        }
+        MapHelper.previousMap = mapOf()
+        MapHelper.locationMarkers.postValue(hashMapOf())
+    }
+
+    private fun isUserLoggedIn(): Boolean {
+        val userID = viewModel.userID
+        if (userID == -1) {
+            Navigation.findNavController(requireView()).navigate(
+                R.id.userCreationFragment
+            )
+            return false
+        }
+        return true
+    }
+
+    private fun requestLocationPermission() {
+        val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        permissionResultLauncher.launch(permissions)
+    }
+
+    private fun observeUser() {
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            binding.mainPageProfileLevelDisplay.text = user.level.toString()
+            binding.mainPageProfileButtonCircularBar.progress = user.exp
+            Glide.with(requireContext())
+                .load(user.imagePath)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(binding.mainPageProfileButton)
+        }
+    }
+
+    private fun setUpProfileButton() {
+        binding.mainPageProfileButton.setOnClickListener {
+            Navigation.findNavController(requireView()).navigate(
+                R.id.navigate_from_main_to_user_page
+            )
+            if (::mapHelper.isInitialized) {
+                mapHelper.stopObservingLocationMarkers()
+            }
+            MapHelper.previousMap = mapOf()
+            MapHelper.locationMarkers.postValue(hashMapOf())
+        }
+    }
+
+    private fun setupLocationResetButton() {
+        binding.mainPageResetPlayerLocation.setOnClickListener {
+            mapView.location.addOnIndicatorPositionChangedListener(
+                onIndicatorPositionChangedListener
+            )
+
+            val cameraOptions = CameraOptions.Builder()
+                .zoom(zoomLevel)
+                .build()
+
+            mapView.getMapboxMap().setCamera(cameraOptions)
+
+            binding.mainPageResetPlayerLocation.background = AppCompatResources.getDrawable(
+                requireContext(),
+                R.drawable.reset_button
+            )
+        }
+    }
+
+    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
+        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
+        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
+    }
+
+    private val onMoveListener = object : OnMoveListener {
+        override fun onMoveBegin(detector: MoveGestureDetector) {
+            binding.mainPageResetPlayerLocation.background = AppCompatResources.getDrawable(
+                requireContext(),
+                R.drawable.reset_button_empty
+            )
+
+            mapView.location.removeOnIndicatorPositionChangedListener(
+                onIndicatorPositionChangedListener
+            )
+        }
+
+        override fun onMove(detector: MoveGestureDetector): Boolean {
+            return false
+        }
+
+        @Suppress("EmptyFunctionBlock")
+        override fun onMoveEnd(detector: MoveGestureDetector) {
+        }
+    }
 
     private val permissionResultLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -61,105 +195,34 @@ class MainPageFragment : Fragment(R.layout.fragment_main_page) {
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        viewModel = ViewModelProvider(this)[MainPageViewModel::class.java]
-        binding = FragmentMainPageBinding.inflate(inflater, container, false)
-        viewAnnotationManager = binding.mapView.viewAnnotationManager
-        mapView = binding.mapView
-        val questObserver = Observer<List<QuestEntity>> { questList ->
-            mapHelper = MapHelper(mapView, questList, requireContext())
-            mapHelper.setUpMap()
-        }
-        viewModel.quests.observe(viewLifecycleOwner, questObserver)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (viewModel.getUserID() == -1) {
-            Navigation.findNavController(requireView()).navigate(
-                R.id.userCreationFragment
-            )
-        } else {
-            val userObserver = Observer<UserEntity> { user ->
-                binding.mainPageProfileLevelDisplay.text = user.level.toString()
-                binding.mainPageProfileButton.setImageURI(user.imagePath?.toUri())
-            }
-            viewModel.user.observe(viewLifecycleOwner, userObserver)
-
-            setUpProfileButton()
-            val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-            permissionResultLauncher.launch(permissions)
-        }
-
-        val riddleObserver = Observer<List<RiddleDetails>> { riddles ->
-            if (riddles.isNotEmpty()) {
-                QuestLogic(requireContext()).finishedQuestGoal(
-                    questID,
-                    questGoal,
-                    viewModel.getUserID()
-                )
-                Log.d(TAG, "Angekommen")
-                Navigation.findNavController(requireView()).navigate(
-                    R.id.navigate_from_main_to_riddle_page
-                )
-            }
-        }
-        viewModel.riddleList.observe(viewLifecycleOwner, riddleObserver)
-    }
-
-    private fun setUpProfileButton() {
-        binding.mainPageProfileButton.setOnClickListener {
-            Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_main_to_user_page
-            )
-        }
-    }
-
     private fun showUserAtMap() = lifecycleScope.launch {
         permissionManager = PermissionManager(requireContext())
         lifecycleScope.launch {
-            Tracking(requireContext()).start()
+            trackingLogic.start()
         }
-        // Show user's location at the map
         mapView.location.updateSettings {
             enabled = true
             pulsingEnabled = true
         }
-
-        // Pass the user's location to camera
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        mapView.location.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
     }
 
     private fun showGpsAlertDialog() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-        builder.setTitle(R.string.gps_required_title)
-            .setMessage(R.string.gps_required_context)
-            .setPositiveButton(R.string.gps_positiveButton) { dialog, id ->
-                val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-                permissionResultLauncher.launch(permissions)
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle(R.string.gps_required_title)
+            setMessage(R.string.gps_required_context)
+            setPositiveButton(R.string.gps_positiveButton) { dialog, _ ->
+                requestLocationPermission()
+                dialog.dismiss()
             }
-            .setNegativeButton(R.string.gps_negativeButton) { _, _ ->
+            setNegativeButton(R.string.gps_negativeButton) { _, _ ->
                 exitProcess(0)
             }
-        builder.create().show()
+            create().show()
+        }
     }
 
-    private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
-        mapView.getMapboxMap().setCamera(CameraOptions.Builder().bearing(it).build())
-    }
-    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
-        mapView.getMapboxMap().setCamera(CameraOptions.Builder().center(it).build())
-        mapView.gestures.focalPoint = mapView.getMapboxMap().pixelForCoordinate(it)
+    companion object {
+        private const val zoomLevel = 17.0
     }
 }

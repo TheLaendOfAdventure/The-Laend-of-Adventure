@@ -1,17 +1,39 @@
 package de.hdmstuttgart.thelaendofadventure.data.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.*
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.LocationGoal
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestDetails
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.RiddleDetails
 import de.hdmstuttgart.thelaendofadventure.data.entity.*
+import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.QuestEntity
 import kotlinx.coroutines.flow.Flow
 
 @Suppress("TooManyFunctions")
 @Dao
 interface QuestDao {
+
+    @Insert
+    suspend fun addQuest(quest: QuestEntity): Long
+
+    @Insert
+    suspend fun addQuestGoal(questGoal: QuestGoalEntity): Long
+
+    @Query(
+        "SELECT dialogPath FROM quest " +
+            "WHERE quest.questID = :questID"
+    )
+    suspend fun getDialogPathByQuestID(questID: Int): String
+
+    @Query(
+        "SELECT * FROM quest " +
+            "WHERE quest.questID = :questID"
+    )
+    suspend fun getQuestByQuestID(questID: Int): QuestEntity
 
     @Query(
         "SELECT quest.* FROM quest " +
@@ -43,8 +65,8 @@ interface QuestDao {
     fun getQuestsWithDetailsByUserID(userID: Int): Flow<List<QuestDetails>>
 
     @Query(
-        "SELECT [action].* From [action] " +
-            "INNER JOIN questGoal ON [action].actionID = questGoal.actionID " +
+        "SELECT action.* From action " +
+            "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
             "INNER JOIN user_quest ON user_quest.questID = questGoal.questID " +
             "WHERE user_quest.currentGoalNumber >= questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"
@@ -52,8 +74,8 @@ interface QuestDao {
     fun getCompletedGoalsForQuestByUserID(userID: Int, questID: Int): Flow<List<ActionEntity>>
 
     @Query(
-        "SELECT [action].* From [action] " +
-            "INNER JOIN questGoal ON [action].actionID = questGoal.actionID " +
+        "SELECT action.* From action " +
+            "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
             "INNER JOIN user_quest ON user_quest.questID = questGoal.questID " +
             "WHERE user_quest.currentGoalNumber < questGoal.goalNumber " +
             "AND user_quest.userID = :userID AND questGoal.questID = :questID"
@@ -68,7 +90,7 @@ interface QuestDao {
 
     @Query(
         "INSERT INTO user_quest (userID, questID, currentGoalNumber)" +
-            "VALUES (:userID, :questID, 1)"
+            "VALUES (:userID, :questID, 0)"
     )
     suspend fun assignQuestToUser(userID: Int, questID: Int)
 
@@ -86,7 +108,8 @@ interface QuestDao {
     fun getLocationForAcceptedQuestsByUserID(userID: Int): Flow<List<LocationGoal>>
 
     @Query(
-        "SELECT riddle.*, riddleAnswers.answer AS possibleAnswers FROM riddle " +
+        "SELECT questGoal.questID , questGoal.goalNumber, " +
+            "riddle.*, riddleAnswers.answer AS possibleAnswers FROM riddle " +
             "JOIN riddleAnswers ON riddleAnswers.actionID = riddle.actionID " +
             "JOIN questGoal ON questGoal.actionID = riddle.actionID " +
             "JOIN user_quest ON user_quest.questID = questGoal.questID " +
@@ -99,13 +122,55 @@ interface QuestDao {
     @Query(
         "SELECT achievement.questID " +
             "FROM achievement " +
-            "JOIN [action] ON [action].actionID = achievement.actionID " +
-            "JOIN badgeGoal ON badgeGoal.actionID = [action].actionID " +
-            "JOIN badge ON badge.badgeID = badgeGoal.badgeID " +
-            "JOIN user_badge ON user_badge.badgeID = badge.badgeID " +
-            "WHERE badge.badgeID = :badgeID " +
-            "AND user_badge.currentGoalNumber = badgeGoal.goalNumber " +
-            "AND user_badge.userID = :userID "
+            "JOIN action ON achievement.actionID = action.actionID " +
+            "JOIN badgeGoal ON action.actionID = badgeGoal.actionID " +
+            "JOIN user_badge ON badgeGoal.badgeGoalID = user_badge.badgeGoalID " +
+            "WHERE badgeGoal.badgeID = :badgeID " +
+            "AND user_badge.userID = :userID"
     )
     fun getQuestForBadgeByUserID(userID: Int, badgeID: Int): Flow<List<Int>>
+
+    @Query(
+        "SELECT action.description " +
+            "FROM action " +
+            "INNER JOIN questGoal ON action.actionID = questGoal.actionID " +
+            "WHERE questGoal.questID = :questID " +
+            "ORDER BY questGoal.goalNumber "
+    )
+    fun getAllActionDescriptionsByQuestID(questID: Int): Flow<List<String>>
+
+    @Query(
+        "SELECT imagePath " +
+            "FROM quest " +
+            "WHERE quest.questID = :questID "
+    )
+    suspend fun getQuestImageByQuestID(questID: Int): String
+
+    @Query(
+        "SELECT name FROM action " +
+            "JOIN questGoal ON questGoal.actionID = action.actionID " +
+            "WHERE questGoal.questID = :questID " +
+            "AND goalNumber = :goalNumber"
+    )
+    suspend fun getNameByQuestByGoal(questID: Int, goalNumber: Int): String
+
+    @Query(
+        "SELECT location.* FROM location " +
+            "JOIN action ON action.actionID = location.actionID " +
+            "JOIN questGoal ON questGoal.actionID = action.actionID " +
+            "WHERE questGoal.goalNumber = :goalNumber AND questGoal.questID = :questID"
+    )
+    suspend fun getLocationByQuestByGoal(questID: Int, goalNumber: Int): Location
+
+    @Query(
+        "SELECT location.longitude, location.latitude " +
+            "FROM quest " +
+            "JOIN user_quest ON quest.questID = user_quest.questID " +
+            "JOIN questGoal ON questGoal.questID = quest.questID " +
+            "JOIN location ON questGoal.actionID = location.actionID " +
+            "WHERE user_quest.userID = :userID " +
+            "AND user_quest.currentGoalNumber < quest.targetGoalNumber " +
+            "AND user_quest.currentGoalNumber = questGoal.goalNumber"
+    )
+    suspend fun getOnlyLocationForAcceptedQuestsByUserID(userID: Int): List<Location>
 }

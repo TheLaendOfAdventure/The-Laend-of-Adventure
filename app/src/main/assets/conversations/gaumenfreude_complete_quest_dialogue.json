@@ -1,0 +1,15 @@
+{
+  "NPC": "Küchenmeister Juri",
+  "image" : [
+    {
+      "speaker": "Küchenmeister Juri",
+      "path"    : "kuechenmeister_juri"
+    }
+  ],
+  "dialogue": [
+    {
+      "speaker": "Küchenmeister Juri",
+      "message": "Vernehmet, es seie mir eine Wonne, mit Euch zu plaudern. Doch nehmet dieses Brot als Zeichen Eures Wissens. \nLebet wohl, wackre Passant!"
+    }
+  ]
+}

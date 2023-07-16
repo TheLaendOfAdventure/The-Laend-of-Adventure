@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
 
     @Insert
-    fun addUser(user: UserEntity): Long
-
-    @Query("SELECT * FROM user")
-    fun getAllUsers(): Flow<List<UserEntity>>
+    suspend fun addUser(user: UserEntity): Long
 
     @Query("SELECT * FROM user WHERE userID = :id")
     fun getUserById(id: Int): Flow<UserEntity>
+
+    @Query("SELECT level FROM user WHERE userID = :id")
+    fun getLevelByUserID(id: Int): Flow<Int>
 
     @Query(
         "UPDATE user SET name = :name " +
@@ -43,8 +43,14 @@ interface UserDao {
     suspend fun updateExpForUserID(userID: Int, exp: Int)
 
     @Query(
-        "UPDATE user SET walkedKm = :walkedKm " +
+        "SELECT wrongAnswerCount FROM user " +
             "WHERE userID = :userID"
     )
-    suspend fun updateWalkedKmForUserID(userID: Int, walkedKm: Int)
+    suspend fun getWrongAnswerCountByUserID(userID: Int): Int
+
+    @Query(
+        "UPDATE user SET wrongAnswerCount = :wrongAnswerCount " +
+            "WHERE userID = :userID"
+    )
+    suspend fun updateWrongAnswerCountByUserID(userID: Int, wrongAnswerCount: Int)
 }

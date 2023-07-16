@@ -1,0 +1,23 @@
+{
+  "NPC": "Die weise Kräuterfrau",
+  "image" : [
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "path"    : "herbalist"
+    }
+  ],
+  "dialogue": [
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "message": "Willkommen, tapfere Abenteurer! Seid gegrüßt in meiner bescheidenen Gegend. Ich bin die weise Kräuterfrau, Hüterin des alten Wissens über die Blässhühner im Länd."
+    },
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "message": "Hört her, denn ich werde euch Hinweise zu den Brutplätzen der Blässhühner geben."
+    },
+    {
+      "speaker": "Die weise Kräuterfrau",
+      "message": "Doch bevor ich euch mein Wissen enthülle, müsst ihr euer eigenes Wissen über diese geheimnisvollen Vögel unter Beweis stellen. Seid ihr bereit für ein Rätsel-Quiz über die Blässhühner?"
+    }
+  ]
+}

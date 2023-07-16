@@ -4,37 +4,54 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
-import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Location
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.QuestWithUserLevel
 import de.hdmstuttgart.thelaendofadventure.data.repository.QuestRepository
 import de.hdmstuttgart.thelaendofadventure.data.repository.UserRepository
+import de.hdmstuttgart.thelaendofadventure.ui.helper.MapHelper
+import de.hdmstuttgart.thelaendofadventure.ui.helper.SharedPreferencesHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 
-class MainPageViewModel(private val application: Application) : AndroidViewModel(application) {
+class MainPageViewModel(application: Application) : AndroidViewModel(application) {
 
-    companion object {
-        private const val sleepTimer = 100L
-    }
+    val userID = SharedPreferencesHelper.getUserID(application as Context)
 
     private val userRepository: UserRepository = AppDataContainer(application).userRepository
     private val questRepository: QuestRepository = AppDataContainer(application).questRepository
-    private var userID = application.getSharedPreferences(
-        R.string.sharedPreferences.toString(),
-        Context.MODE_PRIVATE
-    ).getInt(R.string.userID.toString(), -1)
 
-    val user = userRepository.getUserByID(getUserID()).asLiveData()
-    val quests = questRepository.getUnacceptedQuestsByUserID(getUserID()).asLiveData()
-    val riddleList = questRepository.getRiddleForAcceptedQuestsByUserID(getUserID()).asLiveData()
+    val user = userRepository.getUserByID(userID).asLiveData()
+    private val userLevel = userRepository.getLevelByUserID(userID)
 
-    fun getUserID(): Int {
-        if (userID == -1) {
-            // make sure SharedPreferences is updated
-            Thread.sleep(sleepTimer)
-            userID = application.getSharedPreferences(
-                R.string.sharedPreferences.toString(),
-                Context.MODE_PRIVATE
-            ).getInt(R.string.userID.toString(), -1)
+    private val quests = questRepository.getUnacceptedQuestsByUserID(userID)
+
+    val combinedList = combineQuestWithLevel().asLiveData()
+    private fun combineQuestWithLevel(): Flow<QuestWithUserLevel> {
+        return (
+            combine(quests, userLevel) { value1, value2 ->
+                QuestWithUserLevel(value1, value2)
+            }
+            )
+    }
+
+    fun getLocation() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val currentMap: HashMap<String, Location> = hashMapOf()
+            val locationList = questRepository.getOnlyLocationForAcceptedQuestsByUserID(userID)
+
+            locationList.forEach { location ->
+                val key = location.latitude.toString() + location.longitude.toString()
+                currentMap[key] = location
+            }
+
+            CoroutineScope(Dispatchers.Main).launch {
+                MapHelper.previousMap = hashMapOf<String, Location>().toMap()
+                MapHelper.locationMarkers.value = currentMap
+            }
         }
-        return userID
     }
 }

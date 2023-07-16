@@ -1,0 +1,47 @@
+{
+  "NPC": "Naturkundler Sven",
+  "image" : [
+    {
+      "speaker": "Naturkundler Sven",
+      "path"    : "naturalist"
+    }
+  ],
+  "dialogue": [
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Seid gegrüßt, tapferer Abenteurer! Ich bin Sven, der Naturkundler des Königreichs. Ihr seid hier, um mehr über die faszinierenden Blässhühner zu erfahren, nicht wahr?"
+    },
+    {
+      "speaker": "Player",
+      "message": "Ja, genau! Ich habe von den Blässhühner gehört und bin bereit, mich der Herausforderung nach ihrer Suche zu stellen."
+    },
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Dann seid Ihr an der richtigen Stelle, mein wissbegieriger Freund. Die Blässhühner sind eine wahre Pracht der Natur und es gibt so viel über sie zu lernen."
+    },
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Auch ich habe mich ausführlich mit den Blässhühnern beschäftigt und kann Euch einen Rat geben, der Euch tief in die Geheimnisse dieser majestätischen Vögel einweiht."
+    },
+    {
+      "speaker": "Player",
+      "message": "Das klingt spannend! Wie kann ich Eurem Rat folgen?"
+    },
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Um meinem Rat zu folgen, müsst Ihr zunächst den verlorenen Brutplatz der Blässhühner finden. Bei der weisen Kräuterfrau werdet Ihr auf die ersten Hinweise stoßen, die Euch auf Eure Reise begleiten werden."
+    },
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Die Lage ihrer Hütte habe ich Euch in die Karte eingetragen."
+    },
+    {
+      "speaker": "Player",
+      "message": "Verstanden. Ich werde die Kräuterfrau suchen."
+    },
+    {
+      "speaker": "Naturkundler Sven",
+      "message": "Fantastisch! Ich wünsche Euch viel Erfolg auf Eurer Suche, tapferer Abenteurer. Mögen die Blässhühner Euch auf Eurem Weg begleiten!"
+    }
+  ]
+}

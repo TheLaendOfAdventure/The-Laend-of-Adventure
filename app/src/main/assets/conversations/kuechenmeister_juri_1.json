@@ -1,0 +1,15 @@
+{
+  "NPC": "Küchenmeister Juri",
+  "image" : [
+    {
+      "speaker": "Küchenmeister Juri",
+      "path"    : "kuechenmeister_juri"
+    }
+  ],
+  "dialogue": [
+    {
+      "speaker": "Küchenmeister Juri",
+      "message": "Wohlgetan, dass Ihr Euer Wissen mit Bravour unter Beweis gestellt habet!\nDoch erlaubt mir, Euch an einen besonderen Ort zu geleiten, welcher von einzigartigem Reiz ist.\nWir schreiten zum Speiseraum, die unweit entfernt ihren Platz einnimmt."
+    }
+  ]
+}

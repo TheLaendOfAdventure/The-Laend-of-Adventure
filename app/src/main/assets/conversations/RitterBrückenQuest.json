@@ -1,0 +1,27 @@
+{
+	"NPC" : "Ritter",
+	"image" : [
+		{
+			"speaker": "Ritter",
+			"path"    : "knight"
+		}
+	],
+	"dialogue": [
+		{
+			"speaker": "Player",
+			"message": "Hallo, kannst du mich bitte trainieren, damit ich stark genug bin, um alle Warzeichnungen zu sehen?"
+		},
+		{
+			"speaker": "Ritter",
+			"message": "Gerne, aber beweise es erst, indem du die Wackelbrücke überquerst."
+		},
+		{
+			"speaker": "Player",
+			"message": "Natürlich!"
+		},
+		{
+			"speaker": "Ritter",
+			"message": "Dann zieh los!"
+		}
+	]
+}

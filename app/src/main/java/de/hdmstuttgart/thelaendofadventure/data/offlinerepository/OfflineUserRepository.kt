@@ -7,16 +7,16 @@ import kotlinx.coroutines.flow.Flow
 
 class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
 
-    override fun addUser(user: UserEntity): Long {
+    override suspend fun addUser(user: UserEntity): Long {
         return userDao.addUser(user)
-    }
-
-    override fun getAllUsers(): Flow<List<UserEntity>> {
-        return userDao.getAllUsers()
     }
 
     override fun getUserByID(userID: Int): Flow<UserEntity> {
         return userDao.getUserById(userID)
+    }
+
+    override fun getLevelByUserID(userID: Int): Flow<Int> {
+        return userDao.getLevelByUserID(userID)
     }
 
     override suspend fun updateUserName(userID: Int, name: String) {
@@ -35,7 +35,10 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
         userDao.updateExpForUserID(userID, exp)
     }
 
-    override suspend fun updateUserWalkedKm(userID: Int, walkedKm: Int) {
-        userDao.updateWalkedKmForUserID(userID, walkedKm)
+    override suspend fun getWrongAnswerCountByUserID(userID: Int): Int =
+        userDao.getWrongAnswerCountByUserID(userID)
+
+    override suspend fun updateWrongAnswerCountByUserID(userID: Int, wrongAnswerCount: Int) {
+        userDao.updateWrongAnswerCountByUserID(userID, wrongAnswerCount)
     }
 }

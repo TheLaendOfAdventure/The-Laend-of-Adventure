@@ -11,11 +11,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.hdmstuttgart.the_laend_of_adventure.R
 import de.hdmstuttgart.the_laend_of_adventure.databinding.FragmentUserCreationBinding
-import de.hdmstuttgart.thelaendofadventure.permissions.PermissionManager
-import de.hdmstuttgart.thelaendofadventure.permissions.Permissions
+import de.hdmstuttgart.thelaendofadventure.ui.helper.PermissionManager
+import de.hdmstuttgart.thelaendofadventure.ui.helper.Permissions
 import de.hdmstuttgart.thelaendofadventure.ui.viewmodels.UserCreationViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
 
@@ -25,12 +31,15 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
     private lateinit var permissionManager: PermissionManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Initialize ActivityResultLauncher to pick an image from the gallery
         mPickGallery =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 uri?.let {
                     viewModel.saveImage(uri)
-                    binding.userCreationPageAvatarButton.setImageURI(viewModel.imageUri)
+                    Glide.with(requireContext())
+                        .load(viewModel.imagePath)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(binding.userCreationPageAvatarButton)
                     Log.d(TAG, "User avatar image saved: $uri")
                 }
             }
@@ -43,6 +52,7 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserCreationBinding.inflate(inflater, container, false)
+        binding.userCreationPageAvatarButton.setImageResource(R.drawable.empty_avatar)
         Log.d(TAG, "UserCreationPage is created!")
         return binding.root
     }
@@ -77,12 +87,16 @@ class UserCreationFragment : Fragment(R.layout.fragment_user_creation) {
      */
     private fun setupConfirmButton() {
         binding.userCreationPageConfirmButton.setOnClickListener {
-            viewModel.name = binding.nameTextInput.text.toString()
-            viewModel.createUser()
-            Navigation.findNavController(requireView()).navigate(
-                R.id.navigate_from_creation_to_main_page
-            )
-            Log.d(TAG, "User created with name: ${viewModel.name}")
+            CoroutineScope(Dispatchers.Main).launch {
+                viewModel.name = binding.nameTextInput.text.toString()
+                withContext(Dispatchers.IO) {
+                    viewModel.createUser()
+                }
+                Navigation.findNavController(requireView()).navigate(
+                    R.id.navigate_from_creation_to_main_page
+                )
+                Log.d(TAG, "User created with name: ${viewModel.name}")
+            }
         }
     }
 

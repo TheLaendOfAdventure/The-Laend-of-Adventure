@@ -2,24 +2,17 @@ package de.hdmstuttgart.thelaendofadventure.data.offlinerepository
 
 import de.hdmstuttgart.thelaendofadventure.data.dao.BadgeDao
 import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeDetails
-import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.Progress
 import de.hdmstuttgart.thelaendofadventure.data.entity.ActionEntity
 import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeGoalEntity
+import de.hdmstuttgart.thelaendofadventure.data.entity.UserBadgeEntity
 import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.toList
 
 class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
 
-    override fun getAcceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>> =
-        badgeDao.getAcceptedBadgesByUserID(userID)
-
-    override fun getUnacceptedBadgesByUserID(userID: Int): Flow<List<BadgeEntity>> =
-        badgeDao.getUnacceptedBadgesByUserID(userID)
-
-    override fun getProgressForBadgeByUserID(userID: Int, badgeID: Int):
-        Flow<Progress> = badgeDao.getProgressForBadgeByUserID(userID, badgeID)
+    override fun getBadgesDetailsByUserID(userID: Int):
+        Flow<List<BadgeDetails>> = badgeDao.getBadgesDetailsByUserID(userID)
 
     override fun getCompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int):
         Flow<List<ActionEntity>> = badgeDao.getCompletedGoalsForBadgeByUserID(userID, badgeID)
@@ -27,23 +20,20 @@ class OfflineBadgeRepository(private val badgeDao: BadgeDao) : BadgeRepository {
     override fun getUncompletedGoalsForBadgeByUserID(userID: Int, badgeID: Int):
         Flow<List<ActionEntity>> = badgeDao.getUncompletedGoalsForBadgeByUserID(userID, badgeID)
 
-    override fun getBadgesByUserIDAndQuestID(userID: Int, questID: Int):
-        Flow<List<BadgeDetails>> = badgeDao.getBadgesByUserIDAndQuestID(userID, questID)
+    override fun getUserBadgeGoalsByQuestID(userID: Int, questID: Int):
+        Flow<List<UserBadgeEntity>> = badgeDao.getUserBadgesByUserIDAndQuestID(userID, questID)
 
-    override suspend fun updateBadgeProgressByUserID(userID: Int, badgeID: Int, goalNumber: Int) {
-        val badgeProgress = badgeDao.getProgressForBadgeByUserID(userID, badgeID).first()
-
-        val currentGoalNumber = badgeProgress.currentGoalNumber
-        val targetGoalNumber = badgeProgress.targetGoalNumber
-
-        if (currentGoalNumber != targetGoalNumber) {
-            badgeDao.updateBadgeProgressByUserID(userID, badgeID, goalNumber)
-        }
+    override suspend fun completeBadgeGoalByUserID(userID: Int, badgeID: Int, badgeGoalID: Int) {
+        badgeDao.completeBadgeGoalByUserID(userID, badgeID, badgeGoalID)
     }
 
     override suspend fun assignAllBadgesToUser(userID: Int) {
-        val badges = badgeDao.getUnacceptedBadgesByUserID(userID).toList().flatten()
-        val badgesIDs = badges.map { it.badgeID }
-        badgeDao.assignAllBadgesToUser(userID, badgesIDs)
+        badgeDao.assignAllBadgesToUser(userID)
     }
+
+    override suspend fun getBadgeByBadgeID(badgeID: Int): BadgeEntity? =
+        badgeDao.getBadgeByBadgeID(badgeID)
+
+    override suspend fun getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID: Int):
+        BadgeGoalEntity? = badgeDao.getBadgeGoalWhenWrongRiddleAnswersIsReachedByUserID(userID)
 }

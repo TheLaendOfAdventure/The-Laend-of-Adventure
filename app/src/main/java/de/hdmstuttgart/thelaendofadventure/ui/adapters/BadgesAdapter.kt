@@ -1,36 +1,93 @@
 package de.hdmstuttgart.thelaendofadventure.ui.adapters
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import de.hdmstuttgart.the_laend_of_adventure.R
-import de.hdmstuttgart.thelaendofadventure.data.entity.BadgeEntity
+import de.hdmstuttgart.the_laend_of_adventure.databinding.BadgespageListitemBinding
+import de.hdmstuttgart.thelaendofadventure.data.AppDataContainer
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeAction
+import de.hdmstuttgart.thelaendofadventure.data.dao.datahelper.BadgeActions
+import de.hdmstuttgart.thelaendofadventure.data.repository.BadgeRepository
+import de.hdmstuttgart.thelaendofadventure.ui.helper.StringHelper
 
-class BadgesAdapter(private val badgeList: List<BadgeEntity>) :
-    RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
+class BadgesAdapter(
+    private val badgeList: List<BadgeActions>
+) : RecyclerView.Adapter<BadgesAdapter.ViewHolder>() {
+
+    private lateinit var badgeRepository: BadgeRepository
+    private lateinit var context: Context
+    private lateinit var view: View
+    private lateinit var binding: BadgespageListitemBinding
+
+    companion object {
+        private const val paddingBottom = 200
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // inflates the card_view_design view
-        // that is used to hold list item
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.badgespage_listitem, parent, false)
+        context = parent.context
+        badgeRepository = AppDataContainer(context).badgeRepository
 
-        return ViewHolder(view)
+        binding = BadgespageListitemBinding.inflate(LayoutInflater.from(context), parent, false)
+        val viewHolder = ViewHolder(binding.root)
+        view = binding.root
+        viewHolder.binding = binding
+
+        viewHolder.binding.wrapper.setOnClickListener(
+            ListItemClickListener(
+                viewHolder.binding.wrapper,
+                viewHolder.binding.innerInfo,
+                viewHolder.binding.badgeArrow
+            )
+        )
+
+        return viewHolder
     }
 
     // binds the list items to a view
+    @SuppressLint("DiscouragedApi")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val badge = badgeList[position]
+        val (badge, badgeActions) = badgeList[position]
 
-        // sets the image to the imageview from our itemHolder class
-        holder.imageView.setImageURI(badge.imagePath.toUri())
+        // Fill the information into the holder
+        val imageName = badge.imagePath
+        val resourceID = context.resources.getIdentifier(imageName, "drawable", context.packageName)
+        holder.binding.badgeImage.setImageResource(resourceID)
+        holder.binding.badgeName.text = badge.name
+        holder.binding.badgeProgress.max = badge.targetGoalNumber
+        holder.binding.badgeProgress.setProgress(badge.currentGoalNumber, true)
+        holder.binding.badgeProgressNumeric.text = context.getString(
+            R.string.quest_progress_numeric_text,
+            badge.currentGoalNumber,
+            badge.targetGoalNumber
+        )
 
-        // sets the text to the textview from our itemHolder class
-        holder.textView.text = badge.name
+        // add padding bottom if last item
+        if (position == badgeList.size - 1) {
+            holder.binding.badgeOuter.setPadding(0, 0, 0, paddingBottom)
+        } else {
+            holder.binding.badgeOuter.setPadding(0, 0, 0, 0)
+        }
+
+        holder.binding.badgeGoals.text = getActionString(badgeActions)
+    }
+
+    private fun getActionString(badgeActions: List<BadgeAction>): String {
+        val stringBuilder = StringBuilder()
+        for (action in badgeActions) {
+            val actions = action.description
+
+            if (action.isCompleted) {
+                stringBuilder.append(StringHelper.strikethroughText(actions.joinToString("\n")))
+            } else {
+                stringBuilder.append(actions.joinToString("\n"))
+            }
+        }
+
+        return stringBuilder.toString().trim()
     }
 
     // return the number of the items in the list
@@ -40,7 +97,6 @@ class BadgesAdapter(private val badgeList: List<BadgeEntity>) :
 
     // Holds the views for adding it to image and text
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.badge_image)
-        val textView: TextView = itemView.findViewById(R.id.badge_name)
+        lateinit var binding: BadgespageListitemBinding
     }
 }

@@ -6,6 +6,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "io.gitlab.arturbosch.detekt" version "1.22.0"
     id 'com.google.devtools.ksp'version '1.8.0-1.0.8'
+    id 'org.jetbrains.dokka' version "1.8.20"
 }
 
 detekt {
@@ -41,6 +42,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     buildTypes {
@@ -55,6 +57,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    lintOptions {
+        lintConfig = file("$rootDir/notificationpermission.xml")
     }
     buildFeatures {
         viewBinding true
@@ -73,13 +78,13 @@ dependencies {
 
     // Mapbox library
     implementation 'com.mapbox.maps:android:10.12.1'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
 
     //In App Navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-fragment:2.4.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-fragment:2.6.0'
 
     // Room database
     def room_version = "2.5.1"
@@ -90,16 +95,19 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
 
     //KTX-module
-    def activity_version = "1.7.1"
-    implementation "androidx.activity:activity-ktx:$activity_version"
+    implementation "androidx.activity:activity-ktx:1.7.2"
 
     // Fragment
-    def fragment_version = "1.5.7"
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+    implementation "androidx.fragment:fragment-ktx:1.6.0"
 
     // Kotlin Coroutines
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     implementation 'androidx.core:core-ktx:1.10.1'
+
+    // Glide Images
+    implementation('com.github.bumptech.glide:glide:4.14.2')
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+
 
     // Material Design
     implementation 'com.google.android.material:material:1.9.0'
@@ -107,9 +115,9 @@ dependencies {
     // Testing dependencies
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
+    androidTestImplementation 'androidx.test.ext:junit:1.2.0-alpha01'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test:rules:1.6.0-alpha01'
     // Detekt plugin
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0"
 }

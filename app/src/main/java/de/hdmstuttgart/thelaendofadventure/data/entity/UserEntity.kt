@@ -1,5 +1,6 @@
 package de.hdmstuttgart.thelaendofadventure.data.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -10,5 +11,6 @@ data class UserEntity(
     val imagePath: String?,
     val walkedKm: Int = 0,
     val level: Int = 1,
-    val exp: Int = 0
+    val exp: Int = 0,
+    @ColumnInfo(defaultValue = "0") val wrongAnswerCount: Int = 0
 )

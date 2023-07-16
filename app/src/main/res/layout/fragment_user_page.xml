@@ -83,6 +83,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="50dp"
             android:autofillHints="name"
+            android:textColorHint="@color/black"
             android:background="@drawable/text_field_nine"
             android:hint="@string/userPage_name"
             android:inputType="text"

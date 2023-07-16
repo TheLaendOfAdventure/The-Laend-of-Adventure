@@ -88,7 +88,7 @@
             android:inputType="text"
             android:maxLength="12"
             android:textAlignment="center"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             android:textSize="34sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
